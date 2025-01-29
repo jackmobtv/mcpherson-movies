@@ -1,14 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>JSP - Hello World</title>
-</head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
+<h1><%= "What a Thrill" %></h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
-<a href="users">What a Thrill</a>
-</body>
-</html>
+<a href="hello-servlet">With Darkness and Silence</a>
+<a href="users">Through the Night</a>
