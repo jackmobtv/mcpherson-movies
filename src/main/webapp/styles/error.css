@@ -1,0 +1,7 @@
+body{
+    background-image: url(../img/majin.jpg);
+    background-size: cover;
+}
+p, strong {
+    color: white;
+}

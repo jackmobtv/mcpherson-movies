@@ -13,6 +13,7 @@ import static net.mcphersonmovies.shared.MySQL_Connect.getConnection;
 public class UserDAO {
     public static void main(String[] args) {
         getAll().forEach(System.out::println);
+        System.out.println(get("delete-me@example.com"));
     }
 
     public static List<User> getAll() {
@@ -35,9 +36,38 @@ public class UserDAO {
                 User user = new User(userId, firstName, lastName, email, phone, password, language, status, privileges, createdAt, timezone);
                 list.add(user);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
         return list;
+    }
+
+    public static User get(String email) {
+        User user = null;
+        try (Connection connection = getConnection()) {
+            if (connection != null) {
+                try (CallableStatement statement = connection.prepareCall("{CALL sp_get_user(?)}")) {
+                    statement.setString(1, email);
+                    try (ResultSet resultSet = statement.executeQuery()) {
+                        if (resultSet.next()) {
+                            int userId = resultSet.getInt("user_id");
+                            String firstName = resultSet.getString("first_name");
+                            String lastName = resultSet.getString("last_name");
+                            String phone = resultSet.getString("phone");
+                            char[] password = resultSet.getString("password").toCharArray();
+                            String language = resultSet.getString("language");
+                            String status = resultSet.getString("status");
+                            String privileges = resultSet.getString("privileges");
+                            Instant created_at = resultSet.getTimestamp("created_at").toInstant();
+                            String timezone = resultSet.getString("timezone");
+                            user = new User(userId, firstName, lastName, email, phone, password, language, status, privileges, created_at, timezone);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return user;
     }
 }

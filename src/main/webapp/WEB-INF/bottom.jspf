@@ -1,3 +1,3 @@
-<%@include file="/WEB-INF/bottom-nav.jsp"%>
+<%@include file="/WEB-INF/bottom-nav.jspf"%>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package net.mcphersonmovies.mcphersonmovies.model;
 
+import net.mcphersonmovies.shared.Validators;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -65,6 +66,9 @@ public class User implements Comparable<User> {
     }
 
     public void setEmail(String email) {
+        if(!Validators.isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email address");
+        }
         this.email = email;
     }
 
@@ -81,6 +85,12 @@ public class User implements Comparable<User> {
     }
 
     public void setPassword(char[] password) {
+        if(password != null) {
+            String passwordString = String.valueOf(password);
+            if(!Validators.isStrongPassword(passwordString)) {
+                throw new IllegalArgumentException("Password requires at least 8 characters, and at least 3 of 4: lowercase leter, uppercase letter, number, symbol");
+            }
+        }
         this.password = password;
     }
 

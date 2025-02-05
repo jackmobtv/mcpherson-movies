@@ -50,8 +50,8 @@ public class MySQL_Connect {
             if(getConnection() != null) {
                 System.out.println("Connection successful");
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 }

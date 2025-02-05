@@ -12,6 +12,7 @@
                         <a href="${appURL}" class="btn btn-primary">Take me to the Homepage</a>
                     </c:otherwise>
                 </c:choose>
+                <br><br><br><br><br><br><br><br><br><br><br>
             </div>
         </div>
     </div>

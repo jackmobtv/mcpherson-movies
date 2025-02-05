@@ -4,6 +4,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.mcphersonmovies.mcphersonmovies.model.User;
+import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 
 import java.io.IOException;
 
@@ -17,6 +19,47 @@ public class SignUp extends HomeServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        String passwordConf = req.getParameter("password-conf");
+        String[] terms = req.getParameterValues("terms");
+        req.setAttribute("email", email);
+        req.setAttribute("password", password);
+        req.setAttribute("passwordConf", passwordConf);
+        req.setAttribute("terms", terms != null && terms[0].equals("agree") ? "agree" : "");
+        req.setAttribute("pageTitle", "Sign Up for an account");
+
+        User user = new User();
+        boolean errorFound = false;
+        try {
+            user.setEmail(email);
+        } catch (IllegalArgumentException ex) {
+            errorFound = true;
+            req.setAttribute("emailError", ex.getMessage());
+        }
+        if(UserDAO.get(email) != null) {
+            errorFound = true;
+            req.setAttribute("emailError", "A user with that email already exists. Please login or reset your password.");
+        }
+        try {
+            user.setPassword(password.toCharArray());
+        } catch(IllegalArgumentException ex) {
+            errorFound = true;
+            req.setAttribute("password1Error", ex.getMessage());
+        }
+        if(passwordConf != null && passwordConf.equals("")) {
+            errorFound = true;
+            req.setAttribute("password2Error", "Please confirm your password");
+        }
+        if(password != null && passwordConf != null && !passwordConf.equals(password)) {
+            errorFound = true;
+            req.setAttribute("password2Error", "Passwords don't match");
+        }
+        if(terms == null || !terms[0].equals("agree")) {
+            errorFound = true;
+            req.setAttribute("termsError", "You must agree to our terms of use");
+        }
+
+        req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
     }
 }
