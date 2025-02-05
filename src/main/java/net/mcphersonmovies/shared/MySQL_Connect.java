@@ -15,13 +15,21 @@ public class MySQL_Connect {
             throw new SQLException("MySQL driver not found");
         }
 
-        Dotenv dotenv = null;
+//        Dotenv dotenv = null;
+//        try {
+//            dotenv = Dotenv.load();
+//        } catch(DotenvException e) {
+//            throw new SQLException("Could not find .env file");
+//        }
+//        String connectionString = dotenv.get("AZURE_MYSQL_CONNECTIONSTRING");
+
+        String connectionString = "";
         try {
-            dotenv = Dotenv.load();
-        } catch(DotenvException e) {
-            throw new SQLException("Could not find .env file");
+            connectionString = Config.getEnv("AZURE_MYSQL_CONNECTIONSTRING");
+        } catch(IllegalStateException e) {
+            throw new SQLException(e.getMessage());
         }
-        String connectionString = dotenv.get("AZURE_MYSQL_CONNECTIONSTRING");
+
         if(connectionString == null) {
             throw new SQLException("Connection string not found");
         }
