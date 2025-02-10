@@ -32,39 +32,54 @@ public class AzureEmail {
     public static String sendEmail(String emailOut, String subject, String bodyHTML){
         String error = "";
         if(emailOut == null || !Validators.isValidEmail(emailOut)) {
-            error = error + "<br>Invalid email address: " + emailOut;
+            error += "<br>Invalid email address: " + emailOut;
         }
         if(subject == null || subject.isEmpty()) {
-            error = error + "<br>Subject is required";
+            error += "<br>Subject is required";
         }
         if(bodyHTML == null || bodyHTML.isEmpty()) {
-            error = error + "<br>Body is required";
+            error += "<br>Body is required";
         }
 
         if(!error.isEmpty()) {
             return error;
         }
 
-        EmailClient emailClient = getEmailClient();
-        String body = Jsoup.parse(bodyHTML).text();
-        EmailMessage message = new EmailMessage()
-                .setSenderAddress(Config.getEnv("AZURE_EMAIL_FROM"))
-                .setToRecipients(emailOut)
-                .setSubject(subject)
-                .setBodyPlainText(body)
-                .setBodyHtml(bodyHTML)
-                .setReplyTo(new EmailAddress(Config.getEnv("ADMIN_EMAIL")));
+        EmailClient emailClient = null;
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = null;
-
-
-        try{
-            poller = emailClient.beginSend(message);
-        } catch(RuntimeException ex){
-            error = ex.getMessage();
+        try {
+            emailClient = getEmailClient();
+        } catch (IllegalArgumentException ex) {
+            error += "<br>" + ex.getMessage();
+            return error;
         }
 
-        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+        String body = Jsoup.parse(bodyHTML).text();
+        EmailMessage message = null;
+
+        try {
+            message = new EmailMessage()
+                    .setSenderAddress(Config.getEnv("AZURE_EMAIL_FROM"))
+                    .setToRecipients(emailOut)
+                    .setSubject(subject)
+                    .setBodyPlainText(body)
+                    .setBodyHtml(bodyHTML);
+        } catch (Exception ex) {
+            error += "<br>" + ex.getMessage();
+            return error;
+        }
+
+//        SyncPoller<EmailSendResult, EmailSendResult> poller = null;
+
+        try{
+//            poller = emailClient.beginSend(message);
+            emailClient.beginSend(message);
+        } catch(RuntimeException ex){
+            error = ex.getMessage();
+            return error;
+        }
+
+//        PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         //System.out.println("Operation Id: " + response.getValue().getId());
 

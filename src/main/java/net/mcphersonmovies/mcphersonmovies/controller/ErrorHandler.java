@@ -22,10 +22,10 @@ public class ErrorHandler extends HttpServlet {
         errorMsg += "<strong>Message:</strong>" + req.getAttribute(ERROR_MESSAGE) + "<br>";
         errorMsg += "<strong>Servlet:</strong>" + req.getAttribute(ERROR_SERVLET_NAME) + "<br>";
         errorMsg += "<strong>Request URI:</strong>" + req.getAttribute(ERROR_REQUEST_URI) + "<br>";
-        req.setAttribute("errorMsg", errorMsg);
         if(!getServletContext().getInitParameter("debugging").equals("true")) {
-            AzureEmail.sendEmail("jacob-mcpherson@student.kirkwood.edu", "ERROR MESSAGE", errorMsg);
+            errorMsg += AzureEmail.sendEmail("jacob-mcpherson@student.kirkwood.edu", "ERROR MESSAGE", errorMsg);
         }
+        req.setAttribute("errorMsg", errorMsg);
         req.setAttribute("pageTitle", "Error");
         req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
     }
