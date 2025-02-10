@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 
@@ -27,7 +28,6 @@ public class SignUp extends HomeServlet{
         req.setAttribute("password", password);
         req.setAttribute("passwordConf", passwordConf);
         req.setAttribute("terms", terms != null && terms[0].equals("agree") ? "agree" : "");
-        req.setAttribute("pageTitle", "Sign Up for an account");
 
         User user = new User();
         boolean errorFound = false;
@@ -47,7 +47,7 @@ public class SignUp extends HomeServlet{
             errorFound = true;
             req.setAttribute("password1Error", ex.getMessage());
         }
-        if(passwordConf != null && passwordConf.equals("")) {
+        if(passwordConf != null && passwordConf.isEmpty()) {
             errorFound = true;
             req.setAttribute("password2Error", "Please confirm your password");
         }
@@ -60,6 +60,26 @@ public class SignUp extends HomeServlet{
             req.setAttribute("termsError", "You must agree to our terms of use");
         }
 
+        if(!errorFound) {
+            boolean userAdded = false;
+            try {
+                userAdded = UserDAO.add(user);
+            } catch (RuntimeException ex) {
+                req.setAttribute("userError", "User Could Not Be Added");
+            }
+            if(userAdded) {
+                user.setPassword(null);
+                HttpSession session = req.getSession();
+                session.invalidate();
+                session = req.getSession();
+                session.setAttribute("user", user);
+                session.setAttribute("flashMessageSuccess", "User successfully added");
+                resp.sendRedirect(req.getContextPath());
+                return;
+            }
+        }
+
+        req.setAttribute("pageTitle", "Sign Up for an account");
         req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
     }
 }

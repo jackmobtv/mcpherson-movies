@@ -1,5 +1,8 @@
 package net.mcphersonmovies.mcphersonmovies.model;
 
+import net.mcphersonmovies.shared.Hashing;
+
+import java.security.NoSuchAlgorithmException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,6 +15,7 @@ import static net.mcphersonmovies.shared.MySQL_Connect.getConnection;
 
 public class UserDAO {
     public static void main(String[] args) {
+//        add(new User("bro1234@redrum.org", "Password@123"));
         getAll().forEach(System.out::println);
         System.out.println(get("admin@company.com"));
     }
@@ -73,5 +77,18 @@ public class UserDAO {
             throw new RuntimeException(ex);
         }
         return user;
+    }
+
+    public static boolean add(User user) {
+        try(Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_new_user(?,?)}");
+        ) {
+            statement.setString(1, user.getEmail());
+            statement.setString(2, Hashing.hash(user.getPassword().toString()));
+            statement.executeUpdate();
+        } catch(SQLException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 }

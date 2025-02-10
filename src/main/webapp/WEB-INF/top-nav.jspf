@@ -19,9 +19,20 @@
                     </ul>
                 </li>
             </ul>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form>
             <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                <a class="btn btn-primary ms-3" href="#">Login</a>
-                <a class="btn btn-success" href="${appURL}/signup">Sign-Up</a>
+                <c:choose>
+                    <c:when test="${empty sessionScope.activeUser}">
+                        <a href="#" class="btn btn-dark me-2">Login</a>
+                        <a href="${appURL}/signup" class="btn btn-warning">Sign-up</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="#" class="btn btn-secondary me-2">Sign out</a>
+                        <a href="#" class="btn btn-primary">My Profile</a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

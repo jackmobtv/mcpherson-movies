@@ -39,6 +39,11 @@ public class User implements Comparable<User> {
         this.description = description;
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password.toCharArray();
+    }
+
     public User() {
     }
 
