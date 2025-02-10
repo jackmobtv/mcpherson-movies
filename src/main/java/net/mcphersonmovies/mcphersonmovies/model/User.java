@@ -19,19 +19,24 @@ public class User implements Comparable<User> {
     private String privileges;
     private Instant created_at;
     private String timezone;
+    private Instant dateofbirth;
+    private String pronouns;
+    private String description;
 
-    public User(int userId, String firstName, String lastName, String email, String phone, char[] password, String language, String status, String privileges, Instant created_at, String timezone) {
+    public User(int userId, String firstName, String lastName, String email, String phone, String language, String status, String privileges, Instant created_at, String timezone, Instant dateofbirth, String pronouns, String description) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password = password;
         this.language = language;
         this.status = status;
         this.privileges = privileges;
         this.created_at = created_at;
         this.timezone = timezone;
+        this.dateofbirth = dateofbirth;
+        this.pronouns = pronouns;
+        this.description = description;
     }
 
     public User() {
@@ -151,5 +156,29 @@ public class User implements Comparable<User> {
             result = this.firstName.compareTo(o.firstName);
         }
         return result;
+    }
+
+    public Instant getDateofbirth() {
+        return dateofbirth;
+    }
+
+    public void setDateofbirth(Instant dateofbirth) {
+        this.dateofbirth = dateofbirth;
+    }
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

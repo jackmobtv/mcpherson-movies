@@ -6,8 +6,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.mcphersonmovies.shared.AzureEmail;
+
 import static jakarta.servlet.RequestDispatcher.*;
 import java.io.IOException;
+import java.util.Objects;
 
 @WebServlet("/errorHandler")
 public class ErrorHandler extends HttpServlet {
@@ -20,6 +23,9 @@ public class ErrorHandler extends HttpServlet {
         errorMsg += "<strong>Servlet:</strong>" + req.getAttribute(ERROR_SERVLET_NAME) + "<br>";
         errorMsg += "<strong>Request URI:</strong>" + req.getAttribute(ERROR_REQUEST_URI) + "<br>";
         req.setAttribute("errorMsg", errorMsg);
+        if(!getServletContext().getInitParameter("debugging").equals("true")) {
+            AzureEmail.sendEmail("jacob-mcpherson@student.kirkwood.edu", "ERROR MESSAGE", errorMsg);
+        }
         req.setAttribute("pageTitle", "Error");
         req.getRequestDispatcher("WEB-INF/error.jsp").forward(req, resp);
     }
