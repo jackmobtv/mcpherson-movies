@@ -2,7 +2,7 @@
     <c:if test="${not empty loginFail}">
         <div class="alert alert-danger mb-2">${loginFail}</div>
     </c:if>
-    <form method="post" action="${appURL}/login">
+    <form method="post" action="${appURL}/login" id="loginForm">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">

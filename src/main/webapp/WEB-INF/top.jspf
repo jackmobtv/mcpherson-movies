@@ -44,6 +44,9 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"
             integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA=="
             crossorigin="anonymous"></script>
+    <c:if test="${pageTitle eq 'Login'}">
+        <script defer src="${appURL}/scripts/remember-me.js"></script>
+    </c:if>
 </head>
 <body>
 <%@include file="/WEB-INF/top-nav.jspf"%>
