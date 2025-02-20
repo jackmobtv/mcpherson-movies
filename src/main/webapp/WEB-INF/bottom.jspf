@@ -1,3 +1,11 @@
+<li class="nav-item align-items-center d-flex ms-5 mt-2">
+    <i class="fas fa-sun"></i>
+    <div class="ms-2 form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="themingSwitcher" />
+    </div>
+    <i class="fas fa-moon"></i>
+</li>
+<script defer src="${appURL}/scripts/dark-light.js"></script>
 <%@include file="/WEB-INF/bottom-nav.jspf"%>
 </body>
 </html>

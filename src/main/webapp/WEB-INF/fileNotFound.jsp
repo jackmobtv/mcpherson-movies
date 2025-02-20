@@ -2,6 +2,8 @@
     <div class="container pt-5">
         <div class="row">
             <div class="text-center">
+                <img src="${appURL}/img/wrongturn.jpg" alt="albequerque"/>
+
                 <h1>404</h1>
                 <h2>Page Not Found</h2>
                 <p class="mt-4">The page you are looking for does not exist.</p>

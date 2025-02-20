@@ -18,8 +18,8 @@ import static net.mcphersonmovies.shared.MySQL_Connect.getConnection;
 public class UserDAO {
     public static void main(String[] args) {
 //        add(new User("bro1234@redrum.org", "Password@123"));
-//        getAll().forEach(System.out::println);
-//        System.out.println(get("admin@company.com"));
+        getAll().forEach(System.out::println);
+        System.out.println(get("admin@company.com"));
         System.out.println(auth("admin@company.com", "9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e".toCharArray()));
     }
 
