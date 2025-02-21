@@ -58,7 +58,7 @@ public class Login extends HttpServlet {
             session.setAttribute("activeUser", user);
             session.setAttribute("flashMessageSuccess", String.format("Welcome back%s!", (user.getFirstName() != null && !user.getFirstName().isEmpty() ? " " + user.getFirstName() : "")));
 
-            resp.sendRedirect(req.getContextPath());
+            resp.sendRedirect(req.getContextPath() + "/");
             return;
         }
 

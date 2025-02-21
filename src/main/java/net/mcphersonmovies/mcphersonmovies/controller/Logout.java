@@ -16,6 +16,6 @@ public class Logout extends HttpServlet {
         session.invalidate();
         session = request.getSession();
         session.setAttribute("flashMessageWarning", "You Have been logged out");
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect(request.getContextPath() + "/");
     }
 }

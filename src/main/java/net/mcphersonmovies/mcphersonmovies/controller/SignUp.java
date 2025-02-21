@@ -74,7 +74,7 @@ public class SignUp extends HomeServlet{
                 session = req.getSession();
                 session.setAttribute("user", user);
                 session.setAttribute("flashMessageSuccess", "User successfully added");
-                resp.sendRedirect(req.getContextPath());
+                resp.sendRedirect(req.getContextPath() + "/");
                 return;
             }
         }
