@@ -95,12 +95,6 @@ public class User implements Comparable<User> {
     }
 
     public void setPassword(char[] password) {
-        if(password != null) {
-            String passwordString = String.valueOf(password);
-            if(!Validators.isStrongPassword(passwordString)) {
-                throw new IllegalArgumentException("Password requires at least 8 characters, and at least 3 of 4: lowercase leter, uppercase letter, number, symbol");
-            }
-        }
         this.password = password;
     }
 
@@ -185,5 +179,17 @@ public class User implements Comparable<User> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean validatePassword(String password) {
+        if(password != null) {
+            String passwordString = String.valueOf(password);
+            if(!Validators.isStrongPassword(passwordString)) {
+                throw new IllegalArgumentException("Password requires at least 8 characters, and at least 3 of 4: lowercase leter, uppercase letter, number, symbol");
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }

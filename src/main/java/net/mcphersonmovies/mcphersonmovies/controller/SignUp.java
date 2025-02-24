@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.shared.Hashing;
 import net.mcphersonmovies.shared.Helpers;
 import net.mcphersonmovies.shared.Validators;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 @WebServlet("/signup")
 public class SignUp extends HomeServlet{
@@ -45,8 +47,12 @@ public class SignUp extends HomeServlet{
             req.setAttribute("emailError", "A user with that email already exists. Please login or reset your password.");
         }
         try {
-            user.setPassword(password.toCharArray());
+            user.validatePassword(password);
+            user.setPassword(Hashing.hash(password).toCharArray());
         } catch(IllegalArgumentException ex) {
+            errorFound = true;
+            req.setAttribute("password1Error", ex.getMessage());
+        } catch (NoSuchAlgorithmException ex) {
             errorFound = true;
             req.setAttribute("password1Error", ex.getMessage());
         }

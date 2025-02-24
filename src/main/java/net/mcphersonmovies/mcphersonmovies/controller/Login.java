@@ -42,8 +42,10 @@ public class Login extends HttpServlet {
         User user = null;
         try {
             user = UserDAO.auth(email, Hashing.hash(password).toCharArray());
-        } catch (RuntimeException | NoSuchAlgorithmException e) {
+        } catch (RuntimeException ex) {
             req.setAttribute("loginFail", "An error occurred.");
+        } catch (NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
         }
 
         if (user == null) {
