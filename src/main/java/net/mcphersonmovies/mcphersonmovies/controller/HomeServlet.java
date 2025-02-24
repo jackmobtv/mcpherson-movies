@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
-import net.mcphersonmovies.shared.OMDB;
+import net.mcphersonmovies.mcphersonmovies.OMDB;
 
 import java.io.IOException;
 

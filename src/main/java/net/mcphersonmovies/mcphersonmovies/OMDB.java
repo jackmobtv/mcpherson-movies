@@ -1,9 +1,8 @@
-package net.mcphersonmovies.shared;
+package net.mcphersonmovies.mcphersonmovies;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
+import net.mcphersonmovies.shared.Config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,6 +35,10 @@ public class OMDB {
         try{
             poster = jsonObject.getString("Poster");
         } catch (JSONException ex) {
+            poster = "https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0=";
+        }
+
+        if (poster.equals("N/A")){
             poster = "https://media.istockphoto.com/id/1472933890/vector/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-moment-placeholder.jpg?s=612x612&w=0&k=20&c=Rdn-lecwAj8ciQEccm0Ep2RX50FCuUJOaEM8qQjiLL0=";
         }
 

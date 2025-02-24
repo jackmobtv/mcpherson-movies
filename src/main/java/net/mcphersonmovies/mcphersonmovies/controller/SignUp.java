@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 import net.mcphersonmovies.shared.Hashing;
-import net.mcphersonmovies.shared.Helpers;
 import net.mcphersonmovies.shared.Validators;
 
 import java.io.IOException;
@@ -49,10 +48,7 @@ public class SignUp extends HomeServlet{
         try {
             user.validatePassword(password);
             user.setPassword(Hashing.hash(password).toCharArray());
-        } catch(IllegalArgumentException ex) {
-            errorFound = true;
-            req.setAttribute("password1Error", ex.getMessage());
-        } catch (NoSuchAlgorithmException ex) {
+        } catch(IllegalArgumentException | NoSuchAlgorithmException ex) {
             errorFound = true;
             req.setAttribute("password1Error", ex.getMessage());
         }

@@ -1,5 +1,7 @@
 package net.mcphersonmovies.mcphersonmovies.model;
 
+import jakarta.servlet.http.HttpServletRequest;
+import net.mcphersonmovies.shared.AzureEmail;
 import net.mcphersonmovies.shared.Hashing;
 import net.mcphersonmovies.shared.Helpers;
 
@@ -12,6 +14,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static net.mcphersonmovies.shared.MySQL_Connect.getConnection;
 
@@ -137,6 +140,47 @@ public class UserDAO {
             statement.executeUpdate();
         } catch(SQLException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public static String passwordReset(String email, HttpServletRequest req) {
+        User user = get(email);
+        if (user == null) {
+            return "Sent Password Reset Link to Email if it Exists";
+        } else {
+            try(Connection connection = getConnection()) {
+                String uuid = String.valueOf(UUID.randomUUID());
+                CallableStatement statement = connection.prepareCall("{call sp_insert_password_reset(?,?,?)}");
+                statement.setString(1, email);
+                statement.setString(2, uuid);
+                statement.registerOutParameter(3, java.sql.Types.INTEGER);
+                statement.execute();
+                int rowsAffected = statement.getInt(3);
+                if (rowsAffected > 0) {
+                    String subject = "Password Reset Link";
+                    String body = "<h2>Reset Password</h2>";
+                    body += "<p>Please click this link to reset your password. This link expires in 30 minutes.</p>";
+
+                    String appURL = "";
+                    if(req.isSecure()) {
+                        appURL = req.getServletContext().getInitParameter("appURLCloud");
+                    } else {
+                        appURL = req.getServletContext().getInitParameter("appURLLocal");
+                    }
+                    String URL = String.format("%s/new-password?key=%s", appURL, uuid);
+
+                    body += "<a href='" + URL + "' target='_blank'>Reset Password</a>";
+                    body += "<p>If you did not request a reset, you can ignore this message.</p>";
+
+                    AzureEmail.sendEmail(email, subject, body);
+
+                    return "Sent Password Reset Link to Email if it Exists";
+                } else {
+                    return "We couldn't process your password reset link, Try Again";
+                }
+            } catch (SQLException ex) {
+                return ex.getMessage();
+            }
         }
     }
 }
