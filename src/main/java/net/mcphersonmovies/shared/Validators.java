@@ -1,5 +1,15 @@
 package net.mcphersonmovies.shared;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,5 +58,43 @@ public class Validators {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(country);
         return matcher.matches();
+    }
+
+    // Code from https://stackoverflow.com/questions/27297067/google-recaptcha-how-to-get-user-response-and-validate-in-the-server-side
+    public static boolean validateCaptcha(String response)
+    {
+        JsonObject jsonObject = null;
+        URLConnection connection = null;
+        InputStream is = null;
+        String charset = java.nio.charset.StandardCharsets.UTF_8.name();
+
+        if(response.isEmpty()){
+            return false;
+        }
+
+        String secret = Config.getEnv("CAPTCHA_KEY");
+
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        try {
+            String query = String.format("secret=%s&response=%s",
+                    URLEncoder.encode(secret, charset),
+                    URLEncoder.encode(response, charset));
+
+            connection = new URL(url + "?" + query).openConnection();
+            is = connection.getInputStream();
+            JsonReader rdr = Json.createReader(is);
+            jsonObject = rdr.readObject();
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        return jsonObject.getBoolean("success");
     }
 }

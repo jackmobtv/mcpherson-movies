@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.shared.Helpers;
+import net.mcphersonmovies.shared.Validators;
 
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ import java.io.IOException;
 public class SignUp extends HomeServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("pageTitle", "Sign Up for an Account");
+        req.setAttribute("pageTitle", "Sign up for an Account");
         req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
     }
 
@@ -23,6 +25,7 @@ public class SignUp extends HomeServlet{
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String passwordConf = req.getParameter("password-conf");
+        String response = req.getParameter("g-recaptcha-response");
         String[] terms = req.getParameterValues("terms");
         req.setAttribute("email", email);
         req.setAttribute("password", password);
@@ -59,6 +62,10 @@ public class SignUp extends HomeServlet{
             errorFound = true;
             req.setAttribute("termsError", "You must agree to our terms of use");
         }
+        if(!Validators.validateCaptcha(response)){
+            errorFound = true;
+            req.setAttribute("captchaError", "Captcha Failed");
+        }
 
         if(!errorFound) {
             boolean userAdded = false;
@@ -79,7 +86,7 @@ public class SignUp extends HomeServlet{
             }
         }
 
-        req.setAttribute("pageTitle", "Sign Up for an account");
+        req.setAttribute("pageTitle", "Sign up for an Account");
         req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
     }
 }

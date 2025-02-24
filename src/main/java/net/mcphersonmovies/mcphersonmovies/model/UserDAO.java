@@ -89,8 +89,8 @@ public class UserDAO {
             statement.setString(1, user.getEmail());
             statement.setString(2, Hashing.hash(Arrays.toString(user.getPassword())));
             statement.executeUpdate();
-        } catch(SQLException | NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        } catch(SQLException | NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
         }
         return true;
     }
@@ -127,5 +127,16 @@ public class UserDAO {
             throw new RuntimeException(ex);
         }
         return user;
+    }
+
+    public static void lock(String email) {
+        try(Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_lock_user(?)}");
+        ) {
+            statement.setString(1, email);
+            statement.executeUpdate();
+        } catch(SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

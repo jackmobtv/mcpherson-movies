@@ -46,7 +46,17 @@
     <c:if test="${pageTitle eq 'Login'}">
         <script defer src="${appURL}/scripts/remember-me.js"></script>
     </c:if>
+    <c:if test="${pageTitle eq 'Sign Up for an Account'}">
+        <script defer src="${appURL}/scripts/sign-up.js"></script>
+    </c:if>
+    <c:if test="${pageTitle eq 'Sign up for an Account' || pageTitle eq 'Login'}">
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </c:if>
     <script>
+        setTimeout(function() {
+            alert("You are About to be Logged out")
+        }, 3570000);
+
         const isSystemThemeSetToDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (isSystemThemeSetToDark) {

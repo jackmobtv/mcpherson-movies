@@ -20,6 +20,10 @@
                 Remember Me for 30 days
             </label>
         </div>
+
+        <div class="g-recaptcha" data-sitekey="6LfEWeAqAAAAAKdaJTHjDcWPtbh4EOo0i2Km1pHf"></div>
+        <div style="color: indianred">${captchaError}</div>
+        <br/>
         <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-body-secondary">Don't have an account? <a href="${appURL}/signup">Sign-up</a></p>
     </form>
