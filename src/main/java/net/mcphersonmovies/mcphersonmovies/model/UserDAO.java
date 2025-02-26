@@ -2,17 +2,14 @@ package net.mcphersonmovies.mcphersonmovies.model;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.mcphersonmovies.shared.AzureEmail;
-import net.mcphersonmovies.shared.Hashing;
 import net.mcphersonmovies.shared.Helpers;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -162,10 +159,10 @@ public class UserDAO {
                     body += "<p>Please click this link to reset your password. This link expires in 30 minutes.</p>";
 
                     String appURL = "";
-                    if(req.isSecure()) {
-                        appURL = req.getServletContext().getInitParameter("appURLCloud");
-                    } else {
+                    if(req.getServerName().equals("localhost")) {
                         appURL = req.getServletContext().getInitParameter("appURLLocal");
+                    } else {
+                        appURL = req.getServletContext().getInitParameter("appURLCloud");
                     }
                     String URL = String.format("%s/new-password?key=%s", appURL, uuid);
 
@@ -181,6 +178,45 @@ public class UserDAO {
             } catch (SQLException ex) {
                 return ex.getMessage();
             }
+        }
+    }
+
+    public static String getPasswordReset(String token) {
+        String email = "";
+        try (Connection connection = getConnection();
+             CallableStatement statement = connection.prepareCall("{CALL sp_select_password_reset(?)}")) {
+            statement.setString(1, token);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+//                Instant now = Instant.now();
+//                Instant created_at = resultSet.getTimestamp("created_at").toInstant();
+//                Duration duration = Duration.between(created_at, now);
+//                long minutesElapsed = duration.toMinutes();
+//                if(minutesElapsed < 30) {
+//                    email = resultSet.getString("email");
+//                }
+                int id = resultSet.getInt("id");
+                CallableStatement statement2 = connection.prepareCall("{CALL sp_delete_password_reset(?)}");
+                statement2.setInt(1, id);
+                statement2.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return email;
+    }
+
+    public static void updatePassword(String email, char[] password) {
+        try (Connection connection = getConnection()) {
+            if (connection != null) {
+                try (CallableStatement statement = connection.prepareCall("{CALL sp_update_user_password(?, ?)}")) {
+                    statement.setString(1, email);
+                    statement.setString(2, Helpers.CharToString(password));
+                    statement.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

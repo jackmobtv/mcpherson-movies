@@ -1,5 +1,5 @@
-var wsProtocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
-const wsUri = wsProtocol + window.location.host + document.location.pathname + "/checkEmail"; // Adjust context path as necessary.
+let wsProtocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
+const wsUri = wsProtocol + window.location.host + document.location.pathname + "/checkEmail";
 
 let socket;
 
@@ -11,7 +11,7 @@ $(document).ready(function() {
     };
 
     socket.onmessage = function(event) {
-        const emailExists = event.data === "true"; // Check for "true" response
+        const emailExists = event.data === "true";
         const emailInput = $("#email");
         const emailError = $("#emailError");
         console.log(emailExists);

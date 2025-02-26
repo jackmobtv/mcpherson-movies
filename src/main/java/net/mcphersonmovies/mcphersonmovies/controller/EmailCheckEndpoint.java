@@ -13,7 +13,7 @@ public class EmailCheckEndpoint {
     }
     @OnMessage
     public void onMessage(String email, Session session) {
-        boolean emailExists = UserDAO.get(email) != null; // Assuming UserDAO.get returns true if email exists
+        boolean emailExists = UserDAO.get(email) != null;
         try {
             session.getBasicRemote().sendText(String.valueOf(emailExists));
         } catch (IOException ex) {
