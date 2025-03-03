@@ -8,6 +8,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,8 @@ public class UserDAO {
     }
 
     public static boolean add(User user) {
-        try(Connection connection = getConnection();
+        try(
+            Connection connection = getConnection();
             CallableStatement statement = connection.prepareCall("{CALL sp_new_user(?,?)}");
         ) {
             statement.setString(1, user.getEmail());
@@ -164,7 +166,7 @@ public class UserDAO {
                     } else {
                         appURL = req.getServletContext().getInitParameter("appURLCloud");
                     }
-                    String URL = String.format("%s/new-password?key=%s", appURL, uuid);
+                    String URL = String.format("%s/new-password?token=%s", appURL, uuid);
 
                     body += "<a href='" + URL + "' target='_blank'>Reset Password</a>";
                     body += "<p>If you did not request a reset, you can ignore this message.</p>";
@@ -183,18 +185,20 @@ public class UserDAO {
 
     public static String getPasswordReset(String token) {
         String email = "";
-        try (Connection connection = getConnection();
-             CallableStatement statement = connection.prepareCall("{CALL sp_select_password_reset(?)}")) {
+        try (
+            Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_select_password_reset(?)}");
+        ) {
             statement.setString(1, token);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-//                Instant now = Instant.now();
-//                Instant created_at = resultSet.getTimestamp("created_at").toInstant();
-//                Duration duration = Duration.between(created_at, now);
-//                long minutesElapsed = duration.toMinutes();
-//                if(minutesElapsed < 30) {
-//                    email = resultSet.getString("email");
-//                }
+                Instant now = Instant.now();
+                Instant created_at = resultSet.getTimestamp("created_at").toInstant();
+                Duration duration = Duration.between(created_at, now);
+                long minutesElapsed = duration.toMinutes();
+                if(minutesElapsed < 30) {
+                    email = resultSet.getString("email");
+                }
                 int id = resultSet.getInt("id");
                 CallableStatement statement2 = connection.prepareCall("{CALL sp_delete_password_reset(?)}");
                 statement2.setInt(1, id);
@@ -206,17 +210,19 @@ public class UserDAO {
         return email;
     }
 
-    public static void updatePassword(String email, char[] password) {
+    public static boolean updatePassword(String email, char[] password) {
         try (Connection connection = getConnection()) {
             if (connection != null) {
                 try (CallableStatement statement = connection.prepareCall("{CALL sp_update_user_password(?, ?)}")) {
                     statement.setString(1, email);
                     statement.setString(2, Helpers.CharToString(password));
-                    statement.executeUpdate();
+                    int rows = statement.executeUpdate();
+                    return rows == 1;
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 }

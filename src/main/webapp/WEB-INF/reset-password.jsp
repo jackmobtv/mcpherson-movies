@@ -23,7 +23,7 @@
                                 <div class="mb-4">
                                     <label for="inputEmail" class="form-label">Email address *</label>
                                     <div class="input-group input-group-lg">
-                                        <span class="input-group-text bg-light rounded-start border-0 text-secondary px-3"><i class="bi bi-envelope-fill"></i></span>
+                                        <span class="input-group-text rounded-start border-0 text-secondary px-3"><i class="bi bi-envelope-fill"></i></span>
                                         <input type="text" class="form-control border-2 rounded-end ps-1" placeholder="E-mail" id="inputEmail" name="inputEmail" value="${email}">
                                     </div>
                                 </div>

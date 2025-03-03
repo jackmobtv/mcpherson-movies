@@ -6,10 +6,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 import net.mcphersonmovies.shared.AzureEmail;
 import net.mcphersonmovies.mcphersonmovies.model.User;
+import net.mcphersonmovies.shared.Hashing;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 @WebServlet("/new-password")
 public class NewPassword extends HttpServlet {
@@ -27,13 +30,14 @@ public class NewPassword extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String token = session.getAttribute("token").toString();
-        String password1 = req.getParameter("password1");
-        String password2 = req.getParameter("password2");
+        String password1 = req.getParameter("inputPassword1");
+        String password2 = req.getParameter("inputPassword2");
 
         req.setAttribute("password1", password1);
         req.setAttribute("password2", password2);
 
         User user = new User();
+
         boolean errorFound = false;
         try {
             user.validatePassword(password1);
@@ -54,34 +58,43 @@ public class NewPassword extends HttpServlet {
         }
 
         if(!errorFound) {
-            String email = ""; // Call UserDAO.getPasswordReset()
+            String email = UserDAO.getPasswordReset(token);
             if(email == null || email.isEmpty()) {
                 req.setAttribute("newPasswordFail", "Token not found");
             } else {
-                // Call UserDAO.updatePassword()
-                // Send confirmation email
-                String subject = "New Password Created";
-                String body = "<h2>New Password Created</h2>";
-                body += "<p>Your password has changed. If you suspect that someone else changed your password, please contact customer support.</p>";
-
-                String appURL = "";
-                if(req.getServerName().equals("localhost")) {
-                    appURL = req.getServletContext().getInitParameter("appURLLocal");
-                } else {
-                    appURL = req.getServletContext().getInitParameter("appURLCloud");
+                boolean success = false;
+                try {
+                    success = UserDAO.updatePassword(email, Hashing.hash(password1).toCharArray());
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
                 }
-                String URL = String.format("%s/reset-password", appURL);
-                body += String.format("<p><a href=\"%s\" target=\"_blank\">%s</a></p>", URL, URL);
 
-                try{
-                    AzureEmail.sendEmail(email, subject, body);
-                } catch(Exception ignored){}
+                if(success) {
+                    String subject = "Password has been reset";
+                    String body = "<h2>Password has been reset</h2>";
+                    body += "<p>Your password has changed. If you suspect that someone else changed your password, please contact customer support.</p>";
+
+                    String appURL = "";
+                    if(req.getServerName().equals("localhost")) {
+                        appURL = req.getServletContext().getInitParameter("appURLLocal");
+                    } else {
+                        appURL = req.getServletContext().getInitParameter("appURLCloud");
+                    }
+                    String URL = String.format("%s/reset-password", appURL);
+                    body += String.format("<p><a href=\"%s\" target=\"_blank\">%s</a></p>", URL, URL);
+
+                    try{
+                        AzureEmail.sendEmail(email, subject, body);
+                    } catch(Exception ignored){}
 
 //                session.removeAttribute("activeUser");
 //                session.setAttribute("activeUser", user);
-                session.setAttribute("flashMessageSuccess", "Password has been reset");
-                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
-                return;
+                    session.setAttribute("flashMessageSuccess", "Password has been reset");
+                    resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
+                    return;
+                } else {
+                    session.setAttribute("newPasswordFail", "Reset password failed");
+                }
             }
         }
 

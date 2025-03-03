@@ -18,12 +18,20 @@ import java.security.NoSuchAlgorithmException;
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        session.removeAttribute("redirect");
+        String redirect = req.getParameter("redirect");
+        if(redirect != null && !redirect.isEmpty()){
+            session.setAttribute("redirect", redirect);
+        }
         req.setAttribute("pageTitle", "Login");
         req.getRequestDispatcher("WEB-INF/login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String redirect = session.getAttribute("redirect") == null ? "" : session.getAttribute("redirect").toString();
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String response = req.getParameter("g-recaptcha-response");
@@ -42,14 +50,11 @@ public class Login extends HttpServlet {
         User user = null;
         try {
             user = UserDAO.auth(email, Hashing.hash(password).toCharArray());
-        } catch (RuntimeException ex) {
+        } catch (RuntimeException | NoSuchAlgorithmException ex) {
             req.setAttribute("loginFail", "An error occurred.");
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
         }
 
         if (user == null) {
-            HttpSession session = req.getSession();
             Integer count = (Integer) session.getAttribute("wrongCount");
             if (count == null) {
                 count = 0;
@@ -57,6 +62,7 @@ public class Login extends HttpServlet {
             if(count == 5){
                 UserDAO.lock(email);
                 session.setAttribute("flashMessageDanger", "Account is locked due to too many failed attempts.");
+                session.removeAttribute("wrongCount");
                 resp.sendRedirect(req.getContextPath() + "/");
                 return;
             } else {
@@ -64,6 +70,7 @@ public class Login extends HttpServlet {
                     session.setAttribute("wrongCount", count + 1);
                 } else {
                     session.setAttribute("wrongEmail", email);
+                    session.setAttribute("wrongCount", 1);
                 }
             }
             req.setAttribute("loginFail", "Invalid Email or Password. <a href='signup'>Sign-up</a>");
@@ -77,7 +84,6 @@ public class Login extends HttpServlet {
 
             user.setPassword(null);
 
-            HttpSession session = req.getSession();
             session.invalidate();
             session = req.getSession();
             if(rememberMe != null && rememberMe[0].equals("true")) {
@@ -86,7 +92,7 @@ public class Login extends HttpServlet {
             session.setAttribute("activeUser", user);
             session.setAttribute("flashMessageSuccess", String.format("Welcome back%s!", (user.getFirstName() != null && !user.getFirstName().isEmpty() ? " " + user.getFirstName() : "")));
 
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/" + redirect);
             return;
         }
 
