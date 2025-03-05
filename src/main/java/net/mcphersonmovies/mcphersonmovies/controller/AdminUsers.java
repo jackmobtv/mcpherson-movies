@@ -25,8 +25,16 @@ public class AdminUsers extends HttpServlet {
             req.setAttribute("pageTitle", "All Users");
             req.getRequestDispatcher("WEB-INF/movies/admin-users.jsp").forward(req, resp);
         } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            if(user != null){
+                req.setAttribute("pageTitle", "Home");
+                session.setAttribute("flashMessageWarning", "Only admin users can view this page");
+                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
+            } else {
+                req.setAttribute("pageTitle", "All Users");
+                session.setAttribute("flashMessageWarning", "Only admin users can view this page");
+                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login?redirect=users"));
+            }
+
         }
     }
 }

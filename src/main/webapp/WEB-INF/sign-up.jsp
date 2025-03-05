@@ -20,6 +20,11 @@
                     <label for="password-conf">Confirm Password</label>
                     <c:if test="${not empty password2Error}"><div class="invalid-feedback">${password2Error}</div></c:if>
                 </div>
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control <c:if test="${not empty dobError}">is-invalid</c:if>" id="dob" name="dob" value="${passwordConf}">
+                    <label for="dob">Date Of Birth</label>
+                    <c:if test="${not empty dobError}"><div class="invalid-feedback">${dobError}</div></c:if>
+                </div>
                 <div class="checkbox mb-3">
                     <input type="checkbox" value="agree" class="<c:if test="${not empty termsError}">is-invalid</c:if>" id="terms" name="terms" <c:if test="${terms eq 'agree'}">checked</c:if>>
                     <label for="terms">Agree to the <a href="${appURL}/terms">Terms of Service</a></label>

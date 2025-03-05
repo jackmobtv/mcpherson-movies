@@ -7,22 +7,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
-import net.mcphersonmovies.mcphersonmovies.model.OMDB;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("")
-public class HomeServlet extends HttpServlet {
+@WebServlet(value="/movies")
+public class Movies extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Movie movie = MovieDAO.getRandomMovie();
-
-        req.setAttribute("title", movie.getTitle());
-        req.setAttribute("plot", OMDB.getPlot(movie.getTitle()));
-        req.setAttribute("posterURL", OMDB.getPoster(movie.getTitle()));
-        req.setAttribute("id", movie.getMovie_id());
-
-        req.setAttribute("pageTitle", "Home");
-        req.getRequestDispatcher("/WEB-INF/home.jsp").forward(req, resp);
+        List<Movie> movies = MovieDAO.getAllMovies();
+        req.setAttribute("movies", movies);
+        req.setAttribute("pageTitle", "Movies");
+        req.getRequestDispatcher("WEB-INF/movies/movies.jsp").forward(req, resp);
     }
 }

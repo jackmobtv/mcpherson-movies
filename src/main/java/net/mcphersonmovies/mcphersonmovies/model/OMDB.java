@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies;
+package net.mcphersonmovies.mcphersonmovies.model;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;

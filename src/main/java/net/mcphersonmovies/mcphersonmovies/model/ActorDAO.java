@@ -17,7 +17,7 @@ public class ActorDAO {
     public static List<Actor> getAllActors() {
         List<Actor> actors = new ArrayList<>();
         try(Connection connection = getConnection()) {
-            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_actors()}");
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_actors(0,0)}");
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 int id = rs.getInt("actor_id");

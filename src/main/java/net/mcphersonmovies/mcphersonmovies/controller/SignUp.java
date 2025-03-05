@@ -12,6 +12,9 @@ import net.mcphersonmovies.shared.Validators;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @WebServlet("/signup")
 public class SignUp extends HomeServlet{
@@ -27,6 +30,7 @@ public class SignUp extends HomeServlet{
         String password = req.getParameter("password");
         String passwordConf = req.getParameter("password-conf");
         String response = req.getParameter("g-recaptcha-response");
+        String dobString = req.getParameter("dob");
         String[] terms = req.getParameterValues("terms");
         req.setAttribute("email", email);
         req.setAttribute("password", password);
@@ -60,6 +64,20 @@ public class SignUp extends HomeServlet{
             errorFound = true;
             req.setAttribute("password2Error", "Passwords don't match");
         }
+        Timestamp timestamp = null;
+
+        if (dobString != null && !dobString.isEmpty()) {
+            // Parse the date string into java.sql.Timestamp
+            try {
+                // use the appropriate format for your needs
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = dateFormat.parse(dobString);
+                timestamp = new Timestamp(utilDate.getTime());
+            } catch (ParseException ex) {
+                errorFound = true;
+                req.setAttribute("dobError", "Invalid date");
+            }
+        }
         if(terms == null || !terms[0].equals("agree")) {
             errorFound = true;
             req.setAttribute("termsError", "You must agree to our terms of use");
@@ -72,7 +90,7 @@ public class SignUp extends HomeServlet{
         if(!errorFound) {
             boolean userAdded = false;
             try {
-                userAdded = UserDAO.add(user);
+                userAdded = UserDAO.add(user, timestamp);
             } catch (RuntimeException ex) {
                 req.setAttribute("userError", "User Could Not Be Added");
             }

@@ -4,12 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.mcphersonmovies.shared.AzureEmail;
 import net.mcphersonmovies.shared.Helpers;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -83,13 +82,14 @@ public class UserDAO {
         return user;
     }
 
-    public static boolean add(User user) {
+    public static boolean add(User user, Timestamp dob) {
         try(
             Connection connection = getConnection();
-            CallableStatement statement = connection.prepareCall("{CALL sp_new_user(?,?)}");
+            CallableStatement statement = connection.prepareCall("{CALL sp_new_user(?,?,?)}");
         ) {
             statement.setString(1, user.getEmail());
             statement.setString(2, Helpers.CharToString(user.getPassword()));
+            statement.setTimestamp(3, dob);
             statement.executeUpdate();
         } catch(SQLException ex) {
             throw new RuntimeException(ex);
@@ -132,7 +132,8 @@ public class UserDAO {
     }
 
     public static void lock(String email) {
-        try(Connection connection = getConnection();
+        try(
+            Connection connection = getConnection();
             CallableStatement statement = connection.prepareCall("{CALL sp_lock_user(?)}");
         ) {
             statement.setString(1, email);
@@ -224,5 +225,28 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public static boolean update(User user) {
+        try(
+            Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_update_user_profile(?,?,?,?,?,?,?,?,?)}")
+        ) {
+            statement.setInt(1, user.getUserId());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPhone());
+            statement.setString(6, user.getLanguage());
+            statement.setString(7, user.getTimezone());
+            statement.setString(8, user.getPronouns());
+            statement.setString(9, user.getDescription());
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected == 1;
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }
