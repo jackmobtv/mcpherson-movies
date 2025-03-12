@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.actors;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.Actor;
 import net.mcphersonmovies.mcphersonmovies.model.ActorDAO;
 import net.mcphersonmovies.mcphersonmovies.model.User;
-import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Actors extends HttpServlet {
             List<Actor> actors = ActorDAO.getAllActors();
             req.setAttribute("actors", actors);
             req.setAttribute("pageTitle", "Actors");
-            req.getRequestDispatcher("WEB-INF/movies/actors.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/actors/actors.jsp").forward(req, resp);
         } else {
             session.setAttribute("flashMessageWarning", "Page is Restricted to Premium Users");
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/pricing"));

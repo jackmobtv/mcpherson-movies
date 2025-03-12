@@ -1,10 +1,11 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.mcphersonmovies.mcphersonmovies.controller.HomeServlet;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 import net.mcphersonmovies.shared.Hashing;
@@ -17,11 +18,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @WebServlet("/signup")
-public class SignUp extends HomeServlet{
+public class SignUp extends HomeServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("pageTitle", "Sign up for an Account");
-        req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/users/sign-up.jsp").forward(req, resp);
     }
 
     @Override
@@ -77,7 +78,11 @@ public class SignUp extends HomeServlet{
                 errorFound = true;
                 req.setAttribute("dobError", "Invalid date");
             }
+        } else {
+            errorFound = true;
+            req.setAttribute("dobError", "You Must Enter Your Date of Birth");
         }
+
         if(terms == null || !terms[0].equals("agree")) {
             errorFound = true;
             req.setAttribute("termsError", "You must agree to our terms of use");
@@ -107,6 +112,6 @@ public class SignUp extends HomeServlet{
         }
 
         req.setAttribute("pageTitle", "Sign up for an Account");
-        req.getRequestDispatcher("/WEB-INF/sign-up.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/users/sign-up.jsp").forward(req, resp);
     }
 }

@@ -4,11 +4,12 @@
             <c:if test="${not empty userAddFail}">
                 <div class="alert alert-danger mb-2">${userAddFail}</div>
             </c:if>
+            <div hidden id="emailErrorJS">${emailError}</div>
             <form method="POST" action="${appURL}/signup" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control <c:if test="${not empty emailError}">is-invalid</c:if>" id="email" name="email" value="${email}" placeholder="name@example.com" onblur="checkEmail(event)">
                     <label for="email">Email address</label>
-                    <div class="invalid-feedback" id="emailError"><c:if test="${not empty emailError}">${emailError}</c:if></div>
+                    <div class="invalid-feedback" id="emailError">${emailError}</div>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control <c:if test="${not empty password1Error}">is-invalid</c:if>" id="password" name="password" value="${password}" placeholder="Password">
@@ -21,7 +22,7 @@
                     <c:if test="${not empty password2Error}"><div class="invalid-feedback">${password2Error}</div></c:if>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="date" class="form-control <c:if test="${not empty dobError}">is-invalid</c:if>" id="dob" name="dob" value="${passwordConf}">
+                    <input type="date" class="form-control <c:if test="${not empty dobError}">is-invalid</c:if>" id="dob" name="dob">
                     <label for="dob">Date Of Birth</label>
                     <c:if test="${not empty dobError}"><div class="invalid-feedback">${dobError}</div></c:if>
                 </div>

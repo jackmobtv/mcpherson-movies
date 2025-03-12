@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,10 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
-import net.mcphersonmovies.shared.Validators;
 
 import java.io.IOException;
-import java.time.Instant;
 
 @WebServlet("/edit-profile")
 public class EditProfile extends HttpServlet {
@@ -32,7 +30,7 @@ public class EditProfile extends HttpServlet {
         }
 
         req.setAttribute("pageTitle", "Edit Profile");
-        req.getRequestDispatcher("WEB-INF/edit-profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/edit-profile.jsp").forward(req, resp);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class EditProfile extends HttpServlet {
         if(lastName != null && !lastName.equals(user.getLastName())) {
             user.setLastName(lastName);
         }
-        if(email != null && !email.equals("") && !email.equals(user.getEmail()) && UserDAO.get(email) != null) {
+        if(email != null && !email.isEmpty() && !email.equals(user.getEmail()) && UserDAO.get(email) != null) {
             errorFound = true;
             req.setAttribute("emailError", "A user with that email already exists.");
         } else {
@@ -110,6 +108,6 @@ public class EditProfile extends HttpServlet {
         }
 
         req.setAttribute("pageTitle", "Edit Profile");
-        req.getRequestDispatcher("WEB-INF/edit-profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/edit-profile.jsp").forward(req, resp);
     }
 }

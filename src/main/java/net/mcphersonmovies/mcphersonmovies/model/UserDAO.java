@@ -214,7 +214,7 @@ public class UserDAO {
     public static boolean updatePassword(String email, char[] password) {
         try (Connection connection = getConnection()) {
             if (connection != null) {
-                try (CallableStatement statement = connection.prepareCall("{CALL sp_update_user_password(?, ?)}")) {
+                try (CallableStatement statement = connection.prepareCall("{CALL sp_update_user_password(?,?)}")) {
                     statement.setString(1, email);
                     statement.setString(2, Helpers.CharToString(password));
                     int rows = statement.executeUpdate();
@@ -247,6 +247,18 @@ public class UserDAO {
         } catch(SQLException e) {
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public static boolean delete(String email, char[] password) {
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_delete_user(?,?)}");
+            statement.setString(1, email);
+            statement.setString(2, Helpers.CharToString(password));
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

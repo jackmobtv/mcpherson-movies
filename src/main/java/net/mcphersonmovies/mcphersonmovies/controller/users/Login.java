@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
             session.setAttribute("redirect", redirect);
         }
         req.setAttribute("pageTitle", "Login");
-        req.getRequestDispatcher("WEB-INF/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         if(!Validators.validateCaptcha(response)){
             req.setAttribute("captchaError", "Captcha Failed");
             req.setAttribute("pageTitle", "Login");
-            req.getRequestDispatcher("WEB-INF/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
             return;
         }
 
@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
             if(!user.getStatus().equals("active")) {
                 req.setAttribute("loginFail",  "Your account is locked or inactive. Please reset your password.");
                 req.setAttribute("pageTitle", "Login");
-                req.getRequestDispatcher("WEB-INF/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
                 return;
             }
 
@@ -97,6 +97,6 @@ public class Login extends HttpServlet {
         }
 
         req.setAttribute("pageTitle", "Login");
-        req.getRequestDispatcher("WEB-INF/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
     }
 }

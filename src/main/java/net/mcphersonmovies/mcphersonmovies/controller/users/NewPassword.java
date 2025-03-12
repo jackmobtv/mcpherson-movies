@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class NewPassword extends HttpServlet {
         HttpSession session = req.getSession();
         session.setAttribute("token", token);
         req.setAttribute("pageTitle", "New password");
-        req.getRequestDispatcher("WEB-INF/new-password.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/new-password.jsp").forward(req, resp);
     }
 
     @Override
@@ -99,6 +99,6 @@ public class NewPassword extends HttpServlet {
         }
 
         req.setAttribute("pageTitle", "New password");
-        req.getRequestDispatcher("WEB-INF/new-password.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/new-password.jsp").forward(req, resp);
     }
 }

@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ public class ResetPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("pageTitle", "Reset your password");
-        req.getRequestDispatcher("WEB-INF/reset-password.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/reset-password.jsp").forward(req, resp);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class ResetPassword extends HttpServlet {
         req.setAttribute("passwordResetMsg", message);
 
         req.setAttribute("pageTitle", "Reset your password");
-        req.getRequestDispatcher("WEB-INF/reset-password.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/users/reset-password.jsp").forward(req, resp);
     }
 }
