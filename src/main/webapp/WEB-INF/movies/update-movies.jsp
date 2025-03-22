@@ -5,6 +5,10 @@
             <p class="lead">Movie not found</p>
         </c:when>
         <c:otherwise>
+            <form class="mb-3 mt-2" method="POST" action="delete-movies">
+                <input type="hidden" name="id" value="${movie.movie_id}">
+                <button class="btn btn-danger" type="submit">Delete Movie</button>
+            </form>
             <form class="row g-3" method="POST" action="update-movies">
                 <div class="col-md-4">
                     <label for="movie_id" class="form-label">Movie ID</label>
@@ -44,11 +48,3 @@
     <div style="color:red;" class="mt-3">${error}</div>
     <div style="color:green;" class="mt-3">${success}</div>
 </div>
-
-<!--
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybD26Z1dI8b4G9RxgUoCwxC2fxnRvbGp8AKgW7l+wlU0O8VfC" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-OR+ZlZtCwLDH8LZzSnN3v0C3osHr1fE5vE/pUszUXR7Xo0t5iG4u5Rp/RI56cTV1" crossorigin="anonymous"></script>
--->
-</body>
-</html>

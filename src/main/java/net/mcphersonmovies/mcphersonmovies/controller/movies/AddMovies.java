@@ -5,8 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
+import net.mcphersonmovies.mcphersonmovies.model.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +18,14 @@ public class AddMovies extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("activeUser");
+
+        if(user == null || !user.getStatus().equals("active") || !user.getPrivileges().equals("Admin")) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         req.setAttribute("pageTitle", "Add Movie");
         req.getRequestDispatcher("WEB-INF/movies/add-movies.jsp").forward(req, resp);
     }

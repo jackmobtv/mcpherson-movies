@@ -5,19 +5,28 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
+import net.mcphersonmovies.mcphersonmovies.model.User;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(value="/update-movies")
 public class UpdateMovies extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("activeUser");
+
+        if(user == null || !user.getStatus().equals("active") || !user.getPrivileges().equals("Admin")) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         int movie_id = Integer.parseInt(req.getParameter("id"));
-        Movie movie = MovieDAO.getMovie(movie_id);
+        Movie movie = MovieDAO.getMovieTable(movie_id);
         req.setAttribute("movie", movie);
         req.setAttribute("pageTitle", "Update Movie");
         req.getRequestDispatcher("WEB-INF/movies/update-movies.jsp").forward(req, resp);
@@ -104,7 +113,7 @@ public class UpdateMovies extends HttpServlet {
 
         if(!error.isEmpty()){
             req.setAttribute("error", error);
-            Movie oldMovie = MovieDAO.getMovie(Integer.parseInt(movie_id));
+            Movie oldMovie = MovieDAO.getMovieTable(Integer.parseInt(movie_id));
             req.setAttribute("movie", oldMovie);
             req.setAttribute("pageTitle", "Update Movie");
             req.getRequestDispatcher("WEB-INF/movies/update-movies.jsp").forward(req, resp);
@@ -121,7 +130,7 @@ public class UpdateMovies extends HttpServlet {
         req.setAttribute("error", error);
         req.setAttribute("success", success);
 
-        Movie newMovie = MovieDAO.getMovie(Integer.parseInt(movie_id));
+        Movie newMovie = MovieDAO.getMovieTable(Integer.parseInt(movie_id));
         req.setAttribute("movie", newMovie);
 
         req.setAttribute("pageTitle", "Update Movie");

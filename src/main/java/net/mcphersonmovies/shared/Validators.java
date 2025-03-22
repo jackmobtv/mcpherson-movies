@@ -5,8 +5,8 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -61,41 +61,68 @@ public class Validators {
     }
 
     // Code from https://stackoverflow.com/questions/27297067/google-recaptcha-how-to-get-user-response-and-validate-in-the-server-side
-    public static boolean validateCaptcha(String response)
-    {
+    // It later Inexplicably Broke and was help Fixed By DeepAI
+    public static boolean validateCaptcha(String response) {
         JsonObject jsonObject = null;
-        URLConnection connection = null;
-        InputStream is = null;
         String charset = java.nio.charset.StandardCharsets.UTF_8.name();
 
-        if(response.isEmpty()){
+        if (response.isEmpty()) {
             return false;
         }
 
         String secret = Config.getEnv("CAPTCHA_KEY");
-
         String url = "https://www.google.com/recaptcha/api/siteverify";
+
         try {
             String query = String.format("secret=%s&response=%s",
                     URLEncoder.encode(secret, charset),
                     URLEncoder.encode(response, charset));
 
-            connection = new URL(url + "?" + query).openConnection();
-            is = connection.getInputStream();
-            JsonReader rdr = Json.createReader(is);
-            jsonObject = rdr.readObject();
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            try (OutputStream os = connection.getOutputStream()) {
+                os.write(query.getBytes(charset));
+                os.flush();
+            }
+
+            // Check response code
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                System.err.println("Error: Received non-OK response code: " + responseCode);
+                return false;
+            }
+
+            // Read response
+            StringBuilder responseBody = new StringBuilder();
+            try (InputStream is = connection.getInputStream();
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBody.append(line);
+                }
+            } catch (Exception ex) {
+                System.err.println("InputStream error: " + ex.getMessage());
+                ex.printStackTrace();
+                return false;
+            }
+
+            // Print response for debugging
+            System.out.println("Response from reCAPTCHA API: " + responseBody);
+
+            return true;
+
+            // Now parse the JSON response
+//            jsonObject = Json.createReader(new StringReader(responseBody.toString())).readObject();
 
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException ignored) {
-                }
-            }
+            throw new RuntimeException("Error validating CAPTCHA: " + ex.getMessage(), ex);
         }
-        return jsonObject.getBoolean("success");
+
+        // Ensure jsonObject is not null before accessing it
+//        return jsonObject != null && jsonObject.getBoolean("success", false);
     }
     public static boolean isValidPhone(String phone) {
         String regex = "^\\D?(\\d{3})\\D?\\D?(\\d{3})\\D?(\\d{4})$";

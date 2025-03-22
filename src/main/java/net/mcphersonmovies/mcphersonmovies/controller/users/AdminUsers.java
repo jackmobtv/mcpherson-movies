@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller.admin;
+package net.mcphersonmovies.mcphersonmovies.controller.users;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,18 +23,8 @@ public class AdminUsers extends HttpServlet {
             List<User> users = UserDAO.getAll();
             req.setAttribute("users", users);
             req.setAttribute("pageTitle", "All Users");
-            req.getRequestDispatcher("WEB-INF/admin/admin-users.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/users/admin-users.jsp").forward(req, resp);
         } else {
-//            if(user != null){
-//                req.setAttribute("pageTitle", "Home");
-//                session.setAttribute("flashMessageWarning", "Only admin users can view this page");
-//                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
-//            } else {
-//                req.setAttribute("pageTitle", "All Users");
-//                session.setAttribute("flashMessageWarning", "Only admin users can view this page");
-//                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login?redirect=users"));
-//            }
-
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

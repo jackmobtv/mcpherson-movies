@@ -101,7 +101,7 @@ public class MovieDAO {
         }
     }
 
-    public static Movie getMovie(int id){
+    public static Movie getMovieTable(int id){
         Movie movie = null;
 
         try(Connection connection = getConnection()) {
@@ -137,6 +137,52 @@ public class MovieDAO {
 
         try(Connection connection = getConnection()) {
             CallableStatement statement = connection.prepareCall("{CALL sp_get_random_movie()}");
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                int movieId = rs.getInt("movie_id");
+                String title = rs.getString("title");
+                String genre = rs.getString("genre");
+                String sub_genre = rs.getString("sub_genre");
+                int release_year = rs.getInt("release_year");
+                String location_name = rs.getString("location_name");
+                String format_name = rs.getString("format_name");
+                if(genre == null){
+                    genre = "";
+                }
+                if(sub_genre == null){
+                    sub_genre = "";
+                }
+
+                movie = new Movie(movieId, title, genre, sub_genre, release_year, location_name, format_name);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return movie;
+    }
+
+    public static boolean deleteMovie(int id){
+        boolean result = false;
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_delete_movie(?,?)}");
+            statement.setInt(1, id);
+            statement.registerOutParameter(2, java.sql.Types.INTEGER);
+            statement.execute();
+            result = statement.getInt(2) > 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return result;
+    }
+    public static Movie getMovie(int id){
+        Movie movie = null;
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_movie_by_id(?)}");
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if(rs.next()) {
                 int movieId = rs.getInt("movie_id");

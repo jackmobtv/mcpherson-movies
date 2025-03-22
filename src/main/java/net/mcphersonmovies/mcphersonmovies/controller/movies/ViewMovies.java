@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller;
+package net.mcphersonmovies.mcphersonmovies.controller.movies;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,19 +11,17 @@ import net.mcphersonmovies.mcphersonmovies.model.OMDB;
 
 import java.io.IOException;
 
-@WebServlet("")
-public class HomeServlet extends HttpServlet {
+@WebServlet(value="/view-movies")
+public class ViewMovies extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Movie movie = MovieDAO.getRandomMovie();
-
-        req.setAttribute("title", movie.getTitle());
+        int movie_id = Integer.parseInt(req.getParameter("id"));
+        Movie movie = MovieDAO.getMovie(movie_id);
         String[] movieData = OMDB.getMovieData(movie.getTitle());
         req.setAttribute("plot", movieData[1]);
         req.setAttribute("posterURL", movieData[0]);
-        req.setAttribute("id", movie.getMovie_id());
-
-        req.setAttribute("pageTitle", "Home");
-        req.getRequestDispatcher("/WEB-INF/home.jsp").forward(req, resp);
+        req.setAttribute("movie", movie);
+        req.setAttribute("pageTitle", "View Movie");
+        req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
     }
 }
