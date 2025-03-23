@@ -53,6 +53,9 @@
     <c:if test="${pageTitle eq 'Sign up for an Account' || pageTitle eq 'Login'}">
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </c:if>
+    <c:if test="${pageTitle eq 'Actors'}">
+        <script src="${appURL}/scripts/update-actor.js" defer></script>
+    </c:if>
     <script defer>
         window.addEventListener('DOMContentLoaded',function () {
             if(document.getElementById("data-container").innerHTML === "true"){

@@ -9,7 +9,7 @@
                 <div class="col-md-6 offset-md-3">
                     <div class="card">
                         <div class="card-header">
-                            <h4>${movie.title}</h4>
+                            <h4 class="text-center">${movie.title}</h4>
                         </div>
                         <div class="card-body">
                             <img src="${posterURL}" alt="poster" class="img-fluid mb-3 mx-auto d-block" style="max-width: 100%; height: auto;"/>
@@ -24,6 +24,26 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="table-responsive small mt-5">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">Actor Name</th>
+                        <th scope="col" class="col-2"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${actors}" var="actor">
+                        <tr>
+                            <td class="align-middle"><h5>${actor.actor_name}</h5></td>
+                            <td><c:if test="${(not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' || not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Premium') && sessionScope.activeUser.status eq 'active'}">
+                                <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
+                            </c:if></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </c:otherwise>
     </c:choose>

@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.mcphersonmovies.mcphersonmovies.model.Movie;
-import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
-import net.mcphersonmovies.mcphersonmovies.model.User;
+import net.mcphersonmovies.mcphersonmovies.model.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +25,9 @@ public class UpdateMovies extends HttpServlet {
 
         int movie_id = Integer.parseInt(req.getParameter("id"));
         Movie movie = MovieDAO.getMovieTable(movie_id);
+        List<Actor> actors = ActorDAO.getActorsByMovieId(movie_id);
         req.setAttribute("movie", movie);
+        req.setAttribute("actors", actors);
         req.setAttribute("pageTitle", "Update Movie");
         req.getRequestDispatcher("WEB-INF/movies/update-movies.jsp").forward(req, resp);
     }

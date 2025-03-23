@@ -42,9 +42,63 @@
                     <button class="btn btn-secondary" type="submit">Submit form</button>
                 </div>
             </form>
+
+            <div style="color:red;" class="mt-3">${error}</div>
+            <div style="color:green;" class="mt-3">${success}</div>
+
+            <button type="button" class="btn btn-primary mt-5 mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Actor
+            </button>
+
+            <div class="table-responsive small">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">Actor Name</th>
+                        <th scope="col" class="col-3"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${actors}" var="actor">
+                        <tr>
+                            <td class="align-middle"><h5>${actor.actor_name}</h5></td>
+                            <td>
+                                <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
+                                <form action="delete-movie-actors" method="POST">
+                                    <input type="hidden" value="${actor.actor_id}" name="actor_id">
+                                    <input type="hidden" value="${movie.movie_id}" name="movie_id">
+                                    <button type="submit" class="btn btn-outline-danger">Delete Actor</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </c:otherwise>
     </c:choose>
+</div>
 
-    <div style="color:red;" class="mt-3">${error}</div>
-    <div style="color:green;" class="mt-3">${success}</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="add-actors" method="POST">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter New Actor Name</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="name" name="name">
+                        <label for="name">Actor Name</label>
+                        <input type="hidden" name="id" value="${movie.movie_id}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
