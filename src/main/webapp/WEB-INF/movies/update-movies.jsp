@@ -5,7 +5,7 @@
             <p class="lead">Movie not found</p>
         </c:when>
         <c:otherwise>
-            <form class="mb-3 mt-2" method="POST" action="delete-movies">
+            <form class="mb-3 mt-2" method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
                 <input type="hidden" name="id" value="${movie.movie_id}">
                 <button class="btn btn-danger" type="submit">Delete Movie</button>
             </form>
@@ -64,7 +64,7 @@
                             <td class="align-middle"><h5>${actor.actor_name}</h5></td>
                             <td>
                                 <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
-                                <form action="delete-movie-actors" method="POST">
+                                <form action="delete-movie-actors" method="POST" onsubmit="return confirm('Are You Sure?');">
                                     <input type="hidden" value="${actor.actor_id}" name="actor_id">
                                     <input type="hidden" value="${movie.movie_id}" name="movie_id">
                                     <button type="submit" class="btn btn-outline-danger">Delete Actor</button>
