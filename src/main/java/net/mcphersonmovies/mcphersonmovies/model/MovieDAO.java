@@ -44,6 +44,39 @@ public class MovieDAO {
         return movies;
     }
 
+    public static List<Movie> getAllMoviesFiltered(int offset, int limit, String formats){
+        List<Movie> movies = new ArrayList<Movie>();
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_movies_filtered(?,?,?)}");
+            statement.setInt(1, offset);
+            statement.setInt(2, limit);
+            statement.setString(3, formats);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("movie_id");
+                String title = rs.getString("title");
+                String genre = rs.getString("genre");
+                String sub_genre = rs.getString("sub_genre");
+                int release_year = rs.getInt("release_year");
+                String location_name = rs.getString("location_name");
+                String format_name = rs.getString("format_name");
+                if(genre == null){
+                    genre = "";
+                }
+                if(sub_genre == null){
+                    sub_genre = "";
+                }
+
+                movies.add(new Movie(id, title, genre, sub_genre, release_year, location_name, format_name));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return movies;
+    }
+
     public static boolean addNewMovie(Movie movie, int locationId, int formatId, String actorName){
         try(Connection connection = getConnection()) {
             connection.setAutoCommit(false);

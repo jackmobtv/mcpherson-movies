@@ -1,5 +1,5 @@
 <div class="container py-4">
-    <h2>Movies Starring ${actor.actor_name}</h2>
+    <h2>Movies Starring ${fn:escapeXml(actor.actor_name)}</h2>
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>

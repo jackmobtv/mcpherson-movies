@@ -14,46 +14,24 @@ import net.mcphersonmovies.shared.Validators;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-@WebServlet("/login")
-public class Login extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        session.removeAttribute("redirect");
-        String redirect = req.getParameter("redirect");
-        Object captchaError = session.getAttribute("captchaError");
-        session.removeAttribute("captchaError");
-        if(captchaError != null) {
-            req.setAttribute("captchaError", captchaError);
-        }
-        Object loginError = session.getAttribute("loginError");
-        session.removeAttribute("loginError");
-        if(loginError != null) {
-            req.setAttribute("loginError", loginError);
-        }
-        if(redirect != null && !redirect.isEmpty()){
-            session.setAttribute("redirect", redirect);
-        }
-        req.setAttribute("pageTitle", "Login");
-        req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
-    }
-
+@WebServlet(value="/modal-login")
+public class ModalLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String redirect = session.getAttribute("redirect") == null ? "" : session.getAttribute("redirect").toString();
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String url = req.getParameter("url");
+        session.setAttribute("url", url);
+        String email = req.getParameter("emailM");
+        String password = req.getParameter("passwordM");
         String response = req.getParameter("g-recaptcha-response");
-        String[] rememberMe = req.getParameterValues("rememberMe");
+        String[] rememberMe = req.getParameterValues("rememberMeM");
         req.setAttribute("email", email);
         req.setAttribute("password", password);
         req.setAttribute("rememberMe", (rememberMe != null && rememberMe[0].equals("true")) ? "true" : "");
 
         if(!Validators.validateCaptcha(response)){
-            req.setAttribute("captchaError", "Captcha Failed");
-            req.setAttribute("pageTitle", "Login");
-            req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
+            session.setAttribute("captchaError", "Captcha Failed");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
@@ -83,16 +61,13 @@ public class Login extends HttpServlet {
                     session.setAttribute("wrongCount", 1);
                 }
             }
-            req.setAttribute("loginFail", "Invalid Email or Password. <a href='signup'>Sign-up</a>");
+            session.setAttribute("loginFail", "Invalid Email or Password. <a href='signup'>Sign-up</a>");
         } else {
             if(!user.getStatus().equals("active")) {
-                req.setAttribute("loginFail",  "Your account is locked or inactive. Please reset your password.");
-                req.setAttribute("pageTitle", "Login");
-                req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
+                session.setAttribute("flashMessageDanger",  "Your account is locked or inactive. Please reset your password.");
+                resp.sendRedirect(req.getContextPath() + "/reset-password");
                 return;
             }
-
-            Object url = session.getAttribute("url");
 
             user.setPassword(null);
 
@@ -104,17 +79,11 @@ public class Login extends HttpServlet {
             session.setAttribute("activeUser", user);
             session.setAttribute("flashMessageSuccess", String.format("Welcome back%s!", (user.getFirstName() != null && !user.getFirstName().isEmpty() ? " " + user.getFirstName() : "")));
 
-
-
-            if(url == null){
-                resp.sendRedirect(req.getContextPath() + "/" + redirect);
-            } else {
-                resp.sendRedirect(url.toString());
-            }
+            resp.sendRedirect(url);
+            session.removeAttribute("url");
             return;
         }
 
-        req.setAttribute("pageTitle", "Login");
-        req.getRequestDispatcher("WEB-INF/users/login.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

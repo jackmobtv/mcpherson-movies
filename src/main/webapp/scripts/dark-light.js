@@ -1,3 +1,9 @@
+const isSystemThemeSetToDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+if (isSystemThemeSetToDark) {
+    document.documentElement.dataset.mdbTheme = "dark";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const themeStitcher = document.getElementById("themingSwitcher");
     let isSystemThemeSetToDark = window.matchMedia("(prefers-color-scheme: dark)").matches;

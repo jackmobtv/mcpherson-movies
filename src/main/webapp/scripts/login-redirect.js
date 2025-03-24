@@ -1,0 +1,1 @@
+$("#url").val(window.location.href);

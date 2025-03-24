@@ -50,6 +50,8 @@ public class UpdateMovies extends HttpServlet {
             try {
                 int id = Integer.parseInt(movie_id);
                 List<Movie> movies = MovieDAO.getAllMovies();
+                List<Actor> actors = ActorDAO.getActorsByMovieId(Integer.parseInt(movie_id));
+                req.setAttribute("actors", actors);
                 boolean found = false;
                 for(Movie movie : movies) {
                     if(movie.getMovie_id() == id){

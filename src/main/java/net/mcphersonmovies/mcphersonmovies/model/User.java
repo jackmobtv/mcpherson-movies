@@ -3,9 +3,8 @@ package net.mcphersonmovies.mcphersonmovies.model;
 import net.mcphersonmovies.shared.Validators;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.Date;
 
 public class User implements Comparable<User> {
     private int userId;
@@ -17,13 +16,13 @@ public class User implements Comparable<User> {
     private String language;
     private String status;
     private String privileges;
-    private Instant created_at;
+    private Instant createdAt;
     private String timezone;
     private Instant dateofbirth;
     private String pronouns;
     private String description;
 
-    public User(int userId, String firstName, String lastName, String email, String phone, String language, String status, String privileges, Instant created_at, String timezone, Instant dateofbirth, String pronouns, String description) {
+    public User(int userId, String firstName, String lastName, String email, String phone, String language, String status, String privileges, Instant createdAt, String timezone, Instant dateofbirth, String pronouns, String description) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,7 +31,7 @@ public class User implements Comparable<User> {
         this.language = language;
         this.status = status;
         this.privileges = privileges;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
         this.timezone = timezone;
         this.dateofbirth = dateofbirth;
         this.pronouns = pronouns;
@@ -128,12 +127,16 @@ public class User implements Comparable<User> {
         this.privileges = privileges;
     }
 
-    public Instant getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
+    public Date getCreatedAtDate() {
+        return Date.from(createdAt);
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getTimezone() {

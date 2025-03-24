@@ -1,5 +1,10 @@
 <div class="container py-4">
-    <h2>View Movie</h2>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>View Movie</h2>
+        <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
+            <a class="btn btn-warning float-right" href="${appURL}/update-movies?id=${movie.movie_id}">Update Movie</a>
+        </c:if>
+    </div>
     <c:choose>
         <c:when test="${empty movie}">
             <p class="lead">Movie not found</p>

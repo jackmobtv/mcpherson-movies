@@ -5,10 +5,13 @@
             <p class="lead">Movie not found</p>
         </c:when>
         <c:otherwise>
-            <form class="mb-3 mt-2" method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
-                <input type="hidden" name="id" value="${movie.movie_id}">
-                <button class="btn btn-danger" type="submit">Delete Movie</button>
-            </form>
+            <div>
+                <a class="btn btn-primary text-right" href="${appURL}/view-movies?id=${movie.movie_id}">View Movie</a>
+                <form class="mb-3 mt-2" method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
+                    <input type="hidden" name="id" value="${movie.movie_id}">
+                    <button class="btn btn-danger" type="submit">Delete Movie</button>
+                </form>
+            </div>
             <form class="row g-3" method="POST" action="update-movies">
                 <div class="col-md-4">
                     <label for="movie_id" class="form-label">Movie ID</label>

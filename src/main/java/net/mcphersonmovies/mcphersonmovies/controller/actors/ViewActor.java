@@ -5,10 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import net.mcphersonmovies.mcphersonmovies.model.Actor;
-import net.mcphersonmovies.mcphersonmovies.model.ActorDAO;
-import net.mcphersonmovies.mcphersonmovies.model.Movie;
-import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
+import jakarta.servlet.http.HttpSession;
+import net.mcphersonmovies.mcphersonmovies.model.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,12 +15,20 @@ import java.util.List;
 public class ViewActor extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int actor_id = Integer.parseInt(req.getParameter("id"));
-        List<Movie> movies = MovieDAO.getMoviesByActorId(actor_id);
-        Actor actor = ActorDAO.getActorByActorId(actor_id);
-        req.setAttribute("movies", movies);
-        req.setAttribute("actor", actor);
-        req.setAttribute("pageTitle", "View Movies");
-        req.getRequestDispatcher("WEB-INF/actors/view-actors.jsp").forward(req, resp);
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("activeUser");
+
+        if(user != null && user.getStatus().equals("active") && (user.getPrivileges().equals("Admin") || user.getPrivileges().equals("Premium"))) {
+            int actor_id = Integer.parseInt(req.getParameter("id"));
+            List<Movie> movies = MovieDAO.getMoviesByActorId(actor_id);
+            Actor actor = ActorDAO.getActorByActorId(actor_id);
+            req.setAttribute("movies", movies);
+            req.setAttribute("actor", actor);
+            req.setAttribute("pageTitle", "View Movies");
+            req.getRequestDispatcher("WEB-INF/actors/view-actors.jsp").forward(req, resp);
+        } else {
+            session.setAttribute("flashMessageWarning", "Page is Restricted to Premium Users");
+            resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/pricing"));
+        }
     }
 }

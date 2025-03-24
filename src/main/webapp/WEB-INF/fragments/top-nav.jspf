@@ -31,7 +31,8 @@
             <div class="d-lg-flex col-lg-3 justify-content-lg-end">
                 <c:choose>
                     <c:when test="${empty sessionScope.activeUser}">
-                        <a href="${appURL}/login" class="btn btn-dark me-2">Login</a>
+<%--                        <a href="${appURL}/login" class="btn btn-dark me-2">Login</a>--%>
+                        <button type="button" class="btn btn-dark open-modal me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                         <a href="${appURL}/signup" class="btn btn-warning">Sign-up</a>
                     </c:when>
                     <c:otherwise>

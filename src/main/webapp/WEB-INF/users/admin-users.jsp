@@ -43,7 +43,7 @@
                             <td>${user.language}</td>
                             <td>${user.status}</td>
                             <td>${user.privileges}</td>
-                            <td>${user.created_at}</td>
+                            <td>${user.createdAt}</td>
                             <td>${user.timezone}</td>
                             <td>${user.dateofbirth}</td>
                             <td>${user.pronouns}</td>
