@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="release_year" class="form-label">Year</label>
-                    <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${movie.release_year}">
+                    <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${movie.release_year == 0 ? "" : movies.release_year}">
                 </div>
                 <div class="col-md-4">
                     <label for="locationId" class="form-label">Location ID</label>

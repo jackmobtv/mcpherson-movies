@@ -6,17 +6,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.mcphersonmovies.mcphersonmovies.model.*;
+import net.mcphersonmovies.mcphersonmovies.model.ActorDAO;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(value="/add-actors")
 public class AddActor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name").toString();
-        int id = Integer.parseInt(req.getParameter("id").toString());
+        String name = req.getParameter("name");
+        int id = Integer.parseInt(req.getParameter("id"));
 
         boolean success = false;
         success = ActorDAO.addActor(id, name);

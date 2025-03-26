@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
-import net.mcphersonmovies.mcphersonmovies.model.User;
-import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
 
 import java.io.IOException;
 
@@ -20,7 +18,7 @@ public class DeleteMovies extends HttpServlet {
 
         String id = req.getParameter("id");
 
-        Boolean success = false;
+        boolean success = false;
         try{
             success = MovieDAO.deleteMovie(Integer.parseInt(id));
         } catch (Exception ex){

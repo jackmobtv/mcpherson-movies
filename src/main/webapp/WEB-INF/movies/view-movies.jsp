@@ -12,24 +12,30 @@
         <c:otherwise>
             <div class="row mt-4">
                 <div class="col-md-6 offset-md-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="text-center">${movie.title}</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <a class="btn btn-outline-primary nav-button" href="${appURL}/view-movies?id=${movie.movie_id - 1}" aria-label="Previous Movie"><i class="bi bi-arrow-left"></i></a>
+                        <div class="card mx-3">
+                            <div class="card-header d-flex align-items-center">
+                                <i class="bi bi-star me-2"></i>
+                                <h4 class="flex-grow-1 text-center mb-0">${movie.title}</h4>
+                            </div>
+                            <div class="card-body">
+                                <img src="${posterURL}" alt="poster" class="img-fluid mb-3 mx-auto d-block" style="max-width: 100%; height: auto;"/>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Genre:</strong> ${movie.genre}</li>
+                                    <li class="list-group-item"><strong>Sub-Genre:</strong> ${movie.sub_genre}</li>
+                                    <li class="list-group-item"><strong>Release Year:</strong> ${movie.release_year == 0 ? "" : movies.release_year}</li>
+                                    <li class="list-group-item"><strong>Location Name:</strong> ${movie.location_name}</li>
+                                    <li class="list-group-item"><strong>Format Name:</strong> ${movie.format_name}</li>
+                                </ul>
+                                <p class="mx-auto mt-3 text-center" style="max-width: 600px;">${plot}</p>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <img src="${posterURL}" alt="poster" class="img-fluid mb-3 mx-auto d-block" style="max-width: 100%; height: auto;"/>
-                            <ul class="list-group">
-                                <li class="list-group-item"><strong>Genre:</strong> ${movie.genre}</li>
-                                <li class="list-group-item"><strong>Sub-Genre:</strong> ${movie.sub_genre}</li>
-                                <li class="list-group-item"><strong>Release Year:</strong> ${movie.release_year}</li>
-                                <li class="list-group-item"><strong>Location Name:</strong> ${movie.location_name}</li>
-                                <li class="list-group-item"><strong>Format Name:</strong> ${movie.format_name}</li>
-                            </ul>
-                            <p class="mx-auto mt-3 text-center" style="max-width: 600px;">${plot}</p>
-                        </div>
+                        <a class="btn btn-outline-primary nav-button" href="${appURL}/view-movies?id=${movie.movie_id + 1}" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
+
             <div class="table-responsive small mt-5">
                 <table class="table table-striped table-sm">
                     <thead>

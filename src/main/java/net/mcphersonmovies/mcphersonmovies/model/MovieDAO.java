@@ -12,7 +12,9 @@ public class MovieDAO {
 //        Movie movie = new Movie(10000, "Test", "Action", "Comedy", 2000);
 //        System.out.println(addNewMovie(movie, 1, 1, "Leslie Nielsen"));
 //        System.out.println(getRandomMovie());
-        getMoviesByActorId(1).forEach(System.out::println);
+//        getMoviesByActorId(1).forEach(System.out::println);
+//        getAllFormats().forEach(System.out::println);
+        getAllMoviesFiltered(0,20,"3,6").forEach(System.out::println);
     }
     public static List<Movie> getAllMovies(){
         List<Movie> movies = new ArrayList<Movie>();
@@ -271,5 +273,25 @@ public class MovieDAO {
         }
 
         return movies;
+    }
+
+    public static List<MovieFormat> getAllFormats(){
+        List<MovieFormat> formats = new ArrayList<MovieFormat>();
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_formats()}");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("format_id");
+                String name = rs.getString("format_name");
+                String description = rs.getString("format_description");
+
+                formats.add(new MovieFormat(id, name, description));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return formats;
     }
 }
