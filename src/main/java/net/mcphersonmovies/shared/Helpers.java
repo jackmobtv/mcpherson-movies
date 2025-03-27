@@ -1,5 +1,8 @@
 package net.mcphersonmovies.shared;
 
+import eu.bitwalker.useragentutils.DeviceType;
+import eu.bitwalker.useragentutils.UserAgent;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jsoup.Jsoup;
 
 import java.math.BigDecimal;
@@ -20,5 +23,16 @@ public class Helpers {
     // https://stackoverflow.com/a/3149645/6629315
     public static String html2text(String html) {
         return Jsoup.parse(html).text();
+    }
+
+    //Deep AI
+    public static boolean isMobile(HttpServletRequest req) {
+        String userAgentString = req.getHeader("User-Agent");
+
+        // Parse the User-Agent
+        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentString);
+
+        // Check if the user agent is a mobile device
+        return userAgent.getOperatingSystem().getDeviceType() == DeviceType.MOBILE;
     }
 }

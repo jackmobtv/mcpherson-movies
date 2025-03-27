@@ -9,9 +9,17 @@ html, body {
     padding: 20px;
 }
 
-img {
-    height: 15%;
-    width: 15%;
+@media only screen and (min-width: 769px) {
+    img {
+        height: 15%;
+        width: 15%;
+    }
+}
+@media only screen and (max-width: 769px) {
+    img {
+        height: 50%;
+        width: 50%;
+    }
 }
 
 p {

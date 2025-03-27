@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.*;
+import net.mcphersonmovies.shared.Helpers;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +24,12 @@ public class ViewMovies extends HttpServlet {
         req.setAttribute("movie", movie);
         req.setAttribute("actors", actors);
         req.setAttribute("pageTitle", "View Movie");
-        req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
+
+        if (Helpers.isMobile(req)) {
+            req.getRequestDispatcher("WEB-INF/movies/view-movies-mobile.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
+        }
+//        req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
     }
 }
