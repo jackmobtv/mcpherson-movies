@@ -9,7 +9,7 @@ html, body {
     padding: 20px;
 }
 
-@media only screen and (min-width: 769px) {
+/*@media only screen and (min-width: 769px) {
     img {
         height: 15%;
         width: 15%;
@@ -20,7 +20,7 @@ html, body {
         height: 50%;
         width: 50%;
     }
-}
+}*/
 
 p {
     word-wrap: break-word;

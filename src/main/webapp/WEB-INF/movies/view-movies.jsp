@@ -24,7 +24,7 @@
                                 <ul class="list-group">
                                     <li class="list-group-item"><strong>Genre:</strong> ${movie.genre}</li>
                                     <li class="list-group-item"><strong>Sub-Genre:</strong> ${movie.sub_genre}</li>
-                                    <li class="list-group-item"><strong>Release Year:</strong> ${movie.release_year == 0 ? "" : movies.release_year}</li>
+                                    <li class="list-group-item"><strong>Release Year:</strong> ${movie.release_year == 0 ? "" : movie.release_year}</li>
                                     <li class="list-group-item"><strong>Location Name:</strong> ${movie.location_name}</li>
                                     <li class="list-group-item"><strong>Format Name:</strong> ${movie.format_name}</li>
                                 </ul>

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
 import net.mcphersonmovies.mcphersonmovies.model.OMDB;
+import net.mcphersonmovies.shared.Helpers;
 
 import java.io.IOException;
 
@@ -22,6 +23,8 @@ public class HomeServlet extends HttpServlet {
         req.setAttribute("plot", movieData[1]);
         req.setAttribute("posterURL", movieData[0]);
         req.setAttribute("id", movie.getMovie_id());
+
+        req.setAttribute("mobile", Helpers.isMobile(req) ? 50 : 15);
 
         req.setAttribute("pageTitle", "Home");
         req.getRequestDispatcher("/WEB-INF/home.jsp").forward(req, resp);
