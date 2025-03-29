@@ -37,7 +37,7 @@
                     </c:when>
                     <c:otherwise>
                         <a href="${appURL}/logout" class="btn btn-dark me-2">Sign out</a>
-                        <a href="${appURL}/edit-profile" class="btn btn-warning">My Profile</a>
+                        <a href="${appURL}/favorites" class="btn btn-warning">My Profile</a>
                     </c:otherwise>
                 </c:choose>
             </div>

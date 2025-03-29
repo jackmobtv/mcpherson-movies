@@ -1,7 +1,12 @@
 <div class="container py-4">
-    <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}"><a href="add-movies" class="btn btn-warning mb-3" role="button">Add Movie</a></c:if>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Movies</h2>
+        <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
+            <a href="add-movies" class="btn btn-warning float-right" role="button">Add Movie</a>
+        </c:if>
+    </div>
     <div class="col d-flex justify-content-between align-items-center">
-        <h2 class="mb-4">Movies</h2>
         <!-- Responsive toggler START -->
         <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
             <i class="bi bi-list fs-4"></i>

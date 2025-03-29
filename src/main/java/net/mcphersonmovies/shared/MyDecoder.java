@@ -3,6 +3,7 @@ package net.mcphersonmovies.shared;
 import jakarta.json.Json;
 import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonConfig;
 import jakarta.json.stream.JsonParsingException;
 import jakarta.websocket.DecodeException;
 import jakarta.websocket.Decoder;

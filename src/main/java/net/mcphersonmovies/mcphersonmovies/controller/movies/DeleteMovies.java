@@ -23,15 +23,15 @@ public class DeleteMovies extends HttpServlet {
             success = MovieDAO.deleteMovie(Integer.parseInt(id));
         } catch (Exception ex){
             session.setAttribute("flashMessageDanger", "Failed to delete movie.");
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/movies");
         }
 
         if(success){
             session.setAttribute("flashMessageSuccess", "Movie Deleted.");
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/movies");
         } else {
             session.setAttribute("flashMessageDanger", "Failed to delete movie.");
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/movies");
         }
     }
 }

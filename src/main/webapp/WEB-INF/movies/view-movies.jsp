@@ -1,22 +1,28 @@
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>View Movie</h2>
-        <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
-            <a class="btn btn-warning float-right" href="${appURL}/update-movies?id=${movie.movie_id}">Update Movie</a>
-        </c:if>
-    </div>
+    <div hidden id="favorite">${favorited}</div>
     <c:choose>
-        <c:when test="${empty movie}">
+        <c:when test="${empty movie || movie eq null}">
+            <h2>View Movie</h2>
             <p class="lead">Movie not found</p>
         </c:when>
         <c:otherwise>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>View Movie</h2>
+                <input type="hidden" id="movieId" value="${movie.movie_id}"/>
+                <input type="hidden" id="userId" value="${sessionScope.activeUser.userId}"/>
+                <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
+                    <a class="btn btn-warning float-right" href="${appURL}/update-movies?id=${movie.movie_id}">Update Movie</a>
+                </c:if>
+            </div>
             <div class="row mt-4">
                 <div class="col-md-6 offset-md-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <a class="btn btn-outline-primary nav-button" href="${appURL}/view-movies?id=${movie.movie_id - 1}" aria-label="Previous Movie"><i class="bi bi-arrow-left"></i></a>
+                        <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${movie.movie_id != 1}">${appURL}/view-movies?id=${movie.movie_id - 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Previous Movie" ><i class="bi bi-arrow-left"></i></a>
                         <div class="card mx-3">
                             <div class="card-header d-flex align-items-center">
-                                <i class="bi bi-star me-2"></i>
+                                <c:if test="${not empty sessionScope.activeUser}">
+                                    <i class="bi bi-star me-2" id="star"></i>
+                                </c:if>
                                 <h4 class="flex-grow-1 text-center mb-0">${movie.title}</h4>
                             </div>
                             <div class="card-body">
@@ -31,7 +37,7 @@
                                 <p class="mx-auto mt-3 text-center" style="max-width: 600px;">${plot}</p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-primary nav-button" href="${appURL}/view-movies?id=${movie.movie_id + 1}" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a>
+                        <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${lastMovie eq 'false'}">${appURL}/view-movies?id=${movie.movie_id + 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>

@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.mcphersonmovies.mcphersonmovies.model.Movie;
-import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
-import net.mcphersonmovies.mcphersonmovies.model.User;
+import net.mcphersonmovies.mcphersonmovies.model.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,13 +24,18 @@ public class AddMovies extends HttpServlet {
             return;
         }
 
+        List<MovieLocation> locations = MovieDAO.getAllLocations();
+        req.setAttribute("locations", locations);
+        List<MovieFormat> formats = MovieDAO.getAllFormats();
+        req.setAttribute("formats", formats);
+
         req.setAttribute("pageTitle", "Add Movie");
         req.getRequestDispatcher("WEB-INF/movies/add-movies.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String movie_id = req.getParameter("movie_id");
+        int id = MovieDAO.getLastID() + 1;
         String title = req.getParameter("title");
         String genre = req.getParameter("genre");
         String sub_genre = req.getParameter("sub_genre");
@@ -42,23 +45,6 @@ public class AddMovies extends HttpServlet {
         String actorName = req.getParameter("actorName");
 
         String error = "";
-
-        if (movie_id.isEmpty()) {
-            error += "Movie ID is empty<br>";
-        } else {
-            try {
-                int id = Integer.parseInt(movie_id);
-                List<Movie> movies = MovieDAO.getAllMovies();
-                for(Movie movie : movies) {
-                    if(movie.getMovie_id() == id){
-                        error += "Movie ID is Already in Use<br>";
-                        break;
-                    }
-                }
-            } catch (Exception ex){
-                error += "Invalid Movie ID<br>";
-            }
-        }
 
         if(title.isEmpty()){
             error += "Title is empty<br>";
@@ -96,7 +82,7 @@ public class AddMovies extends HttpServlet {
             }
         }
 
-        req.setAttribute("movie_id", movie_id);
+        req.setAttribute("movie_id", id);
         req.setAttribute("title", title);
         req.setAttribute("genre", genre);
         req.setAttribute("sub_genre", sub_genre);
@@ -105,13 +91,19 @@ public class AddMovies extends HttpServlet {
         req.setAttribute("formatId", formatId);
         req.setAttribute("actorName", actorName);
 
+        List<MovieLocation> locations = MovieDAO.getAllLocations();
+        req.setAttribute("locations", locations);
+        List<MovieFormat> formats = MovieDAO.getAllFormats();
+        req.setAttribute("formats", formats);
+
         if(!error.isEmpty()){
             req.setAttribute("error", error);
             req.setAttribute("pageTitle", "Add Movie");
             req.getRequestDispatcher("WEB-INF/movies/add-movies.jsp").forward(req, resp);
+            return;
         }
 
-        Movie movie = new Movie(Integer.parseInt(movie_id),title,genre,sub_genre,Integer.parseInt(release_year));
+        Movie movie = new Movie(id,title,genre,sub_genre,Integer.parseInt(release_year));
         String success = "";
 
         if(MovieDAO.addNewMovie(movie, Integer.parseInt(locationId), Integer.parseInt(formatId), actorName)){

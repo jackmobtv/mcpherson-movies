@@ -13,11 +13,12 @@
                 </form>
             </div>
             <form class="row g-3" method="POST" action="update-movies">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="movie_id" class="form-label">Movie ID</label>
-                    <input readonly type="text" class="form-control" id="movie_id" name="movie_id" value="${movie.movie_id}">
+                    <input disabled type="text" class="form-control" id="movie_id" value="${movie.movie_id}">
+                    <input type="hidden" name="movie_id" value="${movie.movie_id}">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title" name="title" value="${movie.title}">
                 </div>
@@ -31,18 +32,26 @@
                 </div>
                 <div class="col-md-4">
                     <label for="release_year" class="form-label">Year</label>
-                    <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${movie.release_year == 0 ? "" : movies.release_year}">
+                    <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${movie.release_year eq "0" ? "" : movie.release_year}">
                 </div>
                 <div class="col-md-4">
                     <label for="locationId" class="form-label">Location ID</label>
-                    <input type="text" class="form-control" id="locationId" name="locationId" value="${movie.location_id}">
+                    <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="locationId" name="locationId">
+                        <c:forEach items="${locations}" var="location">
+                            <option value="${location.location_id}" ${location.location_id == movie.location_id ? "selected" : ""}>${location.location_name}</option>
+                        </c:forEach>
+                    </select>
                 </div>
                 <div class="col-md-4">
                     <label for="formatId" class="form-label">Format ID</label>
-                    <input readonly type="text" class="form-control" id="formatId" name="formatId" value="${movie.format_id}">
+                    <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="formatId" name="formatId">
+                        <c:forEach items="${formats}" var="format">
+                            <option value="${format.format_id}" ${format.format_id == movie.format_id ? "selected" : ""}>${format.format_name}</option>
+                        </c:forEach>
+                    </select>
                 </div>
                 <div class="col-12">
-                    <button class="btn btn-secondary" type="submit">Submit form</button>
+                    <button class="btn btn-secondary" type="submit">Update Movie</button>
                 </div>
             </form>
 

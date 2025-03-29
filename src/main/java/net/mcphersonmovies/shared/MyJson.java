@@ -2,6 +2,7 @@ package net.mcphersonmovies.shared;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonConfig;
 
 import java.io.StringWriter;
 

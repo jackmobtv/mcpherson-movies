@@ -34,11 +34,4 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleTheme(event.target.checked);
         console.log("Toggle Changed:", event.target.checked);
     });
-
-    document.addEventListener("keydown", (event) => {
-        if (event.shiftKey && event.key === "D") {
-            themeStitcher.checked = !themeStitcher.checked;
-            toggleTheme(themeStitcher.checked);
-        }
-    });
 });

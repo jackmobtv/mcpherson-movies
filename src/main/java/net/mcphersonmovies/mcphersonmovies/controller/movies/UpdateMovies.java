@@ -28,6 +28,12 @@ public class UpdateMovies extends HttpServlet {
         List<Actor> actors = ActorDAO.getActorsByMovieId(movie_id);
         req.setAttribute("movie", movie);
         req.setAttribute("actors", actors);
+
+        List<MovieLocation> locations = MovieDAO.getAllLocations();
+        req.setAttribute("locations", locations);
+        List<MovieFormat> formats = MovieDAO.getAllFormats();
+        req.setAttribute("formats", formats);
+
         req.setAttribute("pageTitle", "Update Movie");
         req.getRequestDispatcher("WEB-INF/movies/update-movies.jsp").forward(req, resp);
     }
@@ -112,6 +118,11 @@ public class UpdateMovies extends HttpServlet {
         req.setAttribute("release_year", release_year);
         req.setAttribute("locationId", locationId);
         req.setAttribute("formatId", formatId);
+
+        List<MovieLocation> locations = MovieDAO.getAllLocations();
+        req.setAttribute("locations", locations);
+        List<MovieFormat> formats = MovieDAO.getAllFormats();
+        req.setAttribute("formats", formats);
 
         if(!error.isEmpty()){
             req.setAttribute("error", error);

@@ -1,6 +1,4 @@
 <%
-    String movie_id = (String) request.getAttribute("movie_id");
-    movie_id = movie_id == null ? "" : movie_id;
     String title = (String) request.getAttribute("title");
     title = title == null ? "" : title;
     String genre = (String) request.getAttribute("genre");
@@ -24,11 +22,7 @@
     <a href="movies" class="btn btn-warning mb-3" role="button">Movie List</a>
     <h2>Add Movie</h2>
     <form class="row g-3" method="POST" action="add-movies">
-        <div class="col-md-4">
-            <label for="movie_id" class="form-label">Movie ID</label>
-            <input type="text" class="form-control" id="movie_id" name="movie_id" value="${movie_id}">
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-12">
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control" id="title" name="title" value="${title}">
         </div>
@@ -42,15 +36,23 @@
         </div>
         <div class="col-md-4">
             <label for="release_year" class="form-label">Year</label>
-            <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${release_year}">
+            <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${release_year == "0" ? "" : release_year}">
         </div>
         <div class="col-md-4">
             <label for="locationId" class="form-label">Location ID</label>
-            <input type="text" class="form-control" id="locationId" name="locationId" value="${locationId}">
+            <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="locationId" name="locationId">
+                <c:forEach items="${locations}" var="location">
+                    <option value="${location.location_id}" ${location.location_id == locationId ? "selected" : ""}>${location.location_name}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="col-md-4">
             <label for="formatId" class="form-label">Format ID</label>
-            <input type="text" class="form-control" id="formatId" name="formatId" value="${formatId}">
+            <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="formatId" name="formatId">
+                <c:forEach items="${formats}" var="format">
+                    <option value="${format.format_id}" ${format.format_id == formatId ? "selected" : ""}>${format.format_name}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="col-md-4">
             <label for="actorName" class="form-label">Actor Name</label>

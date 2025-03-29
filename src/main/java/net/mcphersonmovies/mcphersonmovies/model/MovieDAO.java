@@ -14,7 +14,9 @@ public class MovieDAO {
 //        System.out.println(getRandomMovie());
 //        getMoviesByActorId(1).forEach(System.out::println);
 //        getAllFormats().forEach(System.out::println);
-        getAllMoviesFiltered(0,20,"3,6").forEach(System.out::println);
+//        getAllMoviesFiltered(0,20,"3,6").forEach(System.out::println);
+//        System.out.println(getLastID());
+        getAllLocations().forEach(System.out::println);
     }
     public static List<Movie> getAllMovies(){
         List<Movie> movies = new ArrayList<Movie>();
@@ -293,5 +295,41 @@ public class MovieDAO {
         }
 
         return formats;
+    }
+
+    public static int getLastID(){
+        int id = 0;
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_last_movie_id()}");
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                id = rs.getInt("movie_id");
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return id;
+    }
+
+    public static List<MovieLocation> getAllLocations(){
+        List<MovieLocation> locations = new ArrayList<>();
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_locations()}");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("location_id");
+                String name = rs.getString("location_name");
+                String description = rs.getString("location_description");
+
+                locations.add(new MovieLocation(id, name, description));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return locations;
     }
 }
