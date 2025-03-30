@@ -3,6 +3,7 @@ package net.mcphersonmovies.mcphersonmovies.controller.favorites;
 import jakarta.json.JsonObject;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
+import net.mcphersonmovies.mcphersonmovies.model.Favorite;
 import net.mcphersonmovies.mcphersonmovies.model.FavoriteDAO;
 import net.mcphersonmovies.shared.MyDecoder;
 import net.mcphersonmovies.shared.MyEncoder;
@@ -29,7 +30,7 @@ public class UnfavoriteEndpoint {
             movie_id = Integer.parseInt(jsonObject.getString("movie"));
             user_id = Integer.parseInt(jsonObject.getString("user"));
         } catch (Exception ignored) {}
-        FavoriteDAO.unfavoriteMovie(user_id, movie_id);
+        FavoriteDAO.unfavoriteMovie(new Favorite(user_id, movie_id));
         session.getBasicRemote().sendText("Removed from Favorites");
     }
     @OnClose

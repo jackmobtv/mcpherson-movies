@@ -14,9 +14,9 @@ public class MovieDAO {
 //        System.out.println(getRandomMovie());
 //        getMoviesByActorId(1).forEach(System.out::println);
 //        getAllFormats().forEach(System.out::println);
-//        getAllMoviesFiltered(0,20,"3,6").forEach(System.out::println);
+        getAllMoviesFiltered(0,20,"2,4","2,5", "").forEach(System.out::println);
 //        System.out.println(getLastID());
-        getAllLocations().forEach(System.out::println);
+//        getAllLocations().forEach(System.out::println);
     }
     public static List<Movie> getAllMovies(){
         List<Movie> movies = new ArrayList<Movie>();
@@ -48,14 +48,16 @@ public class MovieDAO {
         return movies;
     }
 
-    public static List<Movie> getAllMoviesFiltered(int offset, int limit, String formats){
+    public static List<Movie> getAllMoviesFiltered(int offset, int limit, String formats, String locations, String search){
         List<Movie> movies = new ArrayList<Movie>();
 
         try(Connection connection = getConnection()) {
-            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_movies_filtered(?,?,?)}");
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_movies_filtered(?,?,?,?,?)}");
             statement.setInt(1, offset);
             statement.setInt(2, limit);
             statement.setString(3, formats);
+            statement.setString(4, locations);
+            statement.setString(5, search);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 int id = rs.getInt("movie_id");

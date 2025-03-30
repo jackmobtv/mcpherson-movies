@@ -30,7 +30,7 @@ public class ViewMovies extends HttpServlet {
             req.setAttribute("actors", actors);
             req.setAttribute("lastMovie", movie_id == MovieDAO.getLastID() ? "true" : "false");
             if(user != null) {
-                req.setAttribute("favorited", FavoriteDAO.isFavoriteMovie(user.getUserId(), movie_id));
+                req.setAttribute("favorited", FavoriteDAO.isFavoriteMovie(new Favorite(user.getUserId(), movie_id)));
             }
         }
 

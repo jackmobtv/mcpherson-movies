@@ -8,18 +8,18 @@ import static net.mcphersonmovies.shared.MySQL_Connect.getConnection;
 
 public class FavoriteDAO {
     public static void main(String[] args) {
-//        System.out.println(isFavoriteMovie(1,2));
+//        System.out.println(isFavoriteMovie(new Favorite(1,2)));
         getFavoriteMovies(1).forEach(System.out::println);
-//        System.out.println(favoriteMovie(1,3));
-//        System.out.println(unfavoriteMovie(1,3));
+//        System.out.println(favoriteMovie(new Favorite(1,3)));
+//        System.out.println(unfavoriteMovie(new Favorite(1,3)));
     }
-    public static boolean favoriteMovie(int userId, int movieId) {
+    public static boolean favoriteMovie(Favorite favorite) {
         boolean result = false;
 
         try(Connection connection = getConnection()) {
             CallableStatement statement = connection.prepareCall("{CALL sp_favorite_movie(?,?)}");
-            statement.setInt(1, userId);
-            statement.setInt(2, movieId);
+            statement.setInt(1, favorite.getUser_id());
+            statement.setInt(2, favorite.getMovie_id());
             result = statement.executeUpdate() >= 1;
         } catch (SQLException ex) {
             throw new RuntimeException("Database Error  -  " + ex.getMessage());
@@ -28,13 +28,13 @@ public class FavoriteDAO {
         return result;
     }
 
-    public static boolean unfavoriteMovie(int userId, int movieId) {
+    public static boolean unfavoriteMovie(Favorite favorite) {
         boolean result = false;
 
         try(Connection connection = getConnection()) {
             CallableStatement statement = connection.prepareCall("{CALL sp_unfavorite_movie(?,?)}");
-            statement.setInt(1, userId);
-            statement.setInt(2, movieId);
+            statement.setInt(1, favorite.getUser_id());
+            statement.setInt(2, favorite.getMovie_id());
             result = statement.executeUpdate() == 1;
         } catch (SQLException ex) {
             throw new RuntimeException("Database Error  -  " + ex.getMessage());
@@ -43,21 +43,21 @@ public class FavoriteDAO {
         return result;
     }
 
-    public static boolean isFavoriteMovie(int userId, int movieId) {
-        boolean favorite = false;
+    public static boolean isFavoriteMovie(Favorite favorite) {
+        boolean isFavorite = false;
 
         try(Connection connection = getConnection()) {
             CallableStatement statement = connection.prepareCall("{CALL sp_is_movie_favorited(?,?,?)}");
-            statement.setInt(1, userId);
-            statement.setInt(2, movieId);
+            statement.setInt(1, favorite.getUser_id());
+            statement.setInt(2, favorite.getMovie_id());
             statement.registerOutParameter(3, Types.BOOLEAN);
             statement.execute();
-            favorite = statement.getBoolean(3);
+            isFavorite = statement.getBoolean(3);
         } catch (SQLException ex) {
             throw new RuntimeException("Database Error  -  " + ex.getMessage());
         }
 
-        return favorite;
+        return isFavorite;
     }
 
     public static List<Movie> getFavoriteMovies(int userId) {
