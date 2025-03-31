@@ -15,6 +15,11 @@
     </div>
     <div class="row">
         <div class="col-lg-9">
+            <c:if test="${limit != 0}">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <%@include file="/WEB-INF/fragments/pagination.jspf"%>
+                </div>
+            </c:if>
             <div class="table-responsive small">
                 <table class="table table-striped table-sm">
                     <thead>
@@ -39,6 +44,11 @@
                     </tbody>
                 </table>
             </div>
+            <c:if test="${limit != 0}">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <%@include file="/WEB-INF/fragments/pagination.jspf"%>
+                </div>
+            </c:if>
         </div>
         <%@include file="/WEB-INF/fragments/movie-sidebar.jspf"%>
     </div>

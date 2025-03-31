@@ -24,7 +24,7 @@ public class Movies extends HttpServlet {
             limit = Integer.parseInt(limitStr);
         } catch(NumberFormatException ignored) {}
 
-        int offset = 0;
+
 
         String[] formatsArr = req.getParameterValues("formats");
         String formatFilter = "";
@@ -42,6 +42,62 @@ public class Movies extends HttpServlet {
         if(search == null) {
             search = "";
         }
+
+        int totalMovies = MovieDAO.getMovieCount(formatFilter, locationFilter, search);
+        int totalPages = 0;
+        if (limit != 0) {
+            totalPages = totalMovies / limit;
+
+            if(totalMovies % limit != 0) {
+                totalPages++;
+            }
+        }
+
+        String pageStr = req.getParameter("page");
+        int page = 1;
+        try {
+            page = Integer.parseInt(pageStr);
+        } catch (NumberFormatException ignored) {}
+        req.setAttribute("page", page);
+
+        if (page < 1){
+            page = 1;
+        } else if (page > totalPages){
+            page = totalPages;
+        }
+
+        int offset = (page - 1) * limit;
+
+//        int pageLinks = 5;
+//        int beginPage = page / pageLinks * pageLinks > 0 ? page / pageLinks * pageLinks : 1;
+//        int endPage = beginPage + pageLinks - 1 > totalPages ? totalPages : beginPage + pageLinks - 1;
+        int beginPage = 1;
+        int endPage = totalPages;
+
+        if (totalPages > 3) {
+            if (page == totalPages || page == totalPages - 1) {
+                endPage = totalPages;
+                beginPage = totalPages - 4;
+            } else {
+                endPage = page + 2;
+            }
+            if (page == 1 || page == 2) {
+                endPage = totalPages == 4 ? 4 : 5;
+            } else {
+                if (page == totalPages || page == totalPages - 1) {
+                    endPage = totalPages;
+                    beginPage = totalPages - 4;
+                } else {
+                    beginPage = page - 2;
+                }
+            }
+        }
+
+        req.setAttribute("beginPage", beginPage);
+        req.setAttribute("endPage", endPage);
+
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("totalMovies", totalMovies);
 
         req.setAttribute("formatFilter", formatFilter);
         req.setAttribute("locationFilter", locationFilter);

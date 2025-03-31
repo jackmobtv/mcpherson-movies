@@ -334,4 +334,22 @@ public class MovieDAO {
 
         return locations;
     }
+
+    public static int getMovieCount(String formats, String locations, String search){
+        try(Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_total_movies(?,?,?)}");
+        ) {
+            statement.setString(1, formats);
+            statement.setString(2, locations);
+            statement.setString(3, search);
+            try(ResultSet resultSet = statement.executeQuery();) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("count");
+                }
+            }
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
 }

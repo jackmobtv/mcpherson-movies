@@ -19,7 +19,11 @@ public class ViewActor extends HttpServlet {
         User user = (User) session.getAttribute("activeUser");
 
         if(user != null && user.getStatus().equals("active") && (user.getPrivileges().equals("Admin") || user.getPrivileges().equals("Premium"))) {
-            int actor_id = Integer.parseInt(req.getParameter("id"));
+            int actor_id = 0;
+            try{
+                actor_id = Integer.parseInt(req.getParameter("actor_id"));
+            } catch(NumberFormatException ignored) {}
+
             List<Movie> movies = MovieDAO.getMoviesByActorId(actor_id);
             Actor actor = ActorDAO.getActorByActorId(actor_id);
             req.setAttribute("movies", movies);

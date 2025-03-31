@@ -14,8 +14,15 @@ import java.io.IOException;
 public class DeleteMovieActor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int actor_id = Integer.parseInt(req.getParameter("actor_id"));
-        int movie_id = Integer.parseInt(req.getParameter("movie_id"));
+        int actor_id = 0;
+        try {
+            actor_id = Integer.parseInt(req.getParameter("actor_id"));
+        } catch (NumberFormatException ignored) {}
+
+        int movie_id = 0;
+        try {
+            movie_id = Integer.parseInt(req.getParameter("movie_id"));
+        } catch (NumberFormatException ignored) {}
 
         boolean success = false;
         success = ActorDAO.deleteMovieActor(movie_id, actor_id);

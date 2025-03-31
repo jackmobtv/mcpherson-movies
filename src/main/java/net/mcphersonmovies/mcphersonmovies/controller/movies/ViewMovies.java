@@ -16,7 +16,11 @@ import java.util.List;
 public class ViewMovies extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int movie_id = Integer.parseInt(req.getParameter("id"));
+        int movie_id = 0;
+        try{
+            movie_id = Integer.parseInt(req.getParameter("movie_id"));
+        } catch(NumberFormatException ignored) {}
+
         Movie movie = MovieDAO.getMovie(movie_id);
 
         if(movie != null) {

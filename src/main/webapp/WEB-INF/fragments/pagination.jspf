@@ -1,0 +1,27 @@
+<c:if test="${totalPages gt 1}">
+    <nav aria-label="...">
+        <ul class="pagination">
+            <c:if test="${page gt 1}">
+                <li class="page-item">
+                    <a class="page-link" href="${appURL}/movies?page=1"><i class="bi bi-chevron-double-left"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="${appURL}/movies?page=${page - 1}"><i class="bi bi-chevron-left"></i></a>
+                </li>
+            </c:if>
+            <c:forEach var="i" begin="${beginPage}" end="${endPage}">
+                <li class="page-item <c:if test="${page eq i}">active</c:if>" <c:if test="${page eq i}">aria-current="page"</c:if>>
+                    <a class="page-link" href="${appURL}/movies?page=${i}">${i}</a>
+                </li>
+            </c:forEach>
+            <c:if test="${page lt totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="${appURL}/movies?page=${page + 1}"><i class="bi bi-chevron-right"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="${appURL}/movies?page=${totalPages}"><i class="bi bi-chevron-double-right"></i></a>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+</c:if>

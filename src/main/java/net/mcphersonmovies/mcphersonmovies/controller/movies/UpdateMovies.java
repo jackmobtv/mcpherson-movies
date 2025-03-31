@@ -23,7 +23,11 @@ public class UpdateMovies extends HttpServlet {
             return;
         }
 
-        int movie_id = Integer.parseInt(req.getParameter("id"));
+        int movie_id = 0;
+        try{
+            movie_id = Integer.parseInt(req.getParameter("movie_id"));
+        } catch(NumberFormatException ignored) {}
+
         Movie movie = MovieDAO.getMovieTable(movie_id);
         List<Actor> actors = ActorDAO.getActorsByMovieId(movie_id);
         req.setAttribute("movie", movie);
