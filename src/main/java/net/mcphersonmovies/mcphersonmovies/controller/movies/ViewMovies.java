@@ -18,7 +18,7 @@ public class ViewMovies extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int movie_id = 0;
         try{
-            movie_id = Integer.parseInt(req.getParameter("movie_id"));
+            movie_id = Integer.parseInt(req.getParameter("id"));
         } catch(NumberFormatException ignored) {}
 
         Movie movie = MovieDAO.getMovie(movie_id);

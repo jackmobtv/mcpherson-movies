@@ -8,7 +8,7 @@
     </div>
     <div class="col d-flex justify-content-between align-items-center">
         <!-- Responsive toggler START -->
-        <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+        <button class="btn btn-primary d-lg-none mb-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
             <i class="bi bi-list fs-4"></i>
         </button>
         <!-- Responsive toggler END -->

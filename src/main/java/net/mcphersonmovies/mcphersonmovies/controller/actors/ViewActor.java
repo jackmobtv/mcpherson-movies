@@ -21,7 +21,7 @@ public class ViewActor extends HttpServlet {
         if(user != null && user.getStatus().equals("active") && (user.getPrivileges().equals("Admin") || user.getPrivileges().equals("Premium"))) {
             int actor_id = 0;
             try{
-                actor_id = Integer.parseInt(req.getParameter("actor_id"));
+                actor_id = Integer.parseInt(req.getParameter("id"));
             } catch(NumberFormatException ignored) {}
 
             List<Movie> movies = MovieDAO.getMoviesByActorId(actor_id);
