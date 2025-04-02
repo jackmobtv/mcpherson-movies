@@ -24,19 +24,19 @@ public class Movies extends HttpServlet {
             limit = Integer.parseInt(limitStr);
         } catch(NumberFormatException ignored) {}
 
-
-
         String[] formatsArr = req.getParameterValues("formats");
         String formatFilter = "";
         if(formatsArr != null && formatsArr.length > 0) {
             formatFilter = String.join(",", formatsArr);
         }
+        req.setAttribute("formatArr", formatsArr);
 
         String[] locationsArr = req.getParameterValues("locations");
         String locationFilter = "";
         if(locationsArr != null && locationsArr.length > 0) {
             locationFilter = String.join(",", locationsArr);
         }
+        req.setAttribute("locationArr", locationsArr);
 
         String search = req.getParameter("search");
         if(search == null) {
@@ -71,27 +71,35 @@ public class Movies extends HttpServlet {
 //        int pageLinks = 5;
 //        int beginPage = page / pageLinks * pageLinks > 0 ? page / pageLinks * pageLinks : 1;
 //        int endPage = beginPage + pageLinks - 1 > totalPages ? totalPages : beginPage + pageLinks - 1;
+
         int beginPage = 1;
         int endPage = totalPages;
 
         if (totalPages > 3) {
-            if (page == totalPages || page == totalPages - 1) {
-                endPage = totalPages;
-                beginPage = totalPages - 4;
-            } else {
-                endPage = page + 2;
-            }
             if (page == 1 || page == 2) {
                 endPage = totalPages == 4 ? 4 : 5;
+            } else if (page == totalPages || page == totalPages - 1) {
+                beginPage = totalPages - 4;
             } else {
-                if (page == totalPages || page == totalPages - 1) {
-                    endPage = totalPages;
-                    beginPage = totalPages - 4;
-                } else {
-                    beginPage = page - 2;
-                }
+                beginPage = page - 2;
+                endPage = page + 2;
             }
         }
+
+//        int pageCount = 12;
+//
+//        if(totalPages > pageCount / 2){
+//            if (page == 1 || page == 2) {
+//                endPage = totalPages == pageCount - 1 ? pageCount - 1 : pageCount;
+//            } else if (page == totalPages) {
+//                beginPage = totalPages - pageCount;
+//            } else if (page == totalPages - 1) {
+//                beginPage = totalPages - pageCount + 1;
+//            } else {
+//                beginPage = Math.max(1, page - (pageCount / 2) + 1);
+//                endPage = Math.min(totalPages, page + (pageCount / 2));
+//            }
+//        }
 
         req.setAttribute("beginPage", beginPage);
         req.setAttribute("endPage", endPage);
@@ -99,8 +107,8 @@ public class Movies extends HttpServlet {
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("totalMovies", totalMovies);
 
-        req.setAttribute("formatFilter", formatFilter);
-        req.setAttribute("locationFilter", locationFilter);
+//        req.setAttribute("formatFilter", formatFilter);
+//        req.setAttribute("locationFilter", locationFilter);
         req.setAttribute("limit", limit);
         req.setAttribute("search", search);
 

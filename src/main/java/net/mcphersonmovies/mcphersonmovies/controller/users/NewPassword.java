@@ -21,6 +21,11 @@ public class NewPassword extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getParameter("token");
         HttpSession session = req.getSession();
+        if(UserDAO.getPasswordReset(token).isEmpty()) {
+            session.setAttribute("flashMessageWarning", "Link has Expired");
+            resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
+            return;
+        }
         session.setAttribute("token", token);
         req.setAttribute("pageTitle", "New password");
         req.getRequestDispatcher("WEB-INF/users/new-password.jsp").forward(req, resp);

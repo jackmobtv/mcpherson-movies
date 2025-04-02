@@ -5,14 +5,14 @@
                 <div class="card-body text-center">
                     <h2 class="card-title">${actor.actor_name}</h2>
                     <div>
+                        <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
                         <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
                             <button type="button" class="btn btn-outline-warning open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="${actor.actor_id}" data-name="${actor.actor_name}">
                                 Update Actor
                             </button>
                         </c:if>
-                        <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
                         <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
-                            <form method="POST" action="delete-actors" onsubmit="return confirm('Are You Sure?');">
+                            <form method="POST" action="delete-actors" onsubmit="return confirm('Are You Sure?');" class="mt-1">
                                 <input type="hidden" name="id" value="${actor.actor_id}">
                                 <button type="submit" class="btn btn-outline-danger">Delete Actor</button>
                             </form>

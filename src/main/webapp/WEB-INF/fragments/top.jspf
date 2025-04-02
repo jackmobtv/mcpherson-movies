@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="cfn" uri="/WEB-INF/tld/custom-functions.tld" %>
 <jsp:useBean id="date" class="java.util.Date"/>
 <fmt:setLocale value="en-US" />
 <c:choose>
@@ -126,6 +127,8 @@
                             <div class="g-recaptcha" data-sitekey="6LfEWeAqAAAAAKdaJTHjDcWPtbh4EOo0i2Km1pHf"></div>
                         </div>
                         <div style="color: indianred">${captchaError}</div>
+
+                        <p class="mt-5 mb-3 text-body-secondary"><a href="${appURL}/reset-password">Forgot password?</a><br/>Don't have an account? <a href="${appURL}/signup">Sign-up</a></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

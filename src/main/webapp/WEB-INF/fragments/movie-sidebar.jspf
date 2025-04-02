@@ -16,7 +16,7 @@
                     <c:forEach var="format" items="${formats}">
                         <!-- Checkbox -->
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="format-filter-${format.format_id}" name="formats" value="${format.format_id}" <c:if test="${fn:contains(formatFilter, format.format_id)}">checked</c:if>>
+                                <input class="form-check-input" type="checkbox" id="format-filter-${format.format_id}" name="formats" value="${format.format_id}" <c:if test="${cfn:contains(formatArr, format.format_id)}">checked</c:if>>
                                 <label class="form-check-label" for="format-filter-${format.format_id}">${format.format_name}</label>
                             </div>
                     </c:forEach>
@@ -28,7 +28,7 @@
                     <c:forEach var="location" items="${locations}">
                         <!-- Checkbox -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="location-filter-${location.location_id}" name="locations" value="${location.location_id}" <c:if test="${fn:contains(locationFilter, location.location_id)}">checked</c:if>>
+                            <input class="form-check-input" type="checkbox" id="location-filter-${location.location_id}" name="locations" value="${location.location_id}" <c:if test="${cfn:contains(locationArr, location.location_id)}">checked</c:if>>
                             <label class="form-check-label" for="location-filter-${location.location_id}">${location.location_name}</label>
                         </div>
                     </c:forEach>
