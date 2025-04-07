@@ -170,9 +170,14 @@ public class User implements Comparable<User> {
         return dateofbirth;
     }
 
+    public Date getDateofbirthDate() {
+        return Date.from(dateofbirth);
+    }
+
     public void setDateofbirth(Instant dateofbirth) {
         this.dateofbirth = dateofbirth;
     }
+
 
     public String getPronouns() {
         return pronouns;

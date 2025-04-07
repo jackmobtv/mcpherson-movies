@@ -16,13 +16,15 @@ public class FavoriteDAO {
     public static boolean favoriteMovie(Favorite favorite) {
         boolean result = false;
 
-        try(Connection connection = getConnection()) {
-            CallableStatement statement = connection.prepareCall("{CALL sp_favorite_movie(?,?)}");
-            statement.setInt(1, favorite.getUser_id());
-            statement.setInt(2, favorite.getMovie_id());
-            result = statement.executeUpdate() >= 1;
-        } catch (SQLException ex) {
-            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        if(!isFavoriteMovie(favorite)) {
+            try(Connection connection = getConnection()) {
+                CallableStatement statement = connection.prepareCall("{CALL sp_favorite_movie(?,?)}");
+                statement.setInt(1, favorite.getUser_id());
+                statement.setInt(2, favorite.getMovie_id());
+                result = statement.executeUpdate() >= 1;
+            } catch (SQLException ex) {
+                throw new RuntimeException("Database Error  -  " + ex.getMessage());
+            }
         }
 
         return result;

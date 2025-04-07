@@ -43,9 +43,9 @@
                             <td>${user.language}</td>
                             <td>${user.status}</td>
                             <td>${user.privileges}</td>
-                            <td>${user.createdAt}</td>
+                            <td><fmt:formatDate value="${user.createdAtDate}"/></td>
                             <td>${user.timezone}</td>
-                            <td>${user.dateofbirth}</td>
+                            <td><fmt:formatDate value="${user.dateofbirthDate}"/></td>
                             <td>${fn:escapeXml(user.pronouns)}</td>
                             </c:forEach>
                         </tbody>

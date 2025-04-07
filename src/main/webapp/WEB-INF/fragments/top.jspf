@@ -61,6 +61,7 @@
     <c:if test="${pageTitle eq 'View Movie'}">
         <script src="${appURL}/scripts/favorite.js" defer></script>
     </c:if>
+    <script src="${appURL}/scripts/login-modal.js" defer></script>
 
     <script defer>
         window.addEventListener('DOMContentLoaded',function () {
@@ -69,24 +70,6 @@
                     alert("You are About to be Logged out")
                 }, 3570000);
             }
-
-            const emailInputM = document.getElementById("emailM");
-            const rememberMeCheckboxM = document.getElementById("rememberMeM");
-            const loginFormM= document.getElementById("modalLoginForm");
-
-            const savedEmailM = localStorage.getItem("rememberedEmail");
-            if (savedEmailM) {
-                emailInputM.value = savedEmailM;
-                rememberMeCheckboxM.checked = true;
-            }
-
-            loginFormM.addEventListener("submit", function () {
-                if (rememberMeCheckboxM.checked) {
-                    localStorage.setItem("rememberedEmail", emailInputM.value);
-                } else {
-                    localStorage.removeItem("rememberedEmail");
-                }
-            });
         });
     </script>
 </head>
