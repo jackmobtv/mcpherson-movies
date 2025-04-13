@@ -14,6 +14,7 @@
                             </c:forEach>
                             <c:if test="${not empty search}"><c:param name="search" value="${search}" /></c:if>
                             <c:if test="${not empty limit}"><c:param name="limit" value="${limit}" /></c:if>
+                            <c:if test="${not empty sort}"><c:param name="sort" value="${sort}" /></c:if>
                         </c:url>
                     "><i class="bi bi-chevron-double-left"></i></a>
                 </li>
@@ -29,6 +30,7 @@
                             </c:forEach>
                             <c:if test="${not empty search}"><c:param name="search" value="${search}" /></c:if>
                             <c:if test="${not empty limit}"><c:param name="limit" value="${limit}" /></c:if>
+                            <c:if test="${not empty sort}"><c:param name="sort" value="${sort}" /></c:if>
                         </c:url>
                     "><i class="bi bi-chevron-left"></i></a>
                 </li>
@@ -46,6 +48,7 @@
                             </c:forEach>
                             <c:if test="${not empty search}"><c:param name="search" value="${search}" /></c:if>
                             <c:if test="${not empty limit}"><c:param name="limit" value="${limit}" /></c:if>
+                            <c:if test="${not empty sort}"><c:param name="sort" value="${sort}" /></c:if>
                         </c:url>
                     ">${i}</a>
                 </li>
@@ -63,6 +66,7 @@
                             </c:forEach>
                             <c:if test="${not empty search}"><c:param name="search" value="${search}" /></c:if>
                             <c:if test="${not empty limit}"><c:param name="limit" value="${limit}" /></c:if>
+                            <c:if test="${not empty sort}"><c:param name="sort" value="${sort}" /></c:if>
                         </c:url>
                     "><i class="bi bi-chevron-right"></i></a>
                 </li>
@@ -78,6 +82,7 @@
                             </c:forEach>
                             <c:if test="${not empty search}"><c:param name="search" value="${search}" /></c:if>
                             <c:if test="${not empty limit}"><c:param name="limit" value="${limit}" /></c:if>
+                            <c:if test="${not empty sort}"><c:param name="sort" value="${sort}" /></c:if>
                         </c:url>
                     "><i class="bi bi-chevron-double-right"></i></a>
                 </li>

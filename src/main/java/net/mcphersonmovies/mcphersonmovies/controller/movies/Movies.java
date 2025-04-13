@@ -11,6 +11,7 @@ import net.mcphersonmovies.mcphersonmovies.model.MovieFormat;
 import net.mcphersonmovies.mcphersonmovies.model.MovieLocation;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @WebServlet(value="/movies")
@@ -41,6 +42,11 @@ public class Movies extends HttpServlet {
         String search = req.getParameter("search");
         if(search == null) {
             search = "";
+        }
+
+        String sort = req.getParameter("sort");
+        if(sort == null) {
+            sort = "default";
         }
 
         int totalMovies = MovieDAO.getMovieCount(formatFilter, locationFilter, search);
@@ -79,28 +85,15 @@ public class Movies extends HttpServlet {
             if (page == 1 || page == 2) {
                 endPage = totalPages == 4 ? 4 : 5;
             } else if (page == totalPages || page == totalPages - 1) {
-                beginPage = totalPages - 4;
+                beginPage = ((page == 3 || page == 4) ? 1 : (totalPages - 4));
             } else {
                 beginPage = page - 2;
                 endPage = page + 2;
             }
         }
 
-//        int pageCount = 12;
-//
-//        if(totalPages > pageCount / 2){
-//            if (page == 1 || page == 2) {
-//                endPage = totalPages == pageCount - 1 ? pageCount - 1 : pageCount;
-//            } else if (page == totalPages) {
-//                beginPage = totalPages - pageCount;
-//            } else if (page == totalPages - 1) {
-//                beginPage = totalPages - pageCount + 1;
-//            } else {
-//                beginPage = Math.max(1, page - (pageCount / 2) + 1);
-//                endPage = Math.min(totalPages, page + (pageCount / 2));
-//            }
-//        }
-
+        beginPage = Math.max(1, beginPage);
+        endPage = Math.min(totalPages, endPage);
         req.setAttribute("beginPage", beginPage);
         req.setAttribute("endPage", endPage);
 
@@ -111,10 +104,29 @@ public class Movies extends HttpServlet {
 //        req.setAttribute("locationFilter", locationFilter);
         req.setAttribute("limit", limit);
         req.setAttribute("search", search);
+        req.setAttribute("sort", sort);
 
-        List<Movie> movies = MovieDAO.getAllMoviesFiltered(offset, limit, formatFilter, locationFilter, search);
+        List<Movie> movies = MovieDAO.getAllMoviesFiltered(offset, limit, formatFilter, locationFilter, search, sort);
         List<MovieFormat> formats = MovieDAO.getAllFormats();
         List<MovieLocation> locations = MovieDAO.getAllLocations();
+
+
+//        if(sort == null) {
+//            sort = "default";
+//        } else if (sort.equals("title")) {
+//            movies.sort(Comparator.comparing(Movie::getTitle));
+//        } else if (sort.equals("genre")) {
+//            movies.sort(Comparator.comparing(Movie::getGenre).thenComparing(Movie::getSub_genre));
+//        } else if (sort.equals("year")) {
+//            movies.sort(Comparator.comparingInt(Movie::getRelease_year));
+//        } else if (sort.equals("location")) {
+//            movies.sort(Comparator.comparing(Movie::getLocation_name));
+//        } else if (sort.equals("format")) {
+//            movies.sort(Comparator.comparing(Movie::getFormat_name));
+//        } else {
+//            sort = "default";
+//        }
+
 
         req.setAttribute("movies", movies);
         req.setAttribute("formats", formats);

@@ -61,6 +61,20 @@
 
                 <div class="card card-body shadow p-4 mb-4">
                     <!-- Title -->
+                    <h4 class="mb-2">Sort</h4>
+
+                    <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="sort" name="sort">
+                        <option value="default" ${sort eq "default" ? 'selected' : ''}>Default</option>
+                        <option value="title" ${sort eq "title" ? 'selected' : ''}>Title</option>
+                        <option value="genre" ${sort eq "genre" ? 'selected' : ''}>Genre</option>
+                        <option value="year" ${sort eq "year" ? 'selected' : ''}>Year</option>
+                        <option value="location" ${sort eq "location" ? 'selected' : ''}>Location</option>
+                        <option value="format" ${sort eq "format" ? 'selected' : ''}>Format</option>
+                    </select>
+                </div>
+
+                <div class="card card-body shadow p-4 mb-4">
+                    <!-- Title -->
                     <h4 class="mb-2">Search</h4>
 
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="search" value="${search}">
