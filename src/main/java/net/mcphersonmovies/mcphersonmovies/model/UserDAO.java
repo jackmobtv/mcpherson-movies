@@ -261,4 +261,18 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public static boolean upgrade(int userId) {
+        try(
+            Connection connection = getConnection();
+            CallableStatement statement = connection.prepareCall("{CALL sp_upgrade_user(?)}")
+        ) {
+            statement.setInt(1, userId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected == 1;
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
 }

@@ -12,15 +12,15 @@ import net.mcphersonmovies.shared.Config;
 public class ChargeCreditCard {
     public static void main(String[] args) {
         run(
-            Config.getEnv("AUTHORIZE_NET_API_KEY"),
-            Config.getEnv("AUTHORIZE_NET_TRANSACTION_KEY"),
             25.00,
             new String[]{"6011000000000012","1225","999"},
             "test@test.test"
         );
     }
 
-    public static ANetApiResponse run(String apiLoginId, String transactionKey, Double amount, String[] creditCardInfo, String email) {
+    public static ANetApiResponse run(Double amount, String[] creditCardInfo, String email) {
+        String apiLoginId = Config.getEnv("AUTHORIZE_NET_API_KEY");
+        String transactionKey = Config.getEnv("AUTHORIZE_NET_TRANSACTION_KEY");
 
         // Set the request to operate in either the sandbox or production environment
         ApiOperationBase.setEnvironment(Environment.SANDBOX);

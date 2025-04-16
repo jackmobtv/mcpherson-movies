@@ -9,24 +9,24 @@
                 <form action="subscribe" method="POST">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            <label for="cc-number" class="form-label">Credit card number</label>
-                            <input type="text" class="form-control" id="cc-number" name="cc-number" placeholder="">
+                            <label for="number" class="form-label">Credit card number</label>
+                            <input type="text" class="form-control" id="number" name="number" placeholder=""/>
                             <div class="invalid-feedback">
                                 Credit card number is required
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="cc-expiration" class="form-label">Expiration</label>
-                            <input type="text" class="form-control" id="cc-expiration" name="cc-expiration" placeholder="">
+                            <label for="expiration" class="form-label">Expiration</label>
+                            <input type="text" class="form-control" id="expiration" name="expiration" placeholder="mm/yy"/>
                             <div class="invalid-feedback">
                                 Expiration date required
                             </div>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="cc-cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" id="cc-cvv" name="cc-cvv" placeholder="">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder=""/>
                             <div class="invalid-feedback">
                                 Security code required
                             </div>

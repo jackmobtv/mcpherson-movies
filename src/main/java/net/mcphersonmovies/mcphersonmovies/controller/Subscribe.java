@@ -6,7 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.authorize.api.contract.v1.CreateTransactionResponse;
+import net.authorize.api.contract.v1.MessageTypeEnum;
+import net.authorize.api.contract.v1.TransactionResponse;
 import net.mcphersonmovies.mcphersonmovies.model.User;
+import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.shared.authorize_net.ChargeCreditCard;
 
 import java.io.IOException;
 
@@ -36,8 +41,41 @@ public class Subscribe extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("activeUser");
 
-        session.removeAttribute("activeUser");
-        session.setAttribute("flashMessageSuccess", "Your Account has been given Premium Status, Please log in");
-        resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
+        String expiration = req.getParameter("expiration");
+        expiration = expiration.replace("/", "");
+
+        String[] ccInfo = new String[4];
+        ccInfo[0] = req.getParameter("number");
+        ccInfo[1] = expiration;
+        ccInfo[2] = req.getParameter("cvv");
+
+        CreateTransactionResponse authResponse = (CreateTransactionResponse) ChargeCreditCard.run(15.00, ccInfo, user.getEmail());
+
+        if (authResponse != null) {
+            if (authResponse.getMessages().getResultCode() == MessageTypeEnum.OK) {
+                TransactionResponse result = authResponse.getTransactionResponse();
+                if (result.getMessages() != null) {
+                    boolean success = false;
+                    success = UserDAO.upgrade(user.getUserId());
+                    if (success) {
+                        session.removeAttribute("activeUser");
+                        session.setAttribute("flashMessageSuccess", "Your Account has been given Premium Status, Please log in");
+                        resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
+                        return;
+                    } else {
+                        session.setAttribute("flashMessageDanger", "Something Went Wrong");
+                    }
+                } else {
+                    session.setAttribute("flashMessageDanger", "Something Went Wrong");
+                }
+            } else {
+                session.setAttribute("flashMessageDanger", "Invalid Credit Card Info");
+            }
+        } else {
+            session.setAttribute("flashMessageDanger", "Invalid Credit Card Info");
+        }
+
+        req.setAttribute("pageTitle", "Subscribe");
+        req.getRequestDispatcher("WEB-INF/subscribe.jsp").forward(req, resp);
     }
 }
