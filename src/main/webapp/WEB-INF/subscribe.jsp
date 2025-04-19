@@ -2,6 +2,7 @@
     <main>
         <div class="py-5 text-center">
             <h1 class="h2">Checkout</h1>
+            <i>Your Card info will not be saved, and You will not be Charged</i>
         </div>
 
         <div class="d-flex justify-content-center align-items-center mb-3">

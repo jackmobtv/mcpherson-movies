@@ -30,6 +30,10 @@ public class Subscribe extends HttpServlet {
             session.setAttribute("flashMessageDanger", "Your Account is locked or inactive, Please reset your password");
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
             return;
+        } else if (!user.getPrivileges().equals("User")) {
+            session.setAttribute("flashMessageWarning", "Your Account already has Premium Access");
+            resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
+            return;
         }
 
         req.setAttribute("pageTitle", "Subscribe");
