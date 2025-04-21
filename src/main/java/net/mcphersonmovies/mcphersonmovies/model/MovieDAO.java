@@ -123,7 +123,7 @@ public class MovieDAO {
 
     public static boolean updateMovie(Movie movie) {
         try(Connection connection = getConnection()) {
-            CallableStatement statement = connection.prepareCall("{CALL sp_update_movie(?, ?, ?, ?, ?, ?)}");
+            CallableStatement statement = connection.prepareCall("{CALL sp_update_movie(?, ?, ?, ?, ?, ?, ?)}");
             statement.setInt(1, movie.getMovie_id());
             statement.setString(2, movie.getTitle());
             statement.setString(3, movie.getGenre());
@@ -134,10 +134,11 @@ public class MovieDAO {
                 statement.setInt(5, movie.getRelease_year());
             }
             statement.setInt(6, movie.getLocation_id());
+            statement.setInt(7, movie.getFormat_id());
             statement.executeUpdate();
             return true;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -348,8 +349,8 @@ public class MovieDAO {
                     return resultSet.getInt("count");
                 }
             }
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
         }
         return 0;
     }

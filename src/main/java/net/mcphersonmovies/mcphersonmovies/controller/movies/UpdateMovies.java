@@ -136,7 +136,12 @@ public class UpdateMovies extends HttpServlet {
             req.getRequestDispatcher("WEB-INF/movies/update-movies.jsp").forward(req, resp);
         }
 
-        Movie movie = new Movie(Integer.parseInt(movie_id),title,genre,sub_genre,Integer.parseInt(release_year), Integer.parseInt(locationId));
+        Movie movie = null;
+        try {
+            movie = new Movie(Integer.parseInt(movie_id),title,genre,sub_genre,Integer.parseInt(release_year), Integer.parseInt(locationId), Integer.parseInt(formatId));
+        } catch (Exception ex){
+            error += "Invalid Data";
+        }
         String success = "";
 
         if(MovieDAO.updateMovie(movie)){

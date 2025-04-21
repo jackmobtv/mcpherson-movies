@@ -69,8 +69,8 @@ public class ActorDAO {
             statement.setInt(1, actor.getActor_id());
             statement.setString(2, actor.getActor_name());
             return statement.executeUpdate() > 0;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -80,8 +80,8 @@ public class ActorDAO {
             CallableStatement statement = connection.prepareCall("{CALL sp_delete_actor(?)}");
             statement.setInt(1, actor_id);
             return statement.executeUpdate() > 0;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -92,8 +92,8 @@ public class ActorDAO {
             statement.setInt(1, movie_id);
             statement.setInt(2, actor_id);
             return statement.executeUpdate() > 0;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -105,8 +105,8 @@ public class ActorDAO {
             statement.setString(2, actor_name);
             statement.executeUpdate();
             return true;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }

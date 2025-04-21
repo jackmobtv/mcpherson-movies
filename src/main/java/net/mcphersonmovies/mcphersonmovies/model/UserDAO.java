@@ -205,8 +205,8 @@ public class UserDAO {
                 statement2.setInt(1, id);
                 statement2.executeUpdate();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
         return email;
     }
@@ -221,8 +221,8 @@ public class UserDAO {
                     return rows == 1;
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
         return false;
     }
@@ -244,8 +244,8 @@ public class UserDAO {
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected == 1;
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -257,8 +257,8 @@ public class UserDAO {
             statement.setString(2, Helpers.CharToString(password));
             int rowsAffected = statement.executeUpdate();
             return rowsAffected == 1;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
