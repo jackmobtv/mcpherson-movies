@@ -33,8 +33,11 @@
                         <c:forEach items="${users}" var="user">
                         <tr>
                             <td>
-                                <a href="edit-user?user_id=${user.userId}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a href="delete-user?user_id=${user.userId}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <a href="${appURL}/edit-users?id=${user.userId}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <form action="users" method="POST">
+                                    <input type="hidden" name="id" id="id" value="${user.userId}"/>
+                                    <input type="submit" class="btn btn-sm btn-outline-danger" value="Deactivate"/>
+                                </form>
                             </td>
                             <td>${fn:escapeXml(user.firstName)}</td>
                             <td>${fn:escapeXml(user.lastName)}</td>

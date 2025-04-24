@@ -28,4 +28,33 @@ public class AdminUsers extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("activeUser");
+
+        if(user != null && user.getStatus().equals("active") && user.getPrivileges().equals("Admin")) {
+            int id = 0;
+
+            try{
+                id = Integer.parseInt(req.getParameter("id"));
+            } catch(Exception ex) {
+                session.setAttribute("flashMessageDanger", "User not found");
+                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/users"));
+                return;
+            }
+
+            boolean success = UserDAO.deactivate(id);
+
+            if(!success) {
+                session.setAttribute("flashMessageDanger", "Deactivation Failed");
+                resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/users"));
+                return;
+            }
+
+            session.setAttribute("flashMessageSuccess", "User Deactivated");
+            resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/users"));
+        }
+    }
 }

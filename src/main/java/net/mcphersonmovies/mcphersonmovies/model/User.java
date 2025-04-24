@@ -46,6 +46,17 @@ public class User implements Comparable<User> {
     public User() {
     }
 
+    public User(int id, String firstName, String lastName, String email, String phone, String language, String pronouns, String description) {
+        this.userId = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.language = language;
+        this.pronouns = pronouns;
+        this.description = description;
+    }
+
     public int getUserId() {
         return userId;
     }

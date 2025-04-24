@@ -7,8 +7,6 @@ import net.mcphersonmovies.shared.Helpers;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -62,6 +60,38 @@ public class UserDAO {
                             int userId = rs.getInt("user_id");
                             String firstName = rs.getString("first_name");
                             String lastName = rs.getString("last_name");
+                            String phone = rs.getString("phone");
+                            String language = rs.getString("language");
+                            String status = rs.getString("status");
+                            String privileges = rs.getString("role_name");
+                            Instant created_at = rs.getTimestamp("created_at").toInstant();
+                            String timezone = rs.getString("timezone");
+                            Instant dateofbirth = rs.getTimestamp("dateofbirth").toInstant();
+                            String pronouns = rs.getString("pronouns");
+                            String description = rs.getString("description");
+                            user = new User(userId, firstName, lastName, email, phone, language, status, privileges, created_at, timezone, dateofbirth, pronouns, description);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return user;
+    }
+
+    public static User get(int id) {
+        User user = null;
+        try (Connection connection = getConnection()) {
+            if (connection != null) {
+                try (CallableStatement statement = connection.prepareCall("{CALL sp_get_user_by_id(?)}")) {
+                    statement.setInt(1, id);
+                    try (ResultSet rs = statement.executeQuery()) {
+                        if (rs.next()) {
+                            int userId = rs.getInt("user_id");
+                            String firstName = rs.getString("first_name");
+                            String lastName = rs.getString("last_name");
+                            String email = rs.getString("email");
                             String phone = rs.getString("phone");
                             String language = rs.getString("language");
                             String status = rs.getString("status");
@@ -157,24 +187,28 @@ public class UserDAO {
                 statement.execute();
                 int rowsAffected = statement.getInt(3);
                 if (rowsAffected > 0) {
-                    String subject = "Password Reset Link";
-                    String body = "<h2>Reset Password</h2>";
-                    body += "<p>Please click this link to reset your password. This link expires in 30 minutes.</p>";
+                    if(!get(email).getStatus().equals("inactive")){
+                        String subject = "Password Reset Link";
+                        String body = "<h2>Reset Password</h2>";
+                        body += "<p>Please click this link to reset your password. This link expires in 30 minutes.</p>";
 
-                    String appURL = "";
-                    if(req.getServerName().equals("localhost")) {
-                        appURL = req.getServletContext().getInitParameter("appURLLocal");
+                        String appURL = "";
+                        if(req.getServerName().equals("localhost")) {
+                            appURL = req.getServletContext().getInitParameter("appURLLocal");
+                        } else {
+                            appURL = req.getServletContext().getInitParameter("appURLCloud");
+                        }
+                        String URL = String.format("%s/new-password?token=%s", appURL, uuid);
+
+                        body += "<a href='" + URL + "' target='_blank'>Reset Password</a>";
+                        body += "<p>If you did not request a reset, you can ignore this message.</p>";
+
+                        AzureEmail.sendEmail(email, subject, body);
+
+                        return "Sent Password Reset Link to Email if it Exists";
                     } else {
-                        appURL = req.getServletContext().getInitParameter("appURLCloud");
+                        return "Account is Disabled";
                     }
-                    String URL = String.format("%s/new-password?token=%s", appURL, uuid);
-
-                    body += "<a href='" + URL + "' target='_blank'>Reset Password</a>";
-                    body += "<p>If you did not request a reset, you can ignore this message.</p>";
-
-                    AzureEmail.sendEmail(email, subject, body);
-
-                    return "Sent Password Reset Link to Email if it Exists";
                 } else {
                     return "We couldn't process your password reset link, Try Again";
                 }
@@ -273,6 +307,17 @@ public class UserDAO {
         } catch(SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
+        }
+    }
+
+    public static boolean deactivate(int id){
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_deactivate_user(?)}");
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected == 1;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

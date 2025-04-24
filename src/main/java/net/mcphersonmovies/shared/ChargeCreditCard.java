@@ -1,4 +1,4 @@
-package net.mcphersonmovies.shared.authorize_net;
+package net.mcphersonmovies.shared;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,7 +7,6 @@ import net.authorize.Environment;
 import net.authorize.api.contract.v1.*;
 import net.authorize.api.controller.CreateTransactionController;
 import net.authorize.api.controller.base.ApiOperationBase;
-import net.mcphersonmovies.shared.Config;
 
 public class ChargeCreditCard {
     public static void main(String[] args) {
@@ -18,7 +17,7 @@ public class ChargeCreditCard {
         );
     }
 
-    public static ANetApiResponse run(Double amount, String[] creditCardInfo, String email) {
+    public static String run(Double amount, String[] creditCardInfo, String email) {
         String apiLoginId = Config.getEnv("AUTHORIZE_NET_API_KEY");
         String transactionKey = Config.getEnv("AUTHORIZE_NET_TRANSACTION_KEY");
 
@@ -68,37 +67,37 @@ public class ChargeCreditCard {
             if (response.getMessages().getResultCode() == MessageTypeEnum.OK) {
                 TransactionResponse result = response.getTransactionResponse();
                 if (result.getMessages() != null) {
-                    System.out.println("Successfully created transaction with Transaction ID: " + result.getTransId());
-                    System.out.println("Response Code: " + result.getResponseCode());
-                    System.out.println("Message Code: " + result.getMessages().getMessage().get(0).getCode());
-                    System.out.println("Description: " + result.getMessages().getMessage().get(0).getDescription());
-                    System.out.println("Auth Code: " + result.getAuthCode());
+                    return "Successfully created transaction";
                 } else {
-                    System.out.println("Failed Transaction.");
-                    if (response.getTransactionResponse().getErrors() != null) {
-                        System.out.println("Error Code: " + response.getTransactionResponse().getErrors().getError().get(0).getErrorCode());
-                        System.out.println("Error message: " + response.getTransactionResponse().getErrors().getError().get(0).getErrorText());
-                    }
+                    return response.getTransactionResponse().getErrors().getError().get(0).getErrorText();
                 }
             } else {
-                System.out.println("Failed Transaction.");
                 if (response.getTransactionResponse() != null && response.getTransactionResponse().getErrors() != null) {
-                    System.out.println("Error Code: " + response.getTransactionResponse().getErrors().getError().get(0).getErrorCode());
-                    System.out.println("Error message: " + response.getTransactionResponse().getErrors().getError().get(0).getErrorText());
+                    return response.getTransactionResponse().getErrors().getError().get(0).getErrorText();
                 } else {
-                    System.out.println("Error Code: " + response.getMessages().getMessage().get(0).getCode());
-                    System.out.println("Error message: " + response.getMessages().getMessage().get(0).getText());
+                    return response.getMessages().getMessage().get(0).getText();
                 }
             }
         } else {
-            // Display the error code and message when response is null
             ANetApiResponse errorResponse = controller.getErrorResponse();
-            System.out.println("Failed to get response");
             if (!errorResponse.getMessages().getMessage().isEmpty()) {
-                System.out.println("Error: "+errorResponse.getMessages().getMessage().get(0).getCode()+" \n"+ errorResponse.getMessages().getMessage().get(0).getText());
+                String errorCode = errorResponse.getMessages().getMessage().get(0).getCode();
+                String errorMsg = errorResponse.getMessages().getMessage().get(0).getText();
+                if(errorCode.equals("E00003")) {
+                    if(errorMsg.contains("cardNumber")) {
+                        return "The credit card number is invalid";
+                    } else if(errorMsg.contains("expirationDate")) {
+                        return "The expiration date is invalid";
+                    } else if(errorMsg.contains("cardCode")) {
+                        return "The security code is invalid";
+                    } else {
+                        return "An error occurred. Please try again later.";
+                    }
+                } else {
+                    return errorMsg;
+                }
             }
         }
-
-        return response;
+        return "An error occurred. Please try again later.";
     }
 }

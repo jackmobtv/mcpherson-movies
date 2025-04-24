@@ -6,12 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.authorize.api.contract.v1.CreateTransactionResponse;
-import net.authorize.api.contract.v1.MessageTypeEnum;
-import net.authorize.api.contract.v1.TransactionResponse;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
-import net.mcphersonmovies.shared.authorize_net.ChargeCreditCard;
+import net.mcphersonmovies.shared.ChargeCreditCard;
 
 import java.io.IOException;
 
@@ -45,35 +42,50 @@ public class Subscribe extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("activeUser");
 
+        boolean errorFound = false;
+
         String expiration = req.getParameter("expiration");
-        expiration = expiration.replace("/", "");
+        String ccNumber = req.getParameter("number");
+        String cvv = req.getParameter("cvv");
+
+        if(expiration == null || expiration.isEmpty()){
+            errorFound = true;
+        } else {
+            expiration = expiration.replace("/", "");
+        }
+
+        if(ccNumber == null || ccNumber.isEmpty()){
+            errorFound = true;
+        }
+
+        if(cvv == null || cvv.isEmpty()){
+            errorFound = true;
+        }
 
         String[] ccInfo = new String[4];
-        ccInfo[0] = req.getParameter("number");
+        ccInfo[0] = ccNumber;
         ccInfo[1] = expiration;
-        ccInfo[2] = req.getParameter("cvv");
+        ccInfo[2] = cvv;
 
-        CreateTransactionResponse authResponse = (CreateTransactionResponse) ChargeCreditCard.run(15.00, ccInfo, user.getEmail());
+        String authResponse = null;
+
+        if(!errorFound){
+            authResponse = ChargeCreditCard.run(15.00, ccInfo, user.getEmail());
+        }
 
         if (authResponse != null) {
-            if (authResponse.getMessages().getResultCode() == MessageTypeEnum.OK) {
-                TransactionResponse result = authResponse.getTransactionResponse();
-                if (result.getMessages() != null) {
-                    boolean success = false;
-                    success = UserDAO.upgrade(user.getUserId());
-                    if (success) {
-                        session.removeAttribute("activeUser");
-                        session.setAttribute("flashMessageSuccess", "Your Account has been given Premium Status, Please log in");
-                        resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
-                        return;
-                    } else {
-                        session.setAttribute("flashMessageDanger", "Something Went Wrong");
-                    }
+            if (authResponse.contains("Success")) {
+                boolean success = UserDAO.upgrade(user.getUserId());
+                if (success) {
+                    session.removeAttribute("activeUser");
+                    session.setAttribute("flashMessageSuccess", "Your Account has been given Premium Status, Please log in");
+                    resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/login"));
+                    return;
                 } else {
-                    session.setAttribute("flashMessageDanger", "Something Went Wrong");
+                    session.setAttribute("flashMessageDanger", "An error occurred. Please try again later.");
                 }
             } else {
-                session.setAttribute("flashMessageDanger", "Invalid Credit Card Info");
+                session.setAttribute("flashMessageDanger", authResponse);
             }
         } else {
             session.setAttribute("flashMessageDanger", "Invalid Credit Card Info");
