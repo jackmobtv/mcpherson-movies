@@ -45,15 +45,25 @@ public class AdminUsers extends HttpServlet {
                 return;
             }
 
-            boolean success = UserDAO.deactivate(id);
+            boolean success = false;
+            User userCheck = UserDAO.get(id);
+            String actionType = "";
+
+            if(userCheck != null && userCheck.getStatus().equals("inactive")) {
+                actionType = "Activate";
+                success = UserDAO.activate(id);
+            } else {
+                actionType = "Deactivate";
+                success = UserDAO.deactivate(id);
+            }
 
             if(!success) {
-                session.setAttribute("flashMessageDanger", "Deactivation Failed");
+                session.setAttribute("flashMessageDanger", actionType + " Failed");
                 resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/users"));
                 return;
             }
 
-            session.setAttribute("flashMessageSuccess", "User Deactivated");
+            session.setAttribute("flashMessageSuccess", "User " + actionType + "d");
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/users"));
         }
     }

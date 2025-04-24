@@ -320,4 +320,15 @@ public class UserDAO {
             throw new RuntimeException(ex);
         }
     }
+
+    public static boolean activate(int id){
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_activate_user(?)}");
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected == 1;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

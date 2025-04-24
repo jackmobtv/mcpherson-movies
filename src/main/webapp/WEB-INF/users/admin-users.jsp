@@ -36,7 +36,12 @@
                                 <a href="${appURL}/edit-users?id=${user.userId}" class="btn btn-sm btn-outline-warning my-1">Edit</a>
                                 <form action="users" method="POST">
                                     <input type="hidden" name="id" id="id" value="${user.userId}"/>
-                                    <input type="submit" class="btn btn-sm btn-outline-danger" value="Deactivate"/>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <c:choose>
+                                            <c:when test="${user.status eq 'inactive'}">Activate</c:when>
+                                            <c:otherwise>Deactivate</c:otherwise>
+                                        </c:choose>
+                                    </button>
                                 </form>
                             </td>
                             <td>${fn:escapeXml(user.firstName)}</td>
