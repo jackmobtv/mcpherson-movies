@@ -1,16 +1,23 @@
 <div class="container py-4">
-    <h2>Update Movie</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Update Movie</h2>
+        <c:if test="${not empty movie}">
+            <div class="d-flex justify-content align-items-center float-right">
+                <a class="btn btn-primary mx-1" href="${appURL}/view-movies?id=${movie.movie_id}">View Movie</a>
+                <form method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
+                    <input type="hidden" name="id" value="${movie.movie_id}">
+                    <button class="btn btn-danger mx-1" type="submit">Delete Movie</button>
+                </form>
+            </div>
+        </c:if>
+    </div>
     <c:choose>
         <c:when test="${empty movie}">
             <p class="lead">Movie not found</p>
         </c:when>
         <c:otherwise>
             <div>
-                <a class="btn btn-primary text-right" href="${appURL}/view-movies?id=${movie.movie_id}">View Movie</a>
-                <form class="mb-3 mt-2" method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
-                    <input type="hidden" name="id" value="${movie.movie_id}">
-                    <button class="btn btn-danger" type="submit">Delete Movie</button>
-                </form>
+
             </div>
             <form class="row g-3" method="POST" action="update-movies">
                 <div class="col-md-2">
@@ -58,7 +65,7 @@
             <div style="color:red;" class="mt-3">${error}</div>
             <div style="color:green;" class="mt-3">${success}</div>
 
-            <button type="button" class="btn btn-primary mt-5 mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-warning mt-5 mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Add Actor
             </button>
 

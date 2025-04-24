@@ -76,7 +76,7 @@
 
                                 <!-- Save button -->
                                 <div class="d-sm-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary mb-0">Save changes</button>
+                                    <button type="submit" class="btn btn-secondary mb-0">Save changes</button>
                                 </div>
                             </form>
                         </div>

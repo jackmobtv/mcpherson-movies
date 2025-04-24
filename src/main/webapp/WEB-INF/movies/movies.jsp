@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Movies</h2>
         <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
-            <a href="add-movies" class="btn btn-warning float-right" role="button">Add Movie</a>
+            <a href="add-movies" class="btn btn-warning float-right mx-1" role="button">Add Movie</a>
         </c:if>
     </div>
     <div class="col d-flex justify-content-between align-items-center">

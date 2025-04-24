@@ -33,7 +33,7 @@
                         <c:forEach items="${users}" var="user">
                         <tr>
                             <td>
-                                <a href="${appURL}/edit-users?id=${user.userId}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a href="${appURL}/edit-users?id=${user.userId}" class="btn btn-sm btn-outline-warning my-1">Edit</a>
                                 <form action="users" method="POST">
                                     <input type="hidden" name="id" id="id" value="${user.userId}"/>
                                     <input type="submit" class="btn btn-sm btn-outline-danger" value="Deactivate"/>

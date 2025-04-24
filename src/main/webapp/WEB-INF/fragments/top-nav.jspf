@@ -32,12 +32,12 @@
                 <c:choose>
                     <c:when test="${empty sessionScope.activeUser}">
 <%--                        <a href="${appURL}/login" class="btn btn-dark me-2">Login</a>--%>
-                        <button type="button" class="btn btn-dark open-modal me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                        <a href="${appURL}/signup" class="btn btn-warning">Sign-up</a>
+                        <button type="button" class="btn btn-outline-primary open-modal me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                        <a href="${appURL}/signup" class="btn btn-outline-success">Sign-up</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="${appURL}/logout" class="btn btn-dark me-2">Sign out</a>
-                        <a href="${appURL}/favorites" class="btn btn-warning">My Profile</a>
+                        <a href="${appURL}/logout" class="btn btn-outline-primary me-2">Sign out</a>
+                        <a href="${appURL}/favorites" class="btn btn-outline-success">My Profile</a>
                     </c:otherwise>
                 </c:choose>
             </div>
