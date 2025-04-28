@@ -21,7 +21,7 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Add Movie</h2>
-        <a href="movies" class="btn btn-outline-primary float-right mx-1" role="button">Movie List</a>
+        <a href="movies" class="btn btn-outline-primary float-right mx-2" role="button">Movie List</a>
     </div>
 
     <form class="row g-3" method="POST" action="add-movies">

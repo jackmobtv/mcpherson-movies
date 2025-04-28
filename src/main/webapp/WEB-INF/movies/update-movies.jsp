@@ -3,10 +3,10 @@
         <h2>Update Movie</h2>
         <c:if test="${not empty movie}">
             <div class="d-flex justify-content align-items-center float-right">
-                <a class="btn btn-primary mx-1" href="${appURL}/view-movies?id=${movie.movie_id}">View Movie</a>
+                <a class="btn btn-primary mx-2" href="${appURL}/view-movies?id=${movie.movie_id}">View Movie</a>
                 <form method="POST" action="delete-movies" onsubmit="return confirm('Are You Sure?');">
                     <input type="hidden" name="id" value="${movie.movie_id}">
-                    <button class="btn btn-danger mx-1" type="submit">Delete Movie</button>
+                    <button class="btn btn-danger mx-2" type="submit">Delete Movie</button>
                 </form>
             </div>
         </c:if>
@@ -42,7 +42,7 @@
                     <input type="text" maxlength="4" class="form-control" id="release_year" name="release_year" value="${movie.release_year eq "0" ? "" : movie.release_year}">
                 </div>
                 <div class="col-md-4">
-                    <label for="locationId" class="form-label">Location ID</label>
+                    <label for="locationId" class="form-label">Location</label>
                     <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="locationId" name="locationId">
                         <c:forEach items="${locations}" var="location">
                             <option value="${location.location_id}" ${location.location_id == movie.location_id ? "selected" : ""}>${location.location_name}</option>
@@ -50,7 +50,7 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label for="formatId" class="form-label">Format ID</label>
+                    <label for="formatId" class="form-label">Format</label>
                     <select class="form-select js-choice z-index-9" aria-label=".form-select-sm" id="formatId" name="formatId">
                         <c:forEach items="${formats}" var="format">
                             <option value="${format.format_id}" ${format.format_id == movie.format_id ? "selected" : ""}>${format.format_name}</option>

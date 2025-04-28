@@ -11,7 +11,7 @@
                 <input type="hidden" id="movieId" value="${movie.movie_id}"/>
                 <input type="hidden" id="userId" value="${sessionScope.activeUser.userId}"/>
                 <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
-                    <a class="btn btn-warning float-right" href="${appURL}/update-movies?id=${movie.movie_id}">Update Movie</a>
+                    <a class="btn btn-warning float-right mx-2" href="${appURL}/update-movies?id=${movie.movie_id}">Update Movie</a>
                 </c:if>
             </div>
             <div class="row mt-4">

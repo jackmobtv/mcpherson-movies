@@ -3,6 +3,7 @@
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item"><a href="${appURL}/" class="nav-link px-2 text-body-secondary">Home</a></li>
             <li class="nav-item"><a href="${appURL}/pricing" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+            <li class="nav-item"><a href="${appURL}/terms" class="nav-link px-2 text-body-secondary">Terms</a></li>
             <li class="nav-item"><a href="${appURL}/about" class="nav-link px-2 text-body-secondary">About</a></li>
         </ul>
         <p class="text-center text-body-secondary">&copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Company, Inc</p>

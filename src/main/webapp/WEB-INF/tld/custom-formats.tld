@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+        version="3.0">
+    <tlib-version>1.0</tlib-version>
+    <short-name>cfmt</short-name>
+    <uri>/WEB-INF/tld</uri>
+
+    <tag>
+        <description>Takes a string of 10 numerical characters and formats it as (NNN) NNN-NNNN</description>
+        <name>formatPhone</name>
+        <tag-class>net.mcphersonmovies.shared.format_tags.PhoneNumber</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>The phone number to be formatted</description>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+</taglib>

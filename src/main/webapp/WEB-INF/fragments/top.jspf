@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="cfn" uri="/WEB-INF/tld/custom-functions.tld" %>
+<%@ taglib prefix="cfmt" uri="/WEB-INF/tld/custom-formats.tld" %>
 <jsp:useBean id="date" class="java.util.Date"/>
 <fmt:setLocale value="en-US" />
 <c:choose>

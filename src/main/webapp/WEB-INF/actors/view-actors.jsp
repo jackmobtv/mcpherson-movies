@@ -16,7 +16,7 @@
                 <tr>
                     <td class="align-middle"><a href="${appURL}/view-movies?id=${movies.movie_id}">${movies.title}</a></td>
                     <td class="align-middle">${movies.genre}</td>
-                    <td class="align-middle">${movies.release_year}</td>
+                    <td class="align-middle">${movies.release_year == 0 ? "" : movies.release_year}</td>
                     <td class="align-middle">${movies.location_name}</td>
                     <td class="align-middle">${movies.format_name}</td>
                 </tr>
