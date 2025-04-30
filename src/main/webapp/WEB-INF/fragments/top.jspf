@@ -5,7 +5,9 @@
 <%@ taglib prefix="cfn" uri="/WEB-INF/tld/custom-functions.tld" %>
 <%@ taglib prefix="cfmt" uri="/WEB-INF/tld/custom-formats.tld" %>
 <jsp:useBean id="date" class="java.util.Date"/>
-<fmt:setLocale value="en-US" />
+<c:set var="language" value="${not empty activeUser.language ? activeUser.language : 'en-US'}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="a18y" />
 <c:choose>
     <c:when test="${pageContext.request.serverName eq 'localhost'}">
         <%-- Do something on localhost only --%>
@@ -17,7 +19,7 @@
     </c:otherwise>
 </c:choose>
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="${language}" data-bs-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

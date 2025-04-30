@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg" aria-label="navbar">
     <div class="container">
-        <a class="navbar-brand" href="${appURL}">Movies</a>
+        <a class="navbar-brand" href="${appURL}"><fmt:message key="topNav.movies" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,18 +8,18 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="${appURL}/movies">Movies</a>
+                    <a class="nav-link" aria-current="page" href="${appURL}/movies"><fmt:message key="topNav.movies" /></a>
                 </li>
                 <c:if test="${(not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' || not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Premium') && sessionScope.activeUser.status eq 'active'}">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="${appURL}/actors">Actors</a>
+                        <a class="nav-link" aria-current="page" href="${appURL}/actors"><fmt:message key="topNav.actors" /></a>
                     </li>
                 </c:if>
                 <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><fmt:message key="topNav.admin" /></a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="${appURL}/users">Users</a></li>
+                            <li><a class="dropdown-item" href="${appURL}/users"><fmt:message key="topNav.users" /></a></li>
                         </ul>
                     </li>
                 </c:if>
@@ -32,12 +32,12 @@
                 <c:choose>
                     <c:when test="${empty sessionScope.activeUser}">
 <%--                        <a href="${appURL}/login" class="btn btn-dark me-2">Login</a>--%>
-                        <button type="button" class="btn btn-outline-primary open-modal me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                        <a href="${appURL}/signup" class="btn btn-outline-success">Sign-up</a>
+                        <button type="button" class="btn btn-outline-primary open-modal me-2" data-bs-toggle="modal" data-bs-target="#loginModal"><fmt:message key="topNav.login" /></button>
+                        <a href="${appURL}/signup" class="btn btn-outline-success"><fmt:message key="topNav.signup" /></a>
                     </c:when>
                     <c:otherwise>
-                        <a href="${appURL}/logout" class="btn btn-outline-primary me-2">Sign out</a>
-                        <a href="${appURL}/favorites" class="btn btn-outline-success">My Profile</a>
+                        <a href="${appURL}/logout" class="btn btn-outline-primary me-2"><fmt:message key="topNav.signout" /></a>
+                        <a href="${appURL}/favorites" class="btn btn-outline-success"><fmt:message key="topNav.myProfile" /></a>
                     </c:otherwise>
                 </c:choose>
             </div>
