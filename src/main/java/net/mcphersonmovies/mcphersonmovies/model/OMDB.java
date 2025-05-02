@@ -47,13 +47,8 @@ public class OMDB {
 
     public static String getPlot(String title) throws IOException {
         //https://www.omdbapi.com/?t=__&apikey=__
-        Dotenv dotenv = null;
-        try {
-            dotenv = Dotenv.load();
-        } catch(DotenvException e) {
-            throw new RuntimeException("Could not find .env file");
-        }
-        String key = dotenv.get("OMDB_API_KEY");
+
+        String key = Config.getEnv("OMDB_API_KEY");
 
         String url = "https://www.omdbapi.com/?t=" + title + "&apikey=" + key;
 
@@ -80,13 +75,8 @@ public class OMDB {
 
     public static String[] getMovieData(String title) throws IOException {
         //https://www.omdbapi.com/?t=__&apikey=__
-        Dotenv dotenv = null;
-        try {
-            dotenv = Dotenv.load();
-        } catch(DotenvException e) {
-            throw new RuntimeException("Could not find .env file");
-        }
-        String key = dotenv.get("OMDB_API_KEY");
+
+        String key = Config.getEnv("OMDB_API_KEY");
 
         String url = "https://www.omdbapi.com/?t=" + title + "&apikey=" + key;
 
