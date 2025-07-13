@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.MovieDAO;
 
 import java.io.IOException;
 

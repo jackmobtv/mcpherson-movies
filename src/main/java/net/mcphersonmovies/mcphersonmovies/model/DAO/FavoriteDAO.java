@@ -1,4 +1,7 @@
-package net.mcphersonmovies.mcphersonmovies.model;
+package net.mcphersonmovies.mcphersonmovies.model.DAO;
+
+import net.mcphersonmovies.mcphersonmovies.model.Favorite;
+import net.mcphersonmovies.mcphersonmovies.model.Movie;
 
 import java.sql.*;
 import java.util.ArrayList;

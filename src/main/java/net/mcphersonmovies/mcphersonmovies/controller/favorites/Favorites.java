@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.mcphersonmovies.mcphersonmovies.model.FavoriteDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.FavoriteDAO;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 

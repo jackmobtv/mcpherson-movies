@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
-import net.mcphersonmovies.mcphersonmovies.model.MovieDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.MovieDAO;
 import net.mcphersonmovies.mcphersonmovies.model.OMDB;
 import net.mcphersonmovies.shared.Helpers;
 

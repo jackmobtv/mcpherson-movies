@@ -4,7 +4,7 @@ import jakarta.json.JsonObject;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import net.mcphersonmovies.mcphersonmovies.model.Favorite;
-import net.mcphersonmovies.mcphersonmovies.model.FavoriteDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.FavoriteDAO;
 import net.mcphersonmovies.shared.MyDecoder;
 import net.mcphersonmovies.shared.MyEncoder;
 import net.mcphersonmovies.shared.MyJson;

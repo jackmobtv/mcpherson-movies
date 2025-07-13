@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
-import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
 import net.mcphersonmovies.shared.Hashing;
 import net.mcphersonmovies.shared.Validators;
 

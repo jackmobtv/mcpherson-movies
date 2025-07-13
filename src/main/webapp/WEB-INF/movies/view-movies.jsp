@@ -62,6 +62,102 @@
                     </tbody>
                 </table>
             </div>
+
+            <div>
+                <hr>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.activeUser}">
+                        <h2>Your Rating</h2>
+                        <c:choose>
+                            <c:when test="${myRating != null}">
+                                <form action="${appURL}/update-rating" method="post">
+                                    <input type="hidden" name="movie_id" value="${movie.movie_id}">
+                                    <div class="border rounded p-3 m-5">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- Left side: profile info -->
+                                            <div class="d-flex align-items-center">
+                                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                                <h5 class="mb-0">${sessionScope.activeUser.fullName}</h5>
+                                                <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${myRating.createdAtDate}"/></i></p>
+                                            </div>
+                                            <!-- Right side: rating -->
+                                            <div class="d-flex align-items-center">
+                                                <p class="mb-0 mr-2">Rating:</p>
+                                                <input class="mb-0 mx-1 form-control rating <c:if test='${not empty ratingErr}'>is-invalid</c:if>" type="number" size="10" max="10" min="0" name="rating" value="${empty formRating ? myRating.rating : formRating}" required/>
+                                                <h4 class="mb-0 mx-1">/10</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <label for="comment" class="form-label">Comment</label>
+                                            <textarea id="comment" class="form-control" maxlength="1000" name="comment">${empty formComment ? myRating.comment : formComment}</textarea>
+                                        </div>
+                                        <button class="btn btn-primary mt-2" type="submit">Update Rating</button>
+                                    </div>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="border rounded p-3 m-5">
+                                    <form action="${appURL}/view-movies" method="POST">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <!-- Left side: profile info -->
+                                            <div class="d-flex align-items-center">
+                                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                                <h5 class="mb-0">${fullName}</h5>
+                                                <p class="mb-0"><i></i></p>
+                                            </div>
+                                            <!-- Right side: rating -->
+                                            <div class="d-flex align-items-center">
+                                                <p class="mb-0 mr-2">Rating:</p>
+                                                <input class="mb-0 mx-1 form-control rating <c:if test='${not empty ratingErr}'>is-invalid</c:if>" type="number" size="10" max="10" min="0" name="rating" value="${rating}" required/>
+                                                <h4 class="mb-0 mx-1">/10</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <input type="hidden" name="movie_id" value="${movie.movie_id}"/>
+                                            <label for="comment" class="form-label">Comment</label>
+                                            <textarea id="comment" class="form-control <c:if test='${not empty commentErr}'>is-invalid</c:if>" maxlength="1000" name="comment">${comment}</textarea>
+                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+
+                    </c:when>
+                    <c:otherwise>
+                        <h2 class="text-center">Please Log In To Add a Rating</h2>
+                    </c:otherwise>
+                </c:choose>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>User Ratings</h2>
+                    <h5 class="mb-0 float-right mx-5"><i class="bi bi-star-fill me-2"></i>Avg. Rating: ${averageRating}/10</h5>
+                </div>
+                <c:forEach items="${ratings}" var="rating">
+                    <div class="border rounded p-3 m-5">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Left side: profile info -->
+                            <div class="d-flex align-items-center">
+                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                <h5 class="mb-0">${rating.user.fullName}</h5>
+                                <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
+                            </div>
+                            <!-- Right side: rating -->
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 mr-2">Rating:</p>
+                                <h4 class="mb-0 mx-1">${rating.rating}/10</h4>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea id="comment" class="form-control" maxlength="1000" readonly>${rating.comment}</textarea>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
         </c:otherwise>
     </c:choose>
 </div>

@@ -1,6 +1,7 @@
-package net.mcphersonmovies.mcphersonmovies.model;
+package net.mcphersonmovies.mcphersonmovies.model.DAO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.shared.AzureEmail;
 import net.mcphersonmovies.shared.Helpers;
 

@@ -2,7 +2,7 @@ package net.mcphersonmovies.mcphersonmovies.controller;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
-import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
 import java.io.IOException;
 
 @ServerEndpoint("/signup/checkEmail")

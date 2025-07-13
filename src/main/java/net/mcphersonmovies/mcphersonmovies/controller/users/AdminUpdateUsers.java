@@ -7,11 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.User;
-import net.mcphersonmovies.mcphersonmovies.model.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
 
 import java.io.IOException;
 
-import static net.mcphersonmovies.mcphersonmovies.model.UserDAO.get;
+import static net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO.get;
 
 @WebServlet(value = "/edit-users")
 public class AdminUpdateUsers extends HttpServlet {

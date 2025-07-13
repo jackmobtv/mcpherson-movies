@@ -210,11 +210,21 @@ public class User implements Comparable<User> {
         if(password != null) {
             String passwordString = String.valueOf(password);
             if(!Validators.isStrongPassword(passwordString)) {
-                throw new IllegalArgumentException("Password requires at least 8 characters, and at least 3 of 4: lowercase leter, uppercase letter, number, symbol");
+                throw new IllegalArgumentException("Password requires at least 8 characters, and at least 3 of 4: lowercase letter, uppercase letter, number, symbol");
             } else {
                 return true;
             }
         }
         return false;
+    }
+
+    public String getFullName() {
+        String fullName = "Anonymous";
+
+        if(!firstName.isEmpty() || !lastName.isEmpty()) {
+            fullName = firstName + " " + lastName;
+        }
+
+        return fullName.trim();
     }
 }
