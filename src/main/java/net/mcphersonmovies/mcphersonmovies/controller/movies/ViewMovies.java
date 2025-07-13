@@ -64,13 +64,14 @@ public class ViewMovies extends HttpServlet {
         }
 
         req.setAttribute("pageTitle", "View Movie");
+        req.setAttribute("mobile", Helpers.isMobile(req));
 
-        if (Helpers.isMobile(req)) {
-            req.getRequestDispatcher("WEB-INF/movies/view-movies-mobile.jsp").forward(req, resp);
-        } else {
-            req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
-        }
-//        req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
+//        if (Helpers.isMobile(req)) {
+//            req.getRequestDispatcher("WEB-INF/movies/view-movies-mobile.jsp").forward(req, resp);
+//        } else {
+//            req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
+//        }
+        req.getRequestDispatcher("WEB-INF/movies/view-movies.jsp").forward(req, resp);
     }
 
     @Override

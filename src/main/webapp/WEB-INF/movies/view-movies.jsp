@@ -17,7 +17,7 @@
             <div class="row mt-4">
                 <div class="col-md-6 offset-md-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${movie.movie_id != 1}">${appURL}/view-movies?id=${movie.movie_id - 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Previous Movie" ><i class="bi bi-arrow-left"></i></a>
+                        <c:if test="${!mobile}"><a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${movie.movie_id != 1}">${appURL}/view-movies?id=${movie.movie_id - 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Previous Movie" ><i class="bi bi-arrow-left"></i></a></c:if>
                         <div class="card mx-3">
                             <div class="card-header d-flex align-items-center">
                                 <c:if test="${not empty sessionScope.activeUser}">
@@ -37,8 +37,14 @@
                                 <p class="mx-auto mt-3 text-center" style="max-width: 600px;">${plot}</p>
                             </div>
                         </div>
-                        <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${lastMovie eq 'false'}">${appURL}/view-movies?id=${movie.movie_id + 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a>
+                        <c:if test="${!mobile}"><a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${lastMovie eq 'false'}">${appURL}/view-movies?id=${movie.movie_id + 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a></c:if>
                     </div>
+                    <c:if test="${mobile}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${movie.movie_id != 1}">${appURL}/view-movies?id=${movie.movie_id - 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Previous Movie" ><i class="bi bi-arrow-left"></i></a>
+                            <a class="btn btn-outline-primary nav-button" href="<c:choose><c:when test="${lastMovie eq 'false'}">${appURL}/view-movies?id=${movie.movie_id + 1}</c:when><c:otherwise>#</c:otherwise></c:choose>" aria-label="Next Movie"><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 

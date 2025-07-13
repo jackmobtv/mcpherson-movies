@@ -1,5 +1,6 @@
 package net.mcphersonmovies.mcphersonmovies.model.DAO;
 
+import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.Rating;
 import net.mcphersonmovies.mcphersonmovies.model.RatingVM;
 
@@ -85,6 +86,34 @@ public class RatingDAO {
                 rating.setComment(rs.getString("comment"));
                 rating.setCreated_at(rs.getTimestamp("created_at").toInstant());
                 rating.setUser(UserDAO.get(rs.getInt("user_id")));
+
+                ratings.add(rating);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        return ratings;
+    }
+
+    public static List<RatingVM> getAllUserRatings(int user_id, int limit, int offset) {
+        List<RatingVM> ratings = new ArrayList<>();
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_all_user_ratings(?,?,?)}");
+            statement.setInt(1, user_id);
+            statement.setInt(2, limit);
+            statement.setInt(3, offset);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                RatingVM rating = new RatingVM();
+
+                rating.setMovie_id(rs.getInt("movie_id"));
+                rating.setUser_id(user_id);
+                rating.setRating(rs.getInt("rating"));
+                rating.setComment(rs.getString("comment"));
+                rating.setCreated_at(rs.getTimestamp("created_at").toInstant());
+                rating.setMovie(MovieDAO.getMovie(rs.getInt("movie_id")));
 
                 ratings.add(rating);
             }
