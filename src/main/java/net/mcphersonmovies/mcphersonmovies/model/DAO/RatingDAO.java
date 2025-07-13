@@ -123,4 +123,15 @@ public class RatingDAO {
 
         return ratings;
     }
+
+    public static boolean deleteRating(int user_id, int movie_id) {
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_delete_movie_rating(?,?)}");
+            statement.setInt(1, user_id);
+            statement.setInt(2, movie_id);
+            return statement.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
 }

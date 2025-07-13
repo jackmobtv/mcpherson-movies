@@ -68,6 +68,9 @@
         <script src="${appURL}/scripts/favorite.js" defer></script>
     </c:if>
     <script src="${appURL}/scripts/login-modal.js" defer></script>
+    <c:if test="${pageTitle eq 'View Movie'}">
+        <script src="${appURL}/scripts/delete-rating.js" defer></script>
+    </c:if>
 
     <script defer>
         window.addEventListener('DOMContentLoaded',function () {

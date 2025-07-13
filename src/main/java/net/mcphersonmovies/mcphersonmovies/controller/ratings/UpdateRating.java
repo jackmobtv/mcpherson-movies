@@ -1,4 +1,4 @@
-package net.mcphersonmovies.mcphersonmovies.controller.movies;
+package net.mcphersonmovies.mcphersonmovies.controller.ratings;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

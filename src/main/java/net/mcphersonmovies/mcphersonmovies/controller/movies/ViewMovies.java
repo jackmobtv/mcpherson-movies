@@ -12,7 +12,6 @@ import net.mcphersonmovies.mcphersonmovies.model.DAO.FavoriteDAO;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.MovieDAO;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.RatingDAO;
 import net.mcphersonmovies.shared.Helpers;
-import org.eclipse.persistence.internal.helper.Helper;
 
 import java.io.IOException;
 import java.util.List;

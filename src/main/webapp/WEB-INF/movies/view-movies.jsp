@@ -60,9 +60,11 @@
                     <c:forEach items="${actors}" var="actor">
                         <tr>
                             <td class="align-middle"><h5>${actor.actor_name}</h5></td>
-                            <td><c:if test="${(not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' || not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Premium') && sessionScope.activeUser.status eq 'active'}">
-                                <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
-                            </c:if></td>
+                            <td>
+                                <c:if test="${(not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' || not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Premium') && sessionScope.activeUser.status eq 'active'}">
+                                    <a href="${appURL}/view-actors?id=${actor.actor_id}" class="btn btn-outline-primary">View Movies</a>
+                                </c:if>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -98,7 +100,12 @@
                                             <label for="comment" class="form-label">Comment</label>
                                             <textarea id="comment" class="form-control" maxlength="1000" name="comment">${empty formComment ? myRating.comment : formComment}</textarea>
                                         </div>
-                                        <button class="btn btn-primary mt-2" type="submit">Update Rating</button>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button class="btn btn-warning mt-2" type="submit">Update</button>
+                                            <c:if test="${sessionScope.activeUser.status eq 'active'}">
+                                                <button type="button" class="btn btn-danger mt-2 float-right open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-movieId="${myRating.movie_id}" data-userId="${myRating.user_id}">Delete</button>
+                                            </c:if>
+                                        </div>
                                     </div>
                                 </form>
                             </c:when>
@@ -124,8 +131,8 @@
                                             <input type="hidden" name="movie_id" value="${movie.movie_id}"/>
                                             <label for="comment" class="form-label">Comment</label>
                                             <textarea id="comment" class="form-control <c:if test='${not empty commentErr}'>is-invalid</c:if>" maxlength="1000" name="comment">${comment}</textarea>
-                                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
                                         </div>
+                                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
                                     </form>
                                 </div>
                             </c:otherwise>
@@ -161,9 +168,35 @@
                             <label for="comment" class="form-label">Comment</label>
                             <textarea id="comment" class="form-control" maxlength="1000" readonly>${rating.comment}</textarea>
                         </div>
+                        <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
+                            <div class="d-flex d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-danger mt-2 open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-movieId="${rating.movie_id}" data-userId="${rating.user_id}">Delete</button>
+                            </div>
+                        </c:if>
                     </div>
                 </c:forEach>
             </div>
         </c:otherwise>
     </c:choose>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="delete-rating" method="POST">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Are You Sure?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="movieId" name="movie_id">
+                    <input type="hidden" id="userId" name="user_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
