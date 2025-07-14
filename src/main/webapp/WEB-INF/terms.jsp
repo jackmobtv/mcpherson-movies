@@ -11,10 +11,10 @@
     <h2>3. Content Ownership</h2>
     <p>All content available on the Movie Database, including but not limited to movies, descriptions, images, and reviews, is protected by copyright and intellectual property laws.</p>
 
-    <h2>5. Restrictions</h2>
+    <h2>4. Restrictions</h2>
     <p>You agree not to use the Movie Database for any unlawful purpose or in violation of applicable laws and regulations.</p>
 
-    <h2>6. Limitation of Liability</h2>
+    <h2>5. Limitation of Liability</h2>
     <p>The Movie Database is not liable for any direct, indirect, incidental, or consequential damages arising out of your use or inability to use the service.</p>
 
     <h2>6. Changes to the Terms</h2>

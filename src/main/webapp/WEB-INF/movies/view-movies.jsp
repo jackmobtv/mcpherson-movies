@@ -77,6 +77,9 @@
                     <c:when test="${not empty sessionScope.activeUser}">
                         <h2>Your Rating</h2>
                         <c:choose>
+                            <c:when test="${sessionScope.activeUser.status != 'active'}">
+                                <h4>You are not allowed to make Ratings</h4>
+                            </c:when>
                             <c:when test="${myRating != null}">
                                 <form action="${appURL}/update-rating" method="post">
                                     <input type="hidden" name="movie_id" value="${movie.movie_id}">
@@ -154,7 +157,7 @@
                     </div>
                 </c:if>
                 <c:forEach items="${ratings}" var="rating">
-                    <div class="border rounded p-3 m-5">
+                    <div class="border rounded p-3 ${mobile ? 'mt-5 mb-5' : 'm-5'}">
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Left side: profile info -->
                             <div class="d-flex align-items-center">

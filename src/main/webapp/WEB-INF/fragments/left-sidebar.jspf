@@ -11,6 +11,7 @@
                 <!-- Dashboard menu -->
                 <div class="list-group list-group-light list-group-borderless">
                     <a class="list-group-item ${pageTitle == "Favorites" ? "active" : ""}" href="${appURL}/favorites"><i class="bi bi-star-fill me-2"></i>Favorites</a>
+                    <a class="list-group-item ${pageTitle == "Ratings" ? "active" : ""}" href="${appURL}/ratings"><i class="bi bi-film me-2"></i>Ratings</a>
                     <a class="list-group-item ${pageTitle == "Edit Profile" ? "active" : ""}" href="${appURL}/edit-profile"><i class="bi bi-person-gear me-2"></i>Edit Profile</a>
                     <a class="list-group-item ${pageTitle == "Delete Account" ? "active" : ""}" href="${appURL}/delete-account"><i class="bi bi-trash me-2"></i>Delete Account</a>
                 </div>
