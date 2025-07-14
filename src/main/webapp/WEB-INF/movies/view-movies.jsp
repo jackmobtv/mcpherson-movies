@@ -162,7 +162,7 @@
                             <!-- Left side: profile info -->
                             <div class="d-flex align-items-center">
                                 <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
-                                <h5 class="mb-0">${rating.user.fullName}</h5>
+                                <h5 class="mb-0"><a href="view-profile?id=${rating.user_id}">${rating.user.fullName}</a></h5>
                                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
                             </div>
                             <!-- Right side: rating -->

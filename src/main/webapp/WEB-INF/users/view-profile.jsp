@@ -1,0 +1,43 @@
+<main class="py-5">
+    <section class="pt-0">
+        <div class="container">
+            <div class="row">
+                <%@ include file="/WEB-INF/fragments/user-left-sidebar.jspf" %>
+
+                <div class="col-lg-9">
+                    <div class="card bg-transparent border rounded-3">
+                        <!-- Card header -->
+                        <div class="card-header border-bottom">
+                            <h3 class="card-header-title mb-0">Profile</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <c:choose>
+                                <c:when test="${user eq null}">
+                                    <h3>User Not Found</h3>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <img src="${appURL}/img/wrongturn.jpg" width="90" height="90" alt="profile picture" class="cardImage mx-2"/>
+                                            <h3 class="mb-0">${user.fullName}</h3>
+                                            <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${user.dateofbirthDate}"/></i></p>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="mb-0 mx-1">${user.pronouns}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea id="description" class="form-control" readonly>${user.description}</textarea>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

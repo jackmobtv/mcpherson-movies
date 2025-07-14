@@ -7,37 +7,26 @@
                 <%@ include file="/WEB-INF/fragments/left-sidebar.jspf" %>
 
                 <div class="col-lg-9">
-                    <c:if test="${totalPages > 1}">
-                        <div class="col d-flex justify-content-between align-items-center">
-                            <%@include file="/WEB-INF/fragments/profile-rating-pagination.jspf"%>
+                    <div class="card bg-transparent border rounded-3">
+                        <!-- Card header -->
+                        <div class="card-header border-bottom">
+                            <h3 class="card-header-title mb-0">Ratings</h3>
                         </div>
-                    </c:if>
-                    <c:forEach items="${ratings}" var="rating">
-                        <div class="border rounded p-3 mt-5 mb-5">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <!-- Left side: movie info -->
-                                <div class="d-flex align-items-center">
-                                    <h5 class="mb-0"><a href="view-movies?id=${rating.movie_id}">${rating.movie.title}</a></h5>
-                                    <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
-                                </div>
-                                <!-- Right side: rating -->
-                                <div class="d-flex align-items-center">
-                                    <p class="mb-0 mr-2">Rating:</p>
-                                    <h4 class="mb-0 mx-1">${rating.rating}/10</h4>
-                                </div>
-                            </div>
 
-                            <div class="mt-3">
-                                <label for="comment" class="form-label">Comment</label>
-                                <textarea id="comment" class="form-control" maxlength="1000" readonly>${rating.comment}</textarea>
-                            </div>
+                        <div class="card-body">
+                            <c:if test="${totalPages > 1}">
+                                <div class="col d-flex justify-content-between align-items-center">
+                                    <%@include file="/WEB-INF/fragments/profile-rating-pagination.jspf"%>
+                                </div>
+                            </c:if>
+                            <%@include file="/WEB-INF/fragments/ratings.jspf"%>
+                            <c:if test="${totalPages > 1}">
+                                <div class="col d-flex justify-content-between align-items-center">
+                                    <%@include file="/WEB-INF/fragments/profile-rating-pagination.jspf"%>
+                                </div>
+                            </c:if>
                         </div>
-                    </c:forEach>
-                    <c:if test="${totalPages > 1}">
-                        <div class="col d-flex justify-content-between align-items-center">
-                            <%@include file="/WEB-INF/fragments/profile-rating-pagination.jspf"%>
-                        </div>
-                    </c:if>
+                    </div>
                 </div>
             </div>
         </div>
