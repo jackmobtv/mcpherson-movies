@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <!-- Left side: movie info -->
             <div class="d-flex align-items-center">
-                <h5 class="mb-0"><a href="view-movies?id=${rating.movie_id}">${rating.movie.title}</a></h5>
+                <h5 class="mb-0"><a href="${appURL}/view-movies?id=${rating.movie_id}">${rating.movie.title}</a></h5>
                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
             </div>
             <!-- Right side: rating -->

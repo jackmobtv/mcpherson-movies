@@ -157,7 +157,7 @@
                     </div>
                 </c:if>
                 <c:forEach items="${ratings}" var="rating">
-                    <div class="border rounded p-3 ${mobile ? 'mt-5 mb-5' : 'm-5'}">
+                    <div class="border rounded p-3 ${mobile ? 'my-5' : 'm-5'}">
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Left side: profile info -->
                             <div class="d-flex align-items-center">

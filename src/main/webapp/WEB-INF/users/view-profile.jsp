@@ -1,5 +1,6 @@
 <main class="py-5">
-    <section class="pt-0">
+    <%@ include file="/WEB-INF/fragments/user-top-bar.jspf" %>
+    <section class="pt-3">
         <div class="container">
             <div class="row">
                 <%@ include file="/WEB-INF/fragments/user-left-sidebar.jspf" %>
