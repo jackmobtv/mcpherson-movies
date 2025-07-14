@@ -41,18 +41,8 @@ public class ViewMovies extends HttpServlet {
             req.setAttribute("movie", movie);
             req.setAttribute("actors", actors);
 
-            List<RatingVM> ratings = RatingDAO.getAllMovieRatings(movie_id, 100, 0);
-            double combinedRating = 0;
-            for (RatingVM rating : ratings) {
-                combinedRating += rating.getRating();
-            }
-            String avgRate = "_";
-            try{
-                avgRate = Helpers.round(combinedRating / ratings.size(), 2);
-            } catch(NumberFormatException ignored) {}
-            req.setAttribute("averageRating", avgRate);
 
-            req.setAttribute("ratings", ratings);
+
             req.setAttribute("lastMovie", movie_id == MovieDAO.getLastID() ? "true" : "false");
             if(user != null) {
                 req.setAttribute("favorited", FavoriteDAO.isFavoriteMovie(new Favorite(user.getUserId(), movie_id)));
@@ -61,6 +51,65 @@ public class ViewMovies extends HttpServlet {
                 req.setAttribute("fullName", user.getFullName());
             }
         }
+
+
+        int limit = 5;
+        int totalRatings = RatingDAO.getRatingCountByMovie(movie_id);
+        int totalPages = 0;
+        totalPages = totalRatings / limit;
+
+        if(totalRatings % limit != 0) {
+            totalPages++;
+        }
+
+        String pageStr = req.getParameter("page");
+        int page = 1;
+        try {
+            page = Integer.parseInt(pageStr);
+        } catch (NumberFormatException ignored) {}
+        req.setAttribute("page", page);
+
+        if (page < 1){
+            page = 1;
+        } else if (page > totalPages){
+            page = totalPages;
+        }
+
+        int offset = (page - 1) * limit;
+
+//        int pageLinks = 5;
+//        int beginPage = page / pageLinks * pageLinks > 0 ? page / pageLinks * pageLinks : 1;
+//        int endPage = beginPage + pageLinks - 1 > totalPages ? totalPages : beginPage + pageLinks - 1;
+
+        int beginPage = 1;
+        int endPage = totalPages;
+
+        if (totalPages > 3) {
+            if (page == 1 || page == 2) {
+                endPage = totalPages == 4 ? 4 : 5;
+            } else if (page == totalPages || page == totalPages - 1) {
+                beginPage = ((page == 3 || page == 4) ? 1 : (totalPages - 4));
+            } else {
+                beginPage = page - 2;
+                endPage = page + 2;
+            }
+        }
+
+        beginPage = Math.max(1, beginPage);
+        endPage = Math.min(totalPages, endPage);
+        req.setAttribute("beginPage", beginPage);
+        req.setAttribute("endPage", endPage);
+
+        req.setAttribute("totalPages", totalPages);
+
+        List<RatingVM> ratings = RatingDAO.getAllMovieRatings(movie_id, 5, offset);
+
+        String avgRate = "_";
+        try{
+            avgRate = RatingDAO.getAverageMovieRating(movie_id);
+        } catch(NumberFormatException ignored) {}
+        req.setAttribute("averageRating", avgRate);
+        req.setAttribute("ratings", ratings);
 
         req.setAttribute("pageTitle", "View Movie");
         req.setAttribute("mobile", Helpers.isMobile(req));

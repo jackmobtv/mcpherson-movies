@@ -17,7 +17,7 @@ public class Helpers {
     public static String round(double number, int numDecPlaces) {
         BigDecimal bigDecimal = new BigDecimal(Double.toString(number));
         bigDecimal = bigDecimal.setScale(numDecPlaces, RoundingMode.HALF_UP).stripTrailingZeros();
-        return bigDecimal.toString();
+        return bigDecimal.toPlainString();
     }
 
     // https://stackoverflow.com/a/3149645/6629315

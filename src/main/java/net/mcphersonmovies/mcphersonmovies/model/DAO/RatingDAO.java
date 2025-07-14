@@ -3,6 +3,7 @@ package net.mcphersonmovies.mcphersonmovies.model.DAO;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.Rating;
 import net.mcphersonmovies.mcphersonmovies.model.RatingVM;
+import net.mcphersonmovies.shared.Helpers;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -133,5 +134,62 @@ public class RatingDAO {
         } catch (SQLException ex) {
             return false;
         }
+    }
+
+    public static int getRatingCountByMovie(int movie_id) {
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_total_movie_ratings(?)}");
+            statement.setInt(1, movie_id);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                return rs.getInt("count");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+    }
+
+    public static int getRatingCountByUser(int user_id) {
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_total_user_ratings(?)}");
+            statement.setInt(1, user_id);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                return rs.getInt("count");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+    }
+
+    public static String getAverageMovieRating(int movie_id) {
+        List<Double> ratings = new ArrayList<>();
+
+        try(Connection connection = getConnection()) {
+            CallableStatement statement = connection.prepareCall("{CALL sp_get_average_rating_for_movie(?)}");
+            statement.setInt(1, movie_id);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                int rating = 0;
+
+                rating = rs.getInt("rating");
+
+                ratings.add((double)rating);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Database Error  -  " + ex.getMessage());
+        }
+
+        double combinedRating = 0;
+
+        for(Double rating : ratings) {
+            combinedRating += rating;
+        }
+
+        return Helpers.round(combinedRating / ratings.size(),2);
     }
 }

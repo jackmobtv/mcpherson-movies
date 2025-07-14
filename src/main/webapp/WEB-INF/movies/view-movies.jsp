@@ -148,6 +148,11 @@
                     <h2>User Ratings</h2>
                     <h5 class="mb-0 float-right mx-5"><i class="bi bi-star-fill me-2"></i>Avg. Rating: ${averageRating}/10</h5>
                 </div>
+                <c:if test="${totalPages > 1}">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <%@include file="/WEB-INF/fragments/rating-pagination.jspf"%>
+                    </div>
+                </c:if>
                 <c:forEach items="${ratings}" var="rating">
                     <div class="border rounded p-3 m-5">
                         <div class="d-flex justify-content-between align-items-center">
@@ -175,6 +180,11 @@
                         </c:if>
                     </div>
                 </c:forEach>
+                <c:if test="${totalPages > 1}">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <%@include file="/WEB-INF/fragments/rating-pagination.jspf"%>
+                    </div>
+                </c:if>
             </div>
         </c:otherwise>
     </c:choose>
