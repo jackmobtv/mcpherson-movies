@@ -12,7 +12,11 @@
                         </c:otherwise>
                     </c:choose>
 
-                    <input type="file" name="imageFile" accept="image/*" required/>
+                    <div>
+                        <input type="file" name="imageFile" id="imageFile" accept="image/jpeg, image/jpg" required/>
+                        <br/>
+                        <label for="imageFile" class="form-floating text-secondary"><i>.jpg / .jpeg only</i></label>
+                    </div>
                 </div>
                 <br/>
                 <div class="d-flex justify-content-center">
