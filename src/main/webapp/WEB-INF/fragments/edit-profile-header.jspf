@@ -33,6 +33,16 @@
                                 <li class="list-item"><i class="bi bi-star-fill fs-6"></i> Member since <fmt:formatDate value="${activeUser.createdAtDate}"/></li>
                             </ul>
                         </div>
+                        <div class="float-right">
+                            <c:choose>
+                                <c:when test="${empty image.encodedImage}">
+                                    <a href="${appURL}/profile-picture"><img class="cardImage mx-3" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="100" width="100"></a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${appURL}/profile-picture"><img class="cardImage mx-3" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="100" width="100"></a>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                         <!-- Responsive toggler START -->
                         <button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                             <i class="bi bi-list fs-4"></i>

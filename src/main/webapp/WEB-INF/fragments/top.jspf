@@ -36,9 +36,7 @@
     <c:if test="${pageTitle eq 'Error'}">
         <link href="${appURL}/styles/error.css" rel="stylesheet"/>
     </c:if>
-    <c:if test="${pageTitle eq 'View Movie' || pageTitle eq 'Profile'}">
-        <link href="${appURL}/styles/rating.css" rel="stylesheet"/>
-    </c:if>
+    <link href="${appURL}/styles/rating.css" rel="stylesheet"/>
 <%--    <c:if test="${pageTitle eq 'Login'}">--%>
         <link href="${appURL}/styles/login.css" rel="stylesheet"/>
 <%--    </c:if>--%>

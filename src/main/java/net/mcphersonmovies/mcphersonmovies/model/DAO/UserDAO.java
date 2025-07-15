@@ -1,10 +1,16 @@
 package net.mcphersonmovies.mcphersonmovies.model.DAO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.shared.AzureEmail;
 import net.mcphersonmovies.shared.Helpers;
+import net.mcphersonmovies.shared.MySQL_Connect;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
@@ -331,5 +337,36 @@ public class UserDAO {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static boolean saveImage(int user_id, Part filePart, String imageName) {
+        try (Connection conn = MySQL_Connect.getConnection();
+             InputStream inputStream = filePart.getInputStream();
+             CallableStatement statement = conn.prepareCall("{CALL sp_update_image(?,?,?)}")) {
+
+            statement.setInt(1, user_id);
+            statement.setString(2, imageName);
+            statement.setBlob(3, inputStream);
+            return statement.executeUpdate() == 1;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public static Image getImage(int user_id) {
+        try (Connection conn = MySQL_Connect.getConnection();
+             CallableStatement statement = conn.prepareCall("{CALL sp_get_image(?)}")) {
+            statement.setInt(1, user_id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                Blob blob = rs.getBlob("image_data");
+                if(blob == null){
+                    return null;
+                }
+                Image image = new Image(rs.getString("image_name"), blob.getBytes(1, (int) blob.length()));
+                return image;
+            }
+        } catch (Exception ignored) {}
+        return null;
     }
 }

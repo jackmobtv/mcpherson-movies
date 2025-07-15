@@ -1,5 +1,6 @@
 package net.mcphersonmovies.mcphersonmovies.model.DAO;
 
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.Rating;
 import net.mcphersonmovies.mcphersonmovies.model.RatingVM;
@@ -87,6 +88,12 @@ public class RatingDAO {
                 rating.setComment(rs.getString("comment"));
                 rating.setCreated_at(rs.getTimestamp("created_at").toInstant());
                 rating.setUser(UserDAO.get(rs.getInt("user_id")));
+
+                Image image = UserDAO.getImage(rating.getUser_id());
+                if(image != null){
+                    image.EncodeImage();
+                }
+                rating.setImage(image);
 
                 ratings.add(rating);
             }

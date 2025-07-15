@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.RatingDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.RatingVM;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 
@@ -30,6 +32,12 @@ public class Ratings extends HttpServlet {
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
             return;
         }
+
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
 
         int limit = 5;
         int totalRatings = RatingDAO.getRatingCountByUser(user.getUserId());
@@ -84,6 +92,6 @@ public class Ratings extends HttpServlet {
         req.setAttribute("ratings", ratings);
 
         req.setAttribute("pageTitle", "Ratings");
-        req.getRequestDispatcher("WEB-INF/users/ratings.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/ratings/ratings.jsp").forward(req, resp);
     }
 }

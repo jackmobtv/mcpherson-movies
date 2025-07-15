@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
 import net.mcphersonmovies.shared.Hashing;
@@ -28,6 +29,13 @@ public class DeleteAccount extends HttpServlet {
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
             return;
         }
+
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
+
         req.setAttribute("pageTitle", "Delete Account");
         req.getRequestDispatcher("WEB-INF/users/delete-account.jsp").forward(req, resp);
     }
@@ -44,6 +52,13 @@ public class DeleteAccount extends HttpServlet {
         try {
             if(!user.getEmail().equals(email) || !UserDAO.delete(email, Hashing.hash(password).toCharArray())) {
                 session.setAttribute("flashMessageWarning", "Invalid Email or Password.");
+
+                Image image = UserDAO.getImage(user.getUserId());
+                if(image != null){
+                    image.EncodeImage();
+                }
+                req.setAttribute("image", image);
+
                 req.setAttribute("pageTitle", "Delete Account");
                 req.getRequestDispatcher("WEB-INF/users/delete-account.jsp").forward(req, resp);
                 return;

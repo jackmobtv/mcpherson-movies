@@ -29,6 +29,6 @@ public class UserFavorites extends HttpServlet {
         req.setAttribute("favorites", favorites);
 
         req.setAttribute("pageTitle", "Favorites");
-        req.getRequestDispatcher("/WEB-INF/users/user-favorites.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/favorites/user-favorites.jsp").forward(req, resp);
     }
 }

@@ -20,7 +20,14 @@
                                 <c:otherwise>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
-                                            <img src="${appURL}/img/wrongturn.jpg" width="90" height="90" alt="profile picture" class="cardImage mx-2"/>
+                                            <c:choose>
+                                                <c:when test="${empty image.encodedImage}">
+                                                    <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="90" width="90">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="90" width="90">
+                                                </c:otherwise>
+                                            </c:choose>
                                             <h3 class="mb-0">${user.fullName}</h3>
                                             <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${user.dateofbirthDate}"/></i></p>
                                         </div>

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 
 import java.io.IOException;
@@ -21,6 +22,12 @@ public class ViewProfile extends HttpServlet {
 
         User user = UserDAO.get(id);
         req.setAttribute("user", user);
+
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
 
         req.setAttribute("pageTitle", "Profile");
         req.getRequestDispatcher("WEB-INF/users/view-profile.jsp").forward(req, resp);

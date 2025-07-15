@@ -77,6 +77,6 @@ public class UserRatings extends HttpServlet {
         req.setAttribute("ratings", ratings);
 
         req.setAttribute("pageTitle", "Ratings");
-        req.getRequestDispatcher("/WEB-INF/users/user-ratings.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/ratings/user-ratings.jsp").forward(req, resp);
     }
 }

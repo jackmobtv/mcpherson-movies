@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.FavoriteDAO;
+import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.Movie;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 
@@ -30,10 +32,16 @@ public class Favorites extends HttpServlet {
             return;
         }
 
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
+
         List<Movie> favorites = FavoriteDAO.getFavoriteMovies(user.getUserId());
         req.setAttribute("favorites", favorites);
 
         req.setAttribute("pageTitle", "Favorites");
-        req.getRequestDispatcher("WEB-INF/users/favorites.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/favorites/favorites.jsp").forward(req, resp);
     }
 }

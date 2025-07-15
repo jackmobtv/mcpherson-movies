@@ -87,7 +87,14 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <!-- Left side: profile info -->
                                             <div class="d-flex align-items-center">
-                                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                                <c:choose>
+                                                    <c:when test="${empty image.encodedImage}">
+                                                        <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="60" width="60">
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <h5 class="mb-0">${sessionScope.activeUser.fullName}</h5>
                                                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${myRating.createdAtDate}"/></i></p>
                                             </div>
@@ -118,7 +125,14 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <!-- Left side: profile info -->
                                             <div class="d-flex align-items-center">
-                                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                                <c:choose>
+                                                    <c:when test="${empty image.encodedImage}">
+                                                        <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="60" width="60">
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <h5 class="mb-0">${fullName}</h5>
                                                 <p class="mb-0"><i></i></p>
                                             </div>
@@ -161,7 +175,14 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Left side: profile info -->
                             <div class="d-flex align-items-center">
-                                <img src="${appURL}/img/wrongturn.jpg" width="60" height="60" alt="profile picture" class="cardImage mx-2"/>
+                                <c:choose>
+                                    <c:when test="${empty rating.image.encodedImage}">
+                                        <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${rating.image.encodedImage}" alt="${rating.image.fileName}" height="60" width="60">
+                                    </c:otherwise>
+                                </c:choose>
                                 <h5 class="mb-0"><a href="view-profile?id=${rating.user_id}">${rating.user.fullName}</a></h5>
                                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
                             </div>

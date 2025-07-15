@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.mcphersonmovies.mcphersonmovies.model.Image;
 import net.mcphersonmovies.mcphersonmovies.model.User;
 import net.mcphersonmovies.mcphersonmovies.model.DAO.UserDAO;
 
@@ -28,6 +29,12 @@ public class EditProfile extends HttpServlet {
             resp.sendRedirect(resp.encodeRedirectURL(req.getContextPath() + "/"));
             return;
         }
+
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
 
         req.setAttribute("user", UserDAO.get(user.getUserId()));
 
@@ -114,6 +121,12 @@ public class EditProfile extends HttpServlet {
                 session.setAttribute("flashMessageWarning", "Your profile was not updated");
             }
         }
+
+        Image image = UserDAO.getImage(user.getUserId());
+        if(image != null){
+            image.EncodeImage();
+        }
+        req.setAttribute("image", image);
 
         req.setAttribute("pageTitle", "Edit Profile");
         req.getRequestDispatcher("WEB-INF/users/edit-profile.jsp").forward(req, resp);
