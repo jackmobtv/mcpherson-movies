@@ -15,7 +15,7 @@
 
         <div class="mt-3">
             <label for="comment" class="form-label">Comment</label>
-            <textarea id="comment" class="form-control" maxlength="1000" readonly>${rating.comment}</textarea>
+            <textarea id="comment" class="form-control" maxlength="1000" readonly>${fn:escapeXml(rating.comment)}</textarea>
         </div>
     </div>
 </c:forEach>

@@ -25,8 +25,10 @@ public class UserFavorites extends HttpServlet {
         User user = UserDAO.get(id);
         req.setAttribute("user", user);
 
-        List<Movie> favorites = FavoriteDAO.getFavoriteMovies(user.getUserId());
-        req.setAttribute("favorites", favorites);
+        if(user != null){
+            List<Movie> favorites = FavoriteDAO.getFavoriteMovies(user.getUserId());
+            req.setAttribute("favorites", favorites);
+        }
 
         req.setAttribute("pageTitle", "Favorites");
         req.getRequestDispatcher("/WEB-INF/favorites/user-favorites.jsp").forward(req, resp);

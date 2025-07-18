@@ -25,20 +25,20 @@
                                                     <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="90" width="90">
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="90" width="90">
+                                                    <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${fn:escapeXml(image.fileName)}" height="90" width="90">
                                                 </c:otherwise>
                                             </c:choose>
-                                            <h3 class="mb-0">${user.fullName}</h3>
+                                            <h3 class="mb-0">${fn:escapeXml(user.fullName)}</h3>
                                             <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${user.dateofbirthDate}"/></i></p>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <h5 class="mb-0 mx-1">${user.pronouns}</h5>
+                                            <h5 class="mb-0 mx-1">${fn:escapeXml(user.pronouns)}</h5>
                                         </div>
                                     </div>
 
                                     <div class="mt-3">
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea id="description" class="form-control" readonly>${user.description}</textarea>
+                                        <textarea id="description" class="form-control" readonly>${fn:escapeXml(user.description)}</textarea>
                                     </div>
                                 </c:otherwise>
                             </c:choose>

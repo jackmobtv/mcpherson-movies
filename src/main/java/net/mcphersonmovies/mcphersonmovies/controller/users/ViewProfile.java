@@ -23,11 +23,13 @@ public class ViewProfile extends HttpServlet {
         User user = UserDAO.get(id);
         req.setAttribute("user", user);
 
-        Image image = UserDAO.getImage(user.getUserId());
-        if(image != null){
-            image.EncodeImage();
+        if (user != null) {
+            Image image = UserDAO.getImage(user.getUserId());
+            if(image != null){
+                image.EncodeImage();
+            }
+            req.setAttribute("image", image);
         }
-        req.setAttribute("image", image);
 
         req.setAttribute("pageTitle", "Profile");
         req.getRequestDispatcher("WEB-INF/users/view-profile.jsp").forward(req, resp);

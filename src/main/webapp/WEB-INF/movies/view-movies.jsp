@@ -92,10 +92,10 @@
                                                         <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="60" width="60">
+                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${fn:escapeXml(image.fileName)}" height="60" width="60">
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <h5 class="mb-0">${sessionScope.activeUser.fullName}</h5>
+                                                <h5 class="mb-0">${fn:escapeXml(sessionScope.activeUser.fullName)}</h5>
                                                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${myRating.createdAtDate}"/></i></p>
                                             </div>
                                             <!-- Right side: rating -->
@@ -108,7 +108,7 @@
 
                                         <div class="mt-3">
                                             <label for="comment" class="form-label">Comment</label>
-                                            <textarea id="comment" class="form-control" maxlength="1000" name="comment">${empty formComment ? myRating.comment : formComment}</textarea>
+                                            <textarea id="comment" class="form-control" maxlength="1000" name="comment">${empty formComment ? fn:escapeXml(myRating.comment) : fn:escapeXml(formComment)}</textarea>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button class="btn btn-warning mt-2" type="submit">Update</button>
@@ -130,7 +130,7 @@
                                                         <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${image.fileName}" height="60" width="60">
+                                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${image.encodedImage}" alt="${fn:escapeXml(image.fileName)}" height="60" width="60">
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <h5 class="mb-0">${fullName}</h5>
@@ -166,7 +166,7 @@
                     <h5 class="mb-0 float-right mx-5"><i class="bi bi-star-fill me-2"></i>Avg. Rating: ${averageRating}/10</h5>
                 </div>
                 <c:if test="${totalPages > 1}">
-                    <div class="col d-flex justify-content-between align-items-center">
+                    <div class="col d-flex justify-content-between align-items-center mt-5">
                         <%@include file="/WEB-INF/fragments/rating-pagination.jspf"%>
                     </div>
                 </c:if>
@@ -180,10 +180,10 @@
                                         <img class="cardImage mx-2" src="${appURL}/img/profile.svg" alt="Unset Profile Picture" height="60" width="60">
                                     </c:when>
                                     <c:otherwise>
-                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${rating.image.encodedImage}" alt="${rating.image.fileName}" height="60" width="60">
+                                        <img class="cardImage mx-2" src="data:image/jpeg;base64,${rating.image.encodedImage}" alt="${fn:escapeXml(rating.image.fileName)}" height="60" width="60">
                                     </c:otherwise>
                                 </c:choose>
-                                <h5 class="mb-0"><a href="view-profile?id=${rating.user_id}">${rating.user.fullName}</a></h5>
+                                <h5 class="mb-0"><a href="view-profile?id=${rating.user_id}">${fn:escapeXml(rating.user.fullName)}</a></h5>
                                 <p class="mb-0 mx-3 text-secondary"><i><fmt:formatDate value="${rating.createdAtDate}"/></i></p>
                             </div>
                             <!-- Right side: rating -->
@@ -195,7 +195,7 @@
 
                         <div class="mt-3">
                             <label for="comment" class="form-label">Comment</label>
-                            <textarea id="comment" class="form-control" maxlength="1000" readonly>${rating.comment}</textarea>
+                            <textarea id="comment" class="form-control" maxlength="1000" readonly>${fn:escapeXml(rating.comment)}</textarea>
                         </div>
                         <c:if test="${not empty sessionScope.activeUser && sessionScope.activeUser.privileges eq 'Admin' && sessionScope.activeUser.status eq 'active'}">
                             <div class="d-flex d-flex flex-row-reverse">

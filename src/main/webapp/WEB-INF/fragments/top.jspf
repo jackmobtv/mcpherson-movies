@@ -91,7 +91,7 @@
                 <c:if test="${not empty loginFail}">
                     <div class="alert alert-danger mb-2">${loginFail}</div>
                 </c:if>
-                <form action="modal-login" method="POST" id="modalLoginForm">
+                <form action="${appURL}/modal-login" method="POST" id="modalLoginForm">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
