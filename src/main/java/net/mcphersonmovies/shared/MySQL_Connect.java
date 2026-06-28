@@ -25,7 +25,7 @@ public class MySQL_Connect {
 
         String connectionString = "";
         try {
-            connectionString = Config.getEnv("AZURE_MYSQL_CONNECTIONSTRING");
+            connectionString = Config.getEnv("MYSQL_CONNECTIONSTRING");
         } catch(IllegalStateException e) {
             throw new SQLException(e.getMessage());
         }
